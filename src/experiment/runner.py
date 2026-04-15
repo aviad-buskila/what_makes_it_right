@@ -18,6 +18,7 @@ def build_setups(config: ExperimentConfig, retriever=None) -> list[ExperimentSet
             model_config=model_config,
             use_rag=False,
             temperature=config.temperature,
+            timeout_per_query=config.timeout_per_query,
         ))
         # With RAG
         setups.append(ExperimentSetup(
@@ -26,6 +27,7 @@ def build_setups(config: ExperimentConfig, retriever=None) -> list[ExperimentSet
             retriever=retriever,
             rag_config=config.rag,
             temperature=config.temperature,
+            timeout_per_query=config.timeout_per_query,
         ))
     return setups
 
@@ -91,4 +93,21 @@ def run_experiment(
                         pbar.update(1)
                     except Exception as e:
                         print(f"\nError on {question.id}, rep {rep}: {e}")
+                        if config.record_failures:
+                            failure_record = ExperimentResult(
+                                question_id=question.id,
+                                setup_name=setup.name,
+                                model_name=setup.model_config.name,
+                                has_rag=setup.use_rag,
+                                repetition=rep,
+                                model_response="",
+                                extracted_answer=None,
+                                correct_answer=question.correct_answer,
+                                is_correct=False,
+                                latency_seconds=0.0,
+                                succeeded=False,
+                                error_message=str(e),
+                                retrieved_context=None,
+                            )
+                            store.append(failure_record, experiment_name)
                         continue

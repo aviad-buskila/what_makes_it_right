@@ -20,6 +20,8 @@ class ExperimentResult:
     correct_answer: str
     is_correct: bool
     latency_seconds: float
+    succeeded: bool = True
+    error_message: str | None = None
     timestamp: str = field(default_factory=lambda: datetime.now().isoformat())
     retrieved_context: list[str] | None = None
 
