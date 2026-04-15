@@ -29,7 +29,8 @@ class ExperimentConfig:
     max_questions: int | None = None
     random_seed: int = 42
     temperature: float = 0.7
-    timeout_per_query: int = 120
+    timeout_per_query: int = 60
+    record_failures: bool = True
     models: list[ModelConfig] = field(default_factory=list)
     rag: RagConfig = field(default_factory=RagConfig)
     results_dir: str = "results"
@@ -51,7 +52,8 @@ def load_config(path: str | Path = "config.yaml") -> ExperimentConfig:
         max_questions=exp.get("max_questions"),
         random_seed=exp.get("random_seed", 42),
         temperature=exp.get("temperature", 0.7),
-        timeout_per_query=exp.get("timeout_per_query", 120),
+        timeout_per_query=exp.get("timeout_per_query", 60),
+        record_failures=exp.get("record_failures", True),
         models=models,
         rag=RagConfig(**rag_raw) if rag_raw else RagConfig(),
         results_dir=storage.get("results_dir", "results"),

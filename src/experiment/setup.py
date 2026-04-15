@@ -29,12 +29,14 @@ class ExperimentSetup:
         retriever: Retriever | None = None,
         rag_config: RagConfig | None = None,
         temperature: float = 0.7,
+        timeout_per_query: int = 60,
     ):
         self.model_config = model_config
         self.use_rag = use_rag
         self.retriever = retriever
         self.rag_config = rag_config
         self.temperature = temperature
+        self.timeout_per_query = timeout_per_query
 
         rag_suffix = "+RAG" if use_rag else ""
         self.name = f"{model_config.name}{rag_suffix}"
@@ -54,6 +56,7 @@ class ExperimentSetup:
             model_id=self.model_config.ollama_id,
             prompt=prompt,
             temperature=self.temperature,
+            timeout=self.timeout_per_query,
         )
 
         answer = extract_answer(response_text)

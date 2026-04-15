@@ -11,6 +11,7 @@ if str(PROJECT_ROOT) not in sys.path:
 from src.dataset.loader import load_questions, load_medqa, save_questions
 from src.experiment.config import load_config
 from src.experiment.runner import build_setups, run_experiment
+from src.llm.client import ensure_model
 from src.rag.retriever import Retriever
 from src.storage.results import ResultsStore
 
@@ -54,11 +55,13 @@ def main():
     retriever = None
     if Path(chroma_path).exists():
         try:
+            ensure_model(config.rag.embedding_model)
             retriever = Retriever(
                 persist_dir=chroma_path,
                 collection_name=config.rag.collection_name,
                 embedding_model=config.rag.embedding_model,
                 top_k=config.rag.top_k,
+                timeout_per_query=config.timeout_per_query,
             )
             print(f"RAG retriever loaded ({retriever.collection.count()} chunks)")
         except Exception as e:
