@@ -1,0 +1,22 @@
+experiment:
+  name: "smoke_test"
+  repetitions: 1
+  max_questions: 5
+  random_seed: 42
+  temperature: 0.7
+  timeout_per_query: 120
+
+models:
+  - name: "gemma3-4b"
+    ollama_id: "gemma3:4b"
+    category: "small_general"
+
+rag:
+  top_k: 5
+  chunk_size: 512
+  chunk_overlap: 50
+  embedding_model: "nomic-embed-text"
+  collection_name: "medqa_textbooks"
+
+storage:
+  results_dir: "results"
