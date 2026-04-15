@@ -1,0 +1,28 @@
+experiment:
+  name: "medical_mcq_comparison"
+  repetitions: 5
+  max_questions: null  # null = full test set, integer for subset (e.g. 200 for pilot)
+  random_seed: 42
+  temperature: 0.7
+  timeout_per_query: 120
+
+models:
+  - name: "gpt-oss-20b"
+    ollama_id: "gpt-oss:20b"
+    category: "large_general"
+  - name: "gemma3-4b"
+    ollama_id: "gemma3:4b"
+    category: "small_general"
+  - name: "medgemma-4b"
+    ollama_id: "MedAIBase/MedGemma1.5:4b"
+    category: "small_domain"
+
+rag:
+  top_k: 5
+  chunk_size: 512
+  chunk_overlap: 50
+  embedding_model: "nomic-embed-text"
+  collection_name: "medqa_textbooks"
+
+storage:
+  results_dir: "results"
