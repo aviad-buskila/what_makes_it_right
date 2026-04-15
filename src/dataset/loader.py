@@ -7,6 +7,8 @@ from pathlib import Path
 
 from datasets import load_dataset
 
+VALID_ANSWERS = {"A", "B", "C", "D"}
+
 
 @dataclass
 class Question:
@@ -15,6 +17,33 @@ class Question:
     options: dict[str, str]  # {"A": "...", "B": "...", ...}
     correct_answer: str  # letter: "A", "B", "C", or "D"
     metadata: dict[str, str] = field(default_factory=dict)
+
+
+def _normalize_answer_to_letter(answer: str, options: dict[str, str]) -> str:
+    """Return answer as letter A-D when possible.
+
+    Some MedQA variants store the gold answer as answer text, not as option letter.
+    """
+    candidate = (answer or "").strip()
+    if candidate in options:
+        return candidate
+
+    # Match by exact option text first.
+    for key, value in options.items():
+        if candidate == value.strip():
+            return key
+
+    # Fallback: keep original value if no mapping is found.
+    return candidate
+
+
+def _validate_correct_answer(question_id: str, correct_answer: str) -> None:
+    """Fail fast when a question's gold label is not A/B/C/D."""
+    if correct_answer not in VALID_ANSWERS:
+        raise ValueError(
+            f"Invalid correct_answer for {question_id}: {correct_answer!r}. "
+            "Expected one of A/B/C/D."
+        )
 
 
 def load_medqa(
@@ -39,9 +68,10 @@ def load_medqa(
             id=f"medqa_{split}_{idx}",
             question_text=row["question"],
             options=options,
-            correct_answer=row["answer"],
+            correct_answer=_normalize_answer_to_letter(row["answer"], options),
             metadata={"split": split, "index": str(idx)},
         )
+        _validate_correct_answer(q.id, q.correct_answer)
         questions.append(q)
 
     if max_questions is not None and max_questions < len(questions):
@@ -65,5 +95,13 @@ def load_questions(path: Path) -> list[Question]:
     with open(path) as f:
         for line in f:
             data = json.loads(line)
-            questions.append(Question(**data))
+            # Backward compatibility for previously saved files
+            # where correct_answer may be answer text.
+            data["correct_answer"] = _normalize_answer_to_letter(
+                data.get("correct_answer", ""),
+                data.get("options", {}),
+            )
+            q = Question(**data)
+            _validate_correct_answer(q.id, q.correct_answer)
+            questions.append(q)
     return questions
