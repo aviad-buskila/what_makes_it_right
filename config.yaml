@@ -14,7 +14,7 @@ models:
     ollama_id: "gemma3:4b"
     category: "small_general"
   - name: "medgemma-4b"
-    ollama_id: "MedAIBase/MedGemma1.5:4b"
+    ollama_id: "edwardlo12/medgemma-4b-it-q4_k_m:latest"
     category: "small_domain"
 
 rag:
