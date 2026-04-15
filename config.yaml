@@ -1,7 +1,7 @@
 experiment:
   name: "medical_mcq_comparison"
   repetitions: 5
-  max_questions: null  # null = full test set, integer for subset (e.g. 200 for pilot)
+  max_questions: 5  # null = full test set, integer for subset (e.g. 200 for pilot)
   random_seed: 42
   temperature: 0.7
   timeout_per_query: 120
