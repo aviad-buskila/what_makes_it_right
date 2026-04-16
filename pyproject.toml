@@ -1,0 +1,24 @@
+[project]
+name = "what-makes-it-right"
+version = "0.1.0"
+description = "Experiment: what is more crucial for medical QA accuracy — model size, domain expertise, or retrieved knowledge?"
+requires-python = ">=3.11"
+dependencies = [
+    "datasets>=3.0",
+    "chromadb>=0.5",
+    "ollama>=0.4",
+    "pydantic>=2.0",
+    "pyyaml>=6.0",
+    "tqdm>=4.60",
+    "pandas>=2.0",
+    "tabulate>=0.9.0",
+    "scipy>=1.10",
+    "matplotlib>=3.7",
+    "seaborn>=0.13",
+]
+
+[project.scripts]
+download-dataset = "scripts.download_dataset:main"
+build-rag-index = "scripts.build_rag_index:main"
+run-experiment = "scripts.run_experiment:main"
+analyze-results = "scripts.analyze_results:main"
