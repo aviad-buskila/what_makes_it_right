@@ -17,12 +17,14 @@ class Retriever:
         embedding_model: str = "nomic-embed-text",
         top_k: int = 5,
         timeout_per_query: int = 60,
+        max_distance: float = 0.27,
     ):
         self.client = chromadb.PersistentClient(path=persist_dir)
         self.collection = self.client.get_collection(collection_name)
         self.embedding_model = embedding_model
         self.top_k = top_k
         self.timeout_per_query = timeout_per_query
+        self.max_distance = max_distance
 
     def query(self, question_text: str, top_k: int | None = None) -> list[str]:
         """Return the top-K most relevant text chunks for a question."""
