@@ -46,15 +46,21 @@ def load_textbook_corpus(cache_dir: str | None = None) -> list[dict[str, str]]:
         )
         corpus = []
         for idx, row in enumerate(ds):
-            options = row.get("options", {})
-            option_text = "\n".join(
-                f"{key}) {value}"
-                for key, value in sorted(options.items())
-                if isinstance(value, str) and value.strip()
-            )
-            text = f"Question: {row.get('question', '')}\nOptions:\n{option_text}"
-            if row.get("meta_info"):
-                text += f"\nContext: {row['meta_info']}"
+            # Avoid injecting A/B/C/D option lists into retrieval context because
+            # they can distract answer selection in downstream prompts.
+            question_text = str(row.get("question", "")).strip()
+            answer_text = str(row.get("answer", "")).strip()
+            meta_info = str(row.get("meta_info", "")).strip()
+
+            sections = []
+            if question_text:
+                sections.append(f"Clinical prompt: {question_text}")
+            if answer_text:
+                sections.append(f"Reference diagnosis/concept: {answer_text}")
+            if meta_info:
+                sections.append(f"Reference notes: {meta_info}")
+
+            text = "\n".join(sections)
             if text.strip():
                 corpus.append({"id": f"medqa_train_{idx}", "text": text.strip()})
         return corpus

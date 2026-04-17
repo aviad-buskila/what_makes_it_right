@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import re
+
 import chromadb
 
 from src.llm.client import generate_embedding
@@ -32,6 +34,43 @@ class Retriever:
         )
         results = self.collection.query(
             query_embeddings=[embedding],
-            n_results=k,
+            n_results=max(k * 3, k),
+            include=["documents", "distances"],
         )
-        return results["documents"][0] if results["documents"] else []
+        documents = results["documents"][0] if results["documents"] else []
+        distances = results["distances"][0] if results.get("distances") else [0.0] * len(documents)
+        if not documents:
+            return []
+
+        query_tokens = _token_set(question_text)
+        ranked: list[tuple[float, str]] = []
+        for doc, distance in zip(documents, distances):
+            overlap = _jaccard_overlap(query_tokens, _token_set(doc))
+            # Prefer semantic neighbors but penalize weak lexical overlap.
+            score = (1.0 - float(distance)) + (0.35 * overlap)
+            if overlap > 0:
+                ranked.append((score, doc))
+
+        if not ranked:
+            # Fallback: return best semantic matches if overlap filter is too strict.
+            return documents[:k]
+
+        ranked.sort(key=lambda x: x[0], reverse=True)
+        return [doc for _, doc in ranked[:k]]
+
+
+def _token_set(text: str) -> set[str]:
+    tokens = set(re.findall(r"[A-Za-z]{4,}", text.lower()))
+    stopwords = {
+        "with", "from", "that", "this", "which", "into", "about", "after", "before",
+        "would", "could", "should", "there", "their", "they", "them", "then", "than",
+        "have", "has", "were", "been", "being", "where", "when", "what", "your",
+        "question", "answer", "following", "option", "options",
+    }
+    return {t for t in tokens if t not in stopwords}
+
+
+def _jaccard_overlap(a: set[str], b: set[str]) -> float:
+    if not a or not b:
+        return 0.0
+    return len(a & b) / len(a | b)
