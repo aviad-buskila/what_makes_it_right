@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import random
+import re
 from pathlib import Path
 
 import chromadb
@@ -54,6 +55,8 @@ def load_textbook_corpus(
         corpus = []
         for idx, row in enumerate(ds):
             exp = str(row.get("exp") or "").strip()
+            # Strip leading answer labels like "Ans. a.", "Ans: b", "Answer: C."
+            exp = re.sub(r"(?i)^(ans(wer)?\.?\s*[:\-]?\s*[a-d]\.?\s*)+", "", exp).strip()
             if not exp or len(exp) < 50:
                 continue
             subject = str(row.get("subject_name") or "").strip()
