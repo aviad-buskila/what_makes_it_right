@@ -56,7 +56,12 @@ class ExperimentSetup:
             elif self.retriever:
                 top_k = self.rag_config.top_k if self.rag_config else 5
                 context_chunks = self.retriever.query(question.question_text, top_k=top_k)
-            prompt = build_rag_prompt(question, context_chunks or [])
+            # Fall back to base prompt when retrieval finds nothing above the
+            # distance threshold — injecting empty / irrelevant context hurts.
+            if context_chunks:
+                prompt = build_rag_prompt(question, context_chunks)
+            else:
+                prompt = build_base_prompt(question)
         else:
             prompt = build_base_prompt(question)
 

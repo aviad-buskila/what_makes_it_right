@@ -44,6 +44,16 @@ class Retriever:
         if not documents:
             return []
 
+        # Drop chunks that are too far away — they are noise, not knowledge.
+        # Returning an empty list signals the caller to fall back to the base prompt.
+        close_pairs = [
+            (doc, dist) for doc, dist in zip(documents, distances)
+            if float(dist) <= self.max_distance
+        ]
+        if not close_pairs:
+            return []
+        documents, distances = zip(*close_pairs)
+
         query_tokens = _token_set(question_text)
         ranked: list[tuple[float, str]] = []
         min_overlap = 0.02

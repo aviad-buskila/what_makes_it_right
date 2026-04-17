@@ -1,29 +1,30 @@
 experiment:
-  name: "medical_mcq_comparison_1_5_e"
-  repetitions: 1
-  max_questions: 20  # null = full test set, integer for subset (e.g. 200 for pilot)
+  name: "medical_mcq_comparison_3_100"
+  repetitions: 3
+  max_questions: 100  # null = full test set, integer for subset (e.g. 200 for pilot)
   random_seed: 42
-  temperature: 0.3
+  temperature: 0.2
   timeout_per_query: 120
   record_failures: true
 
 models:
-  # - name: "gpt-oss-20b"
-  #   ollama_id: "gpt-oss:20b"
-  #   category: "large_general"
-  # - name: "gemma3-4b"
-  #   ollama_id: "gemma3:4b"
-  #   category: "small_general"
+  - name: "gpt-oss-20b"
+    ollama_id: "gpt-oss:20b"
+    category: "large_general"
+  - name: "gemma3-4b"
+    ollama_id: "gemma3:4b"
+    category: "small_general"
   - name: "medgemma-4b"
     ollama_id: "edwardlo12/medgemma-4b-it-q4_k_m:latest"
     category: "small_domain"
 
 rag:
-  top_k: 2
+  top_k: 5
   chunk_size: 512
   chunk_overlap: 50
   embedding_model: "nomic-embed-text"
   collection_name: "medqa_textbooks"
+  max_distance: 0.27  # cosine distance cutoff — chunks above this are discarded
 
 storage:
   results_dir: "results"

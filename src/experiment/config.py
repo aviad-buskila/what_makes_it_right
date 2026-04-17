@@ -20,6 +20,7 @@ class RagConfig:
     chunk_overlap: int = 50
     embedding_model: str = "nomic-embed-text"
     collection_name: str = "medqa_textbooks"
+    max_distance: float = 0.27  # cosine distance cutoff; chunks above this are discarded
 
 
 @dataclass

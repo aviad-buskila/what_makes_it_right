@@ -62,6 +62,7 @@ def main():
                 embedding_model=config.rag.embedding_model,
                 top_k=config.rag.top_k,
                 timeout_per_query=config.timeout_per_query,
+                max_distance=config.rag.max_distance,
             )
             print(f"RAG retriever loaded ({retriever.collection.count()} chunks)")
         except Exception as e:
