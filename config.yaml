@@ -1,9 +1,9 @@
 experiment:
-  name: "medical_mcq_comparison_3-100"
+  name: "medical_mcq_comparison_3_100"
   repetitions: 3
   max_questions: 100  # null = full test set, integer for subset (e.g. 200 for pilot)
   random_seed: 42
-  temperature: 0.3
+  temperature: 0.2
   timeout_per_query: 120
   record_failures: true
 
@@ -24,6 +24,7 @@ rag:
   chunk_overlap: 50
   embedding_model: "nomic-embed-text"
   collection_name: "medqa_textbooks"
+  max_distance: 0.27  # cosine distance cutoff — chunks above this are discarded
 
 storage:
   results_dir: "results"

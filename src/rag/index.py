@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import random
+import re
 from pathlib import Path
 
 import chromadb
@@ -9,7 +11,11 @@ from tqdm import tqdm
 from src.llm.client import generate_embedding
 
 
-def load_textbook_corpus(cache_dir: str | None = None) -> list[dict[str, str]]:
+def load_textbook_corpus(
+    cache_dir: str | None = None,
+    max_corpus_size: int = 25_000,
+    random_seed: int = 42,
+) -> list[dict[str, str]]:
     """Load the MedQA textbook corpus from HuggingFace.
 
     Returns list of dicts with 'id' and 'text' keys.
@@ -38,38 +44,79 @@ def load_textbook_corpus(cache_dir: str | None = None) -> list[dict[str, str]]:
         if "Dataset scripts are no longer supported" not in str(exc):
             raise
 
-        # Fallback: build a retrieval corpus from MedQA train questions/options.
+        # Fallback: use medmcqa medical explanations as knowledge corpus.
+        # These are concise, exam-oriented medical explanations covering anatomy,
+        # pharmacology, pathology, etc. — real knowledge, no answer labels.
         ds = load_dataset(
-            "GBaker/MedQA-USMLE-4-options",
+            "openlifescienceai/medmcqa",
             split="train",
             cache_dir=cache_dir,
         )
         corpus = []
         for idx, row in enumerate(ds):
-            options = row.get("options", {})
-            option_text = "\n".join(
-                f"{key}) {value}"
-                for key, value in sorted(options.items())
-                if isinstance(value, str) and value.strip()
-            )
-            text = f"Question: {row.get('question', '')}\nOptions:\n{option_text}"
-            if row.get("meta_info"):
-                text += f"\nContext: {row['meta_info']}"
-            if text.strip():
-                corpus.append({"id": f"medqa_train_{idx}", "text": text.strip()})
+            exp = str(row.get("exp") or "").strip()
+            # Strip leading answer labels like "Ans. a.", "Ans: b", "Answer: C."
+            exp = re.sub(r"(?i)^(ans(wer)?\.?\s*[:\-]?\s*[a-d]\.?\s*)+", "", exp).strip()
+            if not exp or len(exp) < 50:
+                continue
+            subject = str(row.get("subject_name") or "").strip()
+            topic = str(row.get("topic_name") or "").strip()
+
+            header = " — ".join(filter(None, [subject, topic]))
+            text = f"{header}\n\n{exp}" if header else exp
+            corpus.append({"id": f"medmcqa_{idx}", "text": text})
+
+        if len(corpus) > max_corpus_size:
+            rng = random.Random(random_seed)
+            corpus = rng.sample(corpus, max_corpus_size)
+
         return corpus
 
 
 def chunk_text(text: str, chunk_size: int = 512, overlap: int = 50) -> list[str]:
-    """Split text into overlapping chunks by character count."""
-    chunks = []
-    start = 0
-    while start < len(text):
-        end = start + chunk_size
-        chunk = text[start:end]
-        if chunk.strip():
-            chunks.append(chunk.strip())
-        start = end - overlap
+    """Split text into overlapping chunks while preserving word boundaries."""
+    clean = " ".join(text.split())
+    if not clean:
+        return []
+    if len(clean) <= chunk_size:
+        return [clean]
+
+    words = clean.split(" ")
+    chunks: list[str] = []
+    current: list[str] = []
+    current_len = 0
+
+    for word in words:
+        # +1 accounts for a joining space when chunk is non-empty.
+        add_len = len(word) + (1 if current else 0)
+        if current and current_len + add_len > chunk_size:
+            chunk = " ".join(current).strip()
+            if chunk:
+                chunks.append(chunk)
+
+            # Rebuild overlap context from tail words of previous chunk.
+            overlap_words: list[str] = []
+            overlap_len = 0
+            for w in reversed(current):
+                next_len = overlap_len + len(w) + (1 if overlap_words else 0)
+                if next_len > overlap:
+                    break
+                overlap_words.append(w)
+                overlap_len = next_len
+            current = list(reversed(overlap_words))
+            current_len = len(" ".join(current)) if current else 0
+
+        if current:
+            current_len += 1 + len(word)
+        else:
+            current_len = len(word)
+        current.append(word)
+
+    if current:
+        chunk = " ".join(current).strip()
+        if chunk:
+            chunks.append(chunk)
+
     return chunks
 
 
@@ -80,6 +127,7 @@ def build_index(
     chunk_size: int = 512,
     chunk_overlap: int = 50,
     cache_dir: str | None = None,
+    max_corpus_size: int = 25_000,
 ) -> chromadb.Collection:
     """Build a ChromaDB index from the textbook corpus.
 
@@ -100,7 +148,7 @@ def build_index(
     )
 
     print("Loading textbook corpus...")
-    corpus = load_textbook_corpus(cache_dir=cache_dir)
+    corpus = load_textbook_corpus(cache_dir=cache_dir, max_corpus_size=max_corpus_size)
     print(f"Loaded {len(corpus)} documents from corpus.")
 
     print("Chunking and embedding...")

@@ -206,4 +206,8 @@ marimo/_static/
 marimo/_lsp/
 __marimo__/
 
+# Generated data — too large for git (vector DB is several GB)
+data/chroma_db/
+data/cache/
+
 
