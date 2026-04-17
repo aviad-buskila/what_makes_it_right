@@ -6,21 +6,20 @@ from src.dataset.loader import Question
 from src.experiment.config import ExperimentConfig
 from src.experiment.setup import ExperimentSetup
 from src.llm.client import check_health, ensure_model
+from src.rag.retriever import Retriever
 from src.storage.results import ExperimentResult, ResultsStore
 
 
-def build_setups(config: ExperimentConfig, retriever=None) -> list[ExperimentSetup]:
-    """Create all 6 experimental setups (each model with and without RAG)."""
+def build_setups(config: ExperimentConfig, retriever: Retriever | None = None) -> list[ExperimentSetup]:
+    """Create all experimental setups (each model with and without RAG)."""
     setups: list[ExperimentSetup] = []
     for model_config in config.models:
-        # Without RAG
         setups.append(ExperimentSetup(
             model_config=model_config,
             use_rag=False,
             temperature=config.temperature,
             timeout_per_query=config.timeout_per_query,
         ))
-        # With RAG
         setups.append(ExperimentSetup(
             model_config=model_config,
             use_rag=True,
@@ -37,77 +36,99 @@ def run_experiment(
     questions: list[Question],
     setups: list[ExperimentSetup],
     store: ResultsStore,
+    retriever: Retriever | None = None,
 ) -> None:
-    """Run the full experiment: setups x questions x repetitions.
+    """Run the full experiment.
 
-    Supports resuming from checkpoint via ResultsStore.
+    Loop order: question → retrieve chunks once → model pairs (base + RAG) →
+    repetitions.  Each question's chunks are retrieved exactly once and shared
+    across all RAG setups, avoiding redundant embedding calls.
     """
     if not check_health():
         raise RuntimeError("Ollama is not running. Start it with 'ollama serve'.")
 
     experiment_name = config.name
     completed = store.get_completed_keys(experiment_name)
-    total = len(setups) * len(questions) * config.repetitions
-    skipped = len(completed)
 
+    # Group setups into {model_name: {"base": setup, "rag": setup}} preserving
+    # model order so we can ensure each model once before the question loop.
+    model_pairs: dict[str, dict[str, ExperimentSetup]] = {}
+    for setup in setups:
+        model_name = setup.model_config.name
+        if model_name not in model_pairs:
+            model_pairs[model_name] = {}
+        key = "rag" if setup.use_rag else "base"
+        model_pairs[model_name][key] = setup
+
+    # Pull / verify all required models once up front.
+    seen_model_ids: set[str] = set()
+    for setup in setups:
+        mid = setup.model_config.ollama_id
+        if mid not in seen_model_ids:
+            ensure_model(mid)
+            seen_model_ids.add(mid)
+
+    total = len(questions) * config.repetitions * len(setups)
+    skipped = len(completed)
     if skipped > 0:
         print(f"Resuming experiment: {skipped}/{total} already completed.")
 
-    # Group by setup to minimize model swaps
-    for setup in setups:
-        print(f"\n{'='*60}")
-        print(f"Setup: {setup.name} (model: {setup.model_config.ollama_id})")
-        print(f"{'='*60}")
+    with tqdm(total=total - skipped, desc="experiment") as pbar:
+        for question in questions:
+            # Retrieve chunks once for this question and reuse across all RAG setups.
+            chunks: list[str] | None = None
+            if retriever is not None:
+                try:
+                    chunks = retriever.query(question.question_text)
+                except Exception as e:
+                    print(f"\nRetrieval failed for {question.id}: {e}. RAG setups will run without context.")
 
-        ensure_model(setup.model_config.ollama_id)
-
-        setup_total = len(questions) * config.repetitions
-        setup_skipped = sum(
-            1 for q in questions for r in range(config.repetitions)
-            if (q.id, setup.name, r) in completed
-        )
-
-        with tqdm(total=setup_total - setup_skipped, desc=setup.name) as pbar:
-            for question in questions:
-                for rep in range(config.repetitions):
-                    key = (question.id, setup.name, rep)
-                    if key in completed:
+            for pair in model_pairs.values():
+                for variant in ("base", "rag"):
+                    setup = pair.get(variant)
+                    if setup is None:
                         continue
 
-                    try:
-                        result = setup.answer(question)
-                        record = ExperimentResult(
-                            question_id=question.id,
-                            setup_name=setup.name,
-                            model_name=setup.model_config.name,
-                            has_rag=setup.use_rag,
-                            repetition=rep,
-                            model_response=result.response,
-                            extracted_answer=result.extracted_answer,
-                            correct_answer=question.correct_answer,
-                            is_correct=result.is_correct,
-                            latency_seconds=result.latency_seconds,
-                            retrieved_context=result.retrieved_context,
-                        )
-                        store.append(record, experiment_name)
-                        pbar.update(1)
-                    except Exception as e:
-                        print(f"\nError on {question.id}, rep {rep}: {e}")
-                        if config.record_failures:
-                            failure_record = ExperimentResult(
+                    for rep in range(config.repetitions):
+                        key = (question.id, setup.name, rep)
+                        if key in completed:
+                            continue
+
+                        try:
+                            pre_chunks = chunks if variant == "rag" else None
+                            result = setup.answer(question, pre_retrieved_chunks=pre_chunks)
+                            record = ExperimentResult(
                                 question_id=question.id,
                                 setup_name=setup.name,
                                 model_name=setup.model_config.name,
                                 has_rag=setup.use_rag,
                                 repetition=rep,
-                                model_response="",
-                                extracted_answer=None,
+                                model_response=result.response,
+                                extracted_answer=result.extracted_answer,
                                 correct_answer=question.correct_answer,
-                                is_correct=False,
-                                latency_seconds=0.0,
-                                succeeded=False,
-                                error_message=str(e),
-                                retrieved_context=None,
+                                is_correct=result.is_correct,
+                                latency_seconds=result.latency_seconds,
+                                retrieved_context=result.retrieved_context,
                             )
-                            store.append(failure_record, experiment_name)
-                        continue
+                            store.append(record, experiment_name)
+                            pbar.update(1)
+                        except Exception as e:
+                            print(f"\nError on {question.id} / {setup.name} / rep {rep}: {e}")
+                            if config.record_failures:
+                                failure_record = ExperimentResult(
+                                    question_id=question.id,
+                                    setup_name=setup.name,
+                                    model_name=setup.model_config.name,
+                                    has_rag=setup.use_rag,
+                                    repetition=rep,
+                                    model_response="",
+                                    extracted_answer=None,
+                                    correct_answer=question.correct_answer,
+                                    is_correct=False,
+                                    latency_seconds=0.0,
+                                    succeeded=False,
+                                    error_message=str(e),
+                                    retrieved_context=None,
+                                )
+                                store.append(failure_record, experiment_name)
+                            continue

@@ -44,16 +44,17 @@ class Retriever:
 
         query_tokens = _token_set(question_text)
         ranked: list[tuple[float, str]] = []
+        min_overlap = 0.02
         for doc, distance in zip(documents, distances):
             overlap = _jaccard_overlap(query_tokens, _token_set(doc))
             # Prefer semantic neighbors but penalize weak lexical overlap.
             score = (1.0 - float(distance)) + (0.35 * overlap)
-            if overlap > 0:
+            if overlap >= min_overlap:
                 ranked.append((score, doc))
 
         if not ranked:
-            # Fallback: return best semantic matches if overlap filter is too strict.
-            return documents[:k]
+            # Fallback: no strong lexical support, avoid flooding model with weak context.
+            return documents[:1]
 
         ranked.sort(key=lambda x: x[0], reverse=True)
         return [doc for _, doc in ranked[:k]]

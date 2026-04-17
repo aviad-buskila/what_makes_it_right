@@ -81,7 +81,7 @@ def main():
 
     # Run
     store = ResultsStore(config.results_dir)
-    run_experiment(config, questions, setups, store)
+    run_experiment(config, questions, setups, store, retriever=retriever)
 
     print(f"\nExperiment complete! Results saved to {config.results_dir}/{config.name}.jsonl")
 
