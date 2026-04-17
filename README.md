@@ -29,15 +29,16 @@ pip install -e .
 ollama serve
 ```
 
-2. Pull required generation models (from `config.yaml`):
+2. Pull required models — generation models and the embedding model used for RAG:
 
 ```bash
 ollama pull gpt-oss:20b
 ollama pull gemma3:4b
 ollama pull edwardlo12/medgemma-4b-it-q4_k_m:latest
+ollama pull nomic-embed-text
 ```
 
-3. Build RAG index (optional but needed for `+RAG` setups):
+3. Build the RAG index (required for `+RAG` setups; takes ~25 min on first run, downloads ~86 MB of data):
 
 ```bash
 python scripts/build_rag_index.py --config config.yaml
@@ -69,6 +70,19 @@ Edit `config.yaml`:
 - `experiment.record_failures`: whether failed calls are written to JSONL
 - `models`: list of Ollama models to compare
 - `rag`: retrieval settings (`top_k`, chunking, embedding model)
+
+## Datasets
+
+| Role                 | Dataset                                          | Split used |
+| -------------------- | ------------------------------------------------ | ---------- |
+| Experiment questions | `GBaker/MedQA-USMLE-4-options`                   | `test`     |
+| RAG knowledge corpus | `openlifescienceai/medmcqa` (explanations only)  | `train`    |
+
+**Experiment questions** are USMLE Step 1/2/3 style 4-option MCQs. The LLMs are evaluated on these.
+
+**RAG corpus** is built from the `exp` (explanation) field of MedMCQA — Indian PG medical exam explanations covering anatomy, pharmacology, pathology, etc. Only the plain explanation text is indexed; questions and answer options from MedMCQA are never stored. This serves as a proxy for medical textbook knowledge since the original MedQA textbook source (`bigbio/med_qa`) is no longer loadable with `datasets >= 4`.
+
+The two datasets are completely disjoint: no MedQA test questions or answers appear in the RAG index.
 
 ## Data and Outputs
 
@@ -113,11 +127,7 @@ python scripts/analyze_results.py --experiment medical_mcq_comparison_try
 - Results are append-only by experiment file. If you want a fresh run:
   - delete `results/<experiment_name>.jsonl`, or
   - change `experiment.name` in `config.yaml`.
-- If you see `model "nomic-embed-text" not found`, run:
-
-```bash
-ollama pull nomic-embed-text
-```
+- The RAG index (`data/chroma_db/`) is not committed to git — run `build_rag_index.py` after cloning.
 
 ## Project Entry Points
 

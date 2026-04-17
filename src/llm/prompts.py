@@ -12,11 +12,12 @@ Question: {question}
 Answer:"""
 
 RAG_PROMPT = """\
-Use the following medical reference material to help answer the question:
+The following medical reference passages may or may not be relevant to the question below.
+Use them only if they directly support your reasoning. If they are not relevant, ignore them and rely on your own knowledge.
 
 {context}
 
-Now answer the following multiple-choice question.
+Answer the following multiple-choice question.
 Respond with ONLY the letter of the correct answer (A, B, C, or D) on the first line, followed by a brief explanation.
 
 Question: {question}

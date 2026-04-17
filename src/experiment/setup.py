@@ -41,14 +41,27 @@ class ExperimentSetup:
         rag_suffix = "+RAG" if use_rag else ""
         self.name = f"{model_config.name}{rag_suffix}"
 
-    def answer(self, question: Question) -> SetupResult:
-        """Send a question to this setup and return the result."""
+    def answer(self, question: Question, pre_retrieved_chunks: list[str] | None = None) -> SetupResult:
+        """Send a question to this setup and return the result.
+
+        If ``pre_retrieved_chunks`` is provided it is used directly (no retrieval
+        call is made), allowing the caller to share one retrieval result across
+        multiple setups for the same question.
+        """
         context_chunks: list[str] | None = None
 
-        if self.use_rag and self.retriever:
-            top_k = self.rag_config.top_k if self.rag_config else 5
-            context_chunks = self.retriever.query(question.question_text, top_k=top_k)
-            prompt = build_rag_prompt(question, context_chunks)
+        if self.use_rag:
+            if pre_retrieved_chunks is not None:
+                context_chunks = pre_retrieved_chunks
+            elif self.retriever:
+                top_k = self.rag_config.top_k if self.rag_config else 5
+                context_chunks = self.retriever.query(question.question_text, top_k=top_k)
+            # Fall back to base prompt when retrieval finds nothing above the
+            # distance threshold — injecting empty / irrelevant context hurts.
+            if context_chunks:
+                prompt = build_rag_prompt(question, context_chunks)
+            else:
+                prompt = build_base_prompt(question)
         else:
             prompt = build_base_prompt(question)
 
