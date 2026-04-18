@@ -6,6 +6,11 @@ experiment:
   temperature: 0.2
   timeout_per_query: 120
   record_failures: true
+  domain: "medical"
+
+dataset:
+  source: "medqa"
+  split: "test"
 
 models:
   - name: "gpt-oss-20b"
@@ -25,6 +30,8 @@ rag:
   embedding_model: "nomic-embed-text"
   collection_name: "medqa_textbooks"
   max_distance: 0.27  # cosine distance cutoff — chunks above this are discarded
+  corpus_source: "medqa"
+  persist_dir: "data/chroma_db"
 
 storage:
   results_dir: "results"

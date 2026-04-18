@@ -1,0 +1,40 @@
+experiment:
+  name: "cyber_mcq_comparison_3_100"
+  repetitions: 3
+  max_questions: 100       # null = full split; pilot with 100
+  random_seed: 42
+  temperature: 0.2
+  timeout_per_query: 120
+  record_failures: true
+  domain: "cybersecurity"  # drives persona in base/RAG prompts
+
+dataset:
+  source: "cybermetric"    # primary benchmark (Tihanyi et al., 2024)
+  split: "test"
+  variant: 2000            # one of: 80 / 500 / 2000 / 10000
+
+models:
+  # Base-vs-domain pair analogous to gemma3:4b vs medgemma:4b.
+  - name: "llama3.1-8b"
+    ollama_id: "llama3.1:8b"
+    category: "small_general"
+  - name: "foundation-sec-8b"
+    ollama_id: "hf.co/fdtn-ai/Foundation-Sec-8B-Q4_K_M-GGUF:Q4_K_M"
+    category: "small_domain"
+  - name: "qwen2.5-7b"
+    ollama_id: "qwen2.5:7b"
+    category: "small_general"
+
+rag:
+  top_k: 5
+  chunk_size: 512
+  chunk_overlap: 50
+  embedding_model: "nomic-embed-text"
+  collection_name: "cyber_kb"
+  max_distance: 0.30
+  corpus_source: "cybersecurity"
+  corpus_include: ["attack", "cwe", "nist", "owasp"]
+  persist_dir: "data/chroma_cyber"
+
+storage:
+  results_dir: "results"

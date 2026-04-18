@@ -9,6 +9,40 @@ from datasets import load_dataset
 from tqdm import tqdm
 
 from src.llm.client import generate_embedding
+from src.rag.cyber_corpus import load_cybersecurity_corpus
+
+
+def load_corpus_by_source(
+    source: str,
+    cache_dir: str | None = None,
+    max_corpus_size: int | None = None,
+    random_seed: int = 42,
+    include: tuple[str, ...] | None = None,
+) -> list[dict[str, str]]:
+    """Dispatch to a corpus loader by name.
+
+    Supported sources:
+      - ``medqa``         → MedQA textbook / MedMCQA explanations fallback
+      - ``cybersecurity`` → MITRE ATT&CK + CWE + NIST SP 800-53 + OWASP
+    """
+    key = source.strip().lower()
+    if key == "medqa":
+        return load_textbook_corpus(
+            cache_dir=cache_dir,
+            max_corpus_size=max_corpus_size or 25_000,
+            random_seed=random_seed,
+        )
+    if key == "cybersecurity":
+        return load_cybersecurity_corpus(
+            cache_dir=cache_dir or "data/cyber_kb",
+            include=tuple(include) if include else ("attack", "cwe",
+                                                    "nist", "owasp"),
+            max_corpus_size=max_corpus_size,
+            random_seed=random_seed,
+        )
+    raise ValueError(
+        f"Unknown corpus source {source!r}. Use 'medqa' or 'cybersecurity'."
+    )
 
 
 def load_textbook_corpus(
@@ -127,11 +161,14 @@ def build_index(
     chunk_size: int = 512,
     chunk_overlap: int = 50,
     cache_dir: str | None = None,
-    max_corpus_size: int = 25_000,
+    max_corpus_size: int | None = 25_000,
+    corpus_source: str = "medqa",
+    corpus_include: tuple[str, ...] | None = None,
 ) -> chromadb.Collection:
-    """Build a ChromaDB index from the textbook corpus.
+    """Build a ChromaDB index from the configured knowledge corpus.
 
-    Embeds chunks using Ollama and persists to disk.
+    Embeds chunks using Ollama and persists to disk. ``corpus_source`` selects
+    between the medical (``medqa``) and cybersecurity (``cybersecurity``) KBs.
     """
     Path(persist_dir).mkdir(parents=True, exist_ok=True)
     client = chromadb.PersistentClient(path=persist_dir)
@@ -147,8 +184,13 @@ def build_index(
         metadata={"hnsw:space": "cosine"},
     )
 
-    print("Loading textbook corpus...")
-    corpus = load_textbook_corpus(cache_dir=cache_dir, max_corpus_size=max_corpus_size)
+    print(f"Loading corpus (source={corpus_source})...")
+    corpus = load_corpus_by_source(
+        source=corpus_source,
+        cache_dir=cache_dir,
+        max_corpus_size=max_corpus_size,
+        include=corpus_include,
+    )
     print(f"Loaded {len(corpus)} documents from corpus.")
 
     print("Chunking and embedding...")

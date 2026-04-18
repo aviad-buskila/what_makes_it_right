@@ -1,7 +1,7 @@
 [project]
 name = "what-makes-it-right"
 version = "0.1.0"
-description = "Experiment: what is more crucial for medical QA accuracy — model size, domain expertise, or retrieved knowledge?"
+description = "Experiment framework comparing model size, domain specialization, and RAG for MCQ accuracy (medical and cybersecurity domains)."
 requires-python = ">=3.11"
 dependencies = [
     "datasets>=3.0",

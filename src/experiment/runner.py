@@ -19,6 +19,7 @@ def build_setups(config: ExperimentConfig, retriever: Retriever | None = None) -
             use_rag=False,
             temperature=config.temperature,
             timeout_per_query=config.timeout_per_query,
+            domain=config.domain,
         ))
         setups.append(ExperimentSetup(
             model_config=model_config,
@@ -27,6 +28,7 @@ def build_setups(config: ExperimentConfig, retriever: Retriever | None = None) -
             rag_config=config.rag,
             temperature=config.temperature,
             timeout_per_query=config.timeout_per_query,
+            domain=config.domain,
         ))
     return setups
 

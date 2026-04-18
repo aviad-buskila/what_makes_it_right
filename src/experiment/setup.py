@@ -30,6 +30,7 @@ class ExperimentSetup:
         rag_config: RagConfig | None = None,
         temperature: float = 0.7,
         timeout_per_query: int = 60,
+        domain: str = "medical",
     ):
         self.model_config = model_config
         self.use_rag = use_rag
@@ -37,6 +38,7 @@ class ExperimentSetup:
         self.rag_config = rag_config
         self.temperature = temperature
         self.timeout_per_query = timeout_per_query
+        self.domain = domain
 
         rag_suffix = "+RAG" if use_rag else ""
         self.name = f"{model_config.name}{rag_suffix}"
@@ -59,11 +61,11 @@ class ExperimentSetup:
             # Fall back to base prompt when retrieval finds nothing above the
             # distance threshold — injecting empty / irrelevant context hurts.
             if context_chunks:
-                prompt = build_rag_prompt(question, context_chunks)
+                prompt = build_rag_prompt(question, context_chunks, domain=self.domain)
             else:
-                prompt = build_base_prompt(question)
+                prompt = build_base_prompt(question, domain=self.domain)
         else:
-            prompt = build_base_prompt(question)
+            prompt = build_base_prompt(question, domain=self.domain)
 
         response_text, latency = generate(
             model_id=self.model_config.ollama_id,
