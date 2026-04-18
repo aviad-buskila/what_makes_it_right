@@ -122,6 +122,46 @@ USMLE Step 1/2/3 style 4-option MCQs. The RAG corpus uses the `exp` (explanation
 
 All cybersecurity KB sources are public, authoritative, and machine-readable. Each entity becomes a self-contained document (ID + title + body) before chunking, which lets the analysis pipeline trace retrieved context back to its source ID (e.g. `CWE-79`, `T1059.003`, `AC-6`). Set `rag.corpus_include` to a subset of `[attack, cwe, nist, owasp]` for per-source ablations.
 
+## Retrieval-only Evaluation (debug / calibrate / tune)
+
+`scripts/evaluate_retrieval.py` measures RAG quality **without running any LLM**, so you can iterate on chunking, indexing, and retrieval parameters in minutes instead of hours. It computes:
+
+- **Intrinsic**: coverage rate, distance distribution (mean / p10 / median / p90), chunk-length stats, per-query latency, source-provenance mix (ATT&CK / CWE / NIST / OWASP).
+- **Silver-label (no LLM)**: correct-option term recall vs. retrieved context, discrimination = overlap(correct) − mean overlap(distractors), and a retrieval-only MCQ accuracy upper bound (pick the option with maximum overlap to the retrieved chunks — this is what RAG alone could give a lookup-table "model").
+
+```bash
+# full eval on the configured question set
+python scripts/evaluate_retrieval.py --config config_cyber.yaml
+
+# fast iteration — first 50 questions
+python scripts/evaluate_retrieval.py --config config_cyber.yaml --limit 50
+
+# grid sweep over top_k and max_distance (no re-embedding)
+python scripts/evaluate_retrieval.py --config config_cyber.yaml --sweep \
+    --top-k-grid 1,3,5,8,10 --max-distance-grid 0.20,0.25,0.30,0.35,0.40,1.0
+
+# single-query debug (prints chunks, distances, inferred source)
+python scripts/evaluate_retrieval.py --config config_cyber.yaml \
+    --query "Which mitigation maps to CWE-79?"
+
+# per-question deep-dive (overlap per option, gold vs heuristic pick)
+python scripts/evaluate_retrieval.py --config config_cyber.yaml \
+    --question-id cybermetric_2000_42
+```
+
+Outputs are written to `results/retrieval/<experiment_name>/`:
+- `per_query.jsonl` — full diagnostics per question
+- `metrics.json` — aggregates + the exact `rag` config used
+- `distance_top1_hist.png`, `distance_topk_hist.png` — for tuning `max_distance`
+- `source_distribution.png` — coverage mix across KB sources
+- `sweep.json` + `sweep_report.md` — ranked sweep results
+
+### How to use the output to tune the pipeline
+- **`max_distance`**: read it off the top-1 distance histogram. Pick the knee.
+- **`top_k`**: look at the sweep row where retrieval-only accuracy plateaus — adding more chunks past that just adds noise.
+- **Chunk size / overlap**: rebuild the index with different `rag.chunk_size` / `rag.chunk_overlap`, rerun the eval, compare `mean_discrimination` and retrieval-only accuracy.
+- **Corpus ablation**: toggle `rag.corpus_include` in the config, rebuild, and compare source-mix vs. accuracy to measure each KB's marginal contribution.
+
 ## Data and Outputs
 
 - Medical questions: `data/medqa/questions.jsonl`
