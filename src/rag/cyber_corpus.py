@@ -35,7 +35,7 @@ SOURCES = {
         "NIST_SP-800-53_rev5_catalog.json"
     ),
     "owasp_top10_root": (
-        "https://raw.githubusercontent.com/OWASP/Top10/master/2021/docs/"
+        "https://raw.githubusercontent.com/OWASP/Top10/master/2021/docs/en/"
     ),
 }
 
@@ -221,6 +221,11 @@ def load_cybersecurity_corpus(
     if "owasp" in include:
         owasp_docs = _load_owasp_top10(cache_root / "owasp")
         print(f"  OWASP Top 10: {len(owasp_docs)} documents")
+        if not owasp_docs:
+            raise RuntimeError(
+                "OWASP Top 10 fetch produced 0 documents. The upstream URL "
+                "structure may have changed; verify SOURCES['owasp_top10_root']."
+            )
         corpus.extend(owasp_docs)
 
     if max_corpus_size is not None and len(corpus) > max_corpus_size:
