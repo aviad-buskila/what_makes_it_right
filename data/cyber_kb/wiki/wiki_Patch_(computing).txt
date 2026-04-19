@@ -1,0 +1,54 @@
+A patch is data for modifying an existing software resource such as a program or a file, often to fix bugs and security vulnerabilities. To patch is also the process of applying the data to the existing resource. Patching a system involves applying a patch. A patch may be created to improve functionality, usability, or performance. A patch may be created manually, but commonly it is created via a tool that compares two versions of the resource and generates data that can be used to transform one to the other.
+Typically, a patch needs to be applied to the specific version of the resource it is intended to modify, although there are exceptions. Some patching tools can detect the version of the existing resource and apply the appropriate patch, even if it supports multiple versions. As more patches are released, their cumulative size can grow significantly, sometimes exceeding the size of the resource itself. To manage this, the number of supported versions may be limited, or a complete copy of the resource might be provided instead.
+Patching allows for modifying a binary executable. Although this can be technically challenging (requires a thorough understanding of the workings of the executable), it may be feasible when the source code is unavailable to build a full executable, and it allows for a smaller distribution which can be more economical than distributing full files.
+Although often intended to fix problems, a patch can introduce new problems – a scenario called software regression. In some cases, an update intentionally disables functionality, for instance, by removing aspects for which the consumer is no longer licensed. Patch management is a part of lifecycle management, and involves a strategy and planning of what patches should be applied to which systems and at what times. Typically, a patch is applied in a permanent way (i.e. to storage), but in some cases, a patch is applied to memory (i.e. via a tool such as a debugger) in which case the change is lost when the resource is reloaded from storage.
+Software update is sometimes conflated with patch even though they are not synonyms. An update can be implemented using patch files and the patching process. Also, some may contend that patching is not limited to modifying file content – that adding, removing and replacing whole files is patching. Typically, patch connotates a relatively small change, so a patch that is large in size or scope may be called the more general software update or another more specific name such as service pack. Windows NT and its successors (including Windows 2000, Windows XP, Windows Vista and Windows 7) use service pack. Historically, IBM used the terms FixPak and Corrective Service Diskette for such updates.
+
+
+History
+
+Historically, software suppliers distributed patches on paper tape or on punched cards, expecting the recipient to cut out the indicated part of the original tape (or deck), and patch in (hence the name) the replacement segment. Later patch distributions used magnetic tape. Then, after the invention of removable disk drives, patches came from the software developer via a disk or, later, CD-ROM via mail. With widely available Internet access, downloading patches from the developer's web site or through automated software updates became often available to the end-users. Starting with Apple's Mac OS 9 and Microsoft's Windows ME, PC operating systems gained the ability to get automatic software updates via the Internet.
+Computer programs can often coordinate patches to update a target program. Automation simplifies the end-user's task, allowing them to only execute an update program, whereupon that program makes sure that updating the target takes place completely and correctly. Service packs for Microsoft Windows NT and its successors and for many commercial software products adopt such automated strategies.
+Some programs can update themselves via the Internet with very little or no intervention on the part of users. The maintenance of server software and of operating systems often takes place in this manner. In situations where system administrators control a number of computers, this sort of automation helps to maintain consistency. The application of security patches commonly occurs in this manner.
+With the advent of larger storage media and higher Internet bandwidth, it became common to replace entire files (or even all of a program's files) rather than modifying existing files, especially for smaller programs.
+
+
+Use
+
+
+Binary patching
+Patches for proprietary software are typically distributed as executable files instead of source code. When executed these files load a program into memory which manages the installation of the patch code into the target program(s) on disk.
+Patches for other software are typically distributed as data files containing the patch code. These are read by a patch utility program which performs the installation. This utility modifies the target program's executable file—the program's machine code—typically by overwriting its bytes with bytes representing the new patch code. If the new code will fit in the space (number of bytes) occupied by the old code, it may be put in place by overwriting directly over the old code. This is called an inline patch. If the new code is bigger than the old code, the patch utility will append load record(s) containing the new code to the object file of the target program being patched. When the patched program is run, execution is directed to the new code with branch instructions (jumps or calls) patched over the place in the old code where the new code is needed. On early 8-bit microcomputers, for example the Radio Shack TRS-80, the operating system includes a PATCH/CMD utility which accepts patch data from a text file and applies the fixes to the target program's executable binary file(s).
+The patch code must have place(s) in memory to be executed at runtime. Inline patches are no difficulty, but when additional memory space is needed the programmer must improvise. Naturally if the patch programmer is the one who first created the code to be patched, this is easier. Savvy programmers plan in advance for this need by reserving memory for later expansion, left unused when producing their final iteration. Other programmers not involved with the original implementation, seeking to incorporate changes at a later time, must find or make space for any additional bytes needed. The most fortunate possible circumstance for this is when the routine to be patched is a distinct module. In this case the patch programmer need merely adjust the pointers or length indicators that signal to other system components the space occupied by the module; he is then free to populate this memory space with his expanded patch code. If the routine to be patched does not exist as a distinct memory module, the programmer must find ways to shrink the routine to make enough room for the expanded patch code. Typical tactics include shortening code by finding more efficient sequences of instructions (or by redesigning with more efficient algorithms), compacting message strings and other data areas, externalizing program functions to mass storage (such as disk overlays), or removal of program features deemed less important than the changes to be installed with the patch.
+Small in-memory machine code patches can be manually applied with the system debug utility, such as CP/M's DDT or MS-DOS's DEBUG debuggers. Programmers working in interpreted BASIC often used the POKE command to alter the functionality of a system service routine or the interpreter itself.
+
+
+Source code patching
+A patch for source code defines how to modify the text of code files. Such a patch is usually a text file that encodes the differences between two versions of a file. As this type of patch is often created via the diff command, the patch file is also a diff file. 
+Source code patching is common for an open-source software project. Maintainers receive patches or people publish patches that fix problems and add functionality, like support for local languages outside the project's locale. In an example from the early development of the Linux kernel (noted for publishing its complete source code), Linus Torvalds, the original author, received hundreds of thousands of patches from many programmers to apply against his original version. 
+The Apache HTTP Server originally evolved as a number of patches that Brian Behlendorf collated to improve NCSA HTTPd, hence a name that implies that it is a collection of patches ("a patchy server"). The FAQ on the project's official site states that the name 'Apache' was chosen from respect for the Native American Indian tribe of Apache. However, the 'a patchy server' explanation was initially given on the project's website.
+
+
+See also
+Automatic bug fixing – Automatic repair of software bugs
+Backporting – Developing an update for older software based on an update to a newer version
+Delta encoding – Type of data transmission method
+Dribbleware
+Monkey patch – Technique to dynamically modify runtime code
+Patch (Unix) – Command for applying changes to text files
+Porting – Process of adapting software to run a different context
+Software maintenance – Modification of software after delivery
+Software release life cycle – Stages in development and support of computer software
+SMP/E – Software management utility for mainframes
+Upgrade – Process of improving something by replacing part of it or adding additional parts
+Vulnerability database – List of computer security vulnerabilities
+White hat (computer security) – Computer hacker who hacks ethically
+
+
+References
+
+
+External links
+The Jargon File entry for patch
+Official Linux kernel patch format
+0-Day Patch – Exposing Vendors (In)security Performance. Archived 2014-01-31 at the Wayback Machine. A metric comparing patch performance of Microsoft and Apple.

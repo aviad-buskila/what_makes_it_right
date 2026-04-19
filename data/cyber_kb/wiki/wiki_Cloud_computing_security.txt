@@ -1,0 +1,149 @@
+Cloud computing security or cloud security refers to a broad set of policies, technologies, applications, and controls used to protect data, applications, services, and the associated infrastructure of cloud computing. It is a sub-domain of computer security, network security and, more broadly, information security.
+
+
+Security issues associated with the cloud
+Cloud computing and storage provide users with the capability to store and process their data in third-party data centers. Organizations use the cloud in a variety of service models (e.g., SaaS, PaaS, IaaS) and deployment models (private, public, hybrid, and community).
+Security concerns associated with cloud computing are typically divided into issues faced by cloud providers and those faced by their customers. The responsibility is shared and is often described in a vendor's "shared responsibility model". The provider must secure its infrastructure, while customers must secure their applications, identities, and configuration settings.
+Analyses of large-scale cloud incidents indicate that many breaches result from misconfigurations and long-unremediated exposures rather than solely from zero-day vulnerabilities.
+When an organization stores data or hosts applications on the public cloud, it loses physical access to the hardware. As a result, potentially sensitive data may be at risk from insider attacks. According to a 2010 Cloud Security Alliance report, insider attacks rank among the top threats in cloud computing. Cloud service providers must ensure that thorough background checks are conducted for employees with physical access to data centers.
+To conserve resources and reduce cost, cloud providers often store multiple customers' data on the same server. As a result, one user's private data might be viewable by another without proper isolation. Providers implement data isolation and logical segregation to mitigate these risks.
+The extensive use of virtualization in cloud infrastructure brings unique security concerns. Virtualization introduces an additional layer—the hypervisor—that must be secured and correctly configured. A compromise of the hypervisor management system can impact an entire data center.
+
+
+Cloud security controls
+Cloud security architecture is effective only if the correct defensive implementations are in place. An efficient cloud security architecture should recognize the issues that will arise with security management and follow all the best practices, procedures, and guidelines to ensure a secure cloud environment. Security management addresses these issues with security controls. These controls protect cloud environments and are put in place to safeguard any weaknesses in the system and reduce the effect of an attack.
+
+Deterrent controls
+Administrative mechanisms intended to reduce attacks by informing attackers of consequences.
+Preventive controls
+Controls designed to reduce vulnerabilities and prevent unauthorized access.
+Detective controls
+Controls that detect and respond to security events. Includes monitoring, SIEM, IDS/IPS, malware detection.
+Corrective controls
+Controls that reduce the impact of an incident and restore systems.
+
+
+Dimensions of cloud security
+Cloud security engineering is characterized by the security layers, plan, design, programming, and best practices that exist inside a cloud security arrangement. Cloud security engineering requires the composed and visual model (design and UI) to be characterized by the tasks inside the Cloud. This cloud security engineering process includes such things as access to the executives, techniques, and controls to ensure applications and information. It also includes ways to deal with and keep up with permeability, consistency, danger stance, and by and large security. Processes for imparting security standards into cloud administrations and activities assume an approach that fulfills consistent guidelines and essential foundation security parts.
+Though the idea of cloud computing is not new, organizations are increasingly adopting it because of its flexible scalability, relative trustability, and cost-effectiveness of services. However, despite its rapid adoption in some sectors and disciplines, research and statistics indicate that security-related pitfalls remain a major barrier to its full adoption.
+It is generally recommended that information security controls be selected and implemented in proportion to the risks, typically by assessing the threats, vulnerabilities and impacts. Cloud security concerns can be grouped in various ways; Gartner identified seven, while the Cloud Security Alliance identified twelve areas of concern. Cloud access security brokers (CASBs) are software that sits between cloud users and cloud applications to provide visibility into cloud application usage, data protection and governance to monitor all activity and enforce security policies.
+
+
+Security and privacy
+Any service without a "hardened" environment is considered a "soft" target. Virtual servers should be protected just like a physical server against data leakage, malware, and exploited vulnerabilities. "Data loss or leakage represents 24.6 % and cloud-related malware 3.4 % of threats causing cloud outages".
+
+
+Identity management
+Every enterprise will have its own identity management system to control access to information and computing resources. Cloud providers either integrate the customer's identity management system into their own infrastructure, using federation or SSO technology or a biometric-based identification system, or provide an identity management system of their own.
+
+
+Physical security
+Cloud service providers physically secure the IT hardware (servers, routers, cables etc.) against unauthorized access, interference, theft, fire, flood etc., and ensure that essential supplies (such as electricity) are sufficiently robust to minimise the possibility of disruption.
+
+
+Personnel security
+Various information security concerns relating to personnel involved in cloud services are typically handled through screening, security-awareness training, and role-based access controls.
+
+
+Privacy
+Providers ensure that all critical data (credit-card numbers, for example) are masked or encrypted and that only authorised users have access to data in its entirety. Moreover, digital identities and credentials must be protected as must any data that the provider collects or produces about customer activity in the cloud.
+
+
+Penetration testing
+Penetration testing is the process of performing offensive security tests on a system, service, or computer network to find security weaknesses in it. Since the cloud is a shared environment with other customers or tenants, following penetration-testing rules of engagement step-by-step is a mandatory requirement. Scanning and penetration-testing from inside or outside the cloud should be authorised by the cloud provider.
+
+
+Cloud vulnerability and penetration testing
+Scanning the cloud from outside and inside using free or commercial tools is crucial. Without a hardened environment, your service is considered a soft target. Virtual servers should be hardened just like a physical server against data leakage, malware, and exploited vulnerabilities. "Data loss or leakage represents 24.6 % and cloud-related malware 3.4 % of threats causing cloud outages".
+
+
+Legal issues
+Privacy legislation often varies by country. By having information stored via the cloud it is difficult to determine under which jurisdiction the data falls. Trans-border clouds are popular given that the largest companies transcend several countries. Legal dilemmas from the ambiguity of the cloud refer to how there is a difference in data-sharing law between and inside organisations.
+
+
+Unauthorized Access to Management Interface
+Due to the autonomous nature of the cloud, consumers are often given management interfaces to monitor their databases. By having controls in one central location and by having the interface be easily accessible for user convenience, there is a possibility that a single actor could gain access to the cloud's management interface; giving them control over much of the system.
+
+
+Data Recovery Vulnerabilities
+The cloud's use of resource pooling means memory or storage resources may be recycled to another user. It is possible for current users to access information left by previous ones.
+
+
+Internet Vulnerabilities
+Cloud services require internet connectivity and use internet protocols, making them subject to attacks such as man-in-the-middle attacks. Furthermore, heavy reliance on internet connectivity means service disruptions or outages can cut off users entirely.
+
+
+Encryption Vulnerabilities
+As encryption algorithms age, vulnerabilities arise. Cloud providers must stay current with encryption standards and transition older systems before they become compromised.
+
+
+Encryption
+Some advanced encryption algorithms applied to cloud computing increase the protection of privacy. In a practice called crypto-shredding, encryption keys can be deleted when data is no longer used.
+
+
+Attribute-based encryption (ABE)
+Attribute-based encryption is a form of public-key encryption in which the user's secret key and the ciphertext depend on attributes (e.g., the country the user lives in, or their subscription type). In such systems, access to decryption depends not simply on identity but on attributes.
+Some of the strengths of ABE are that it bypasses the need for explicit key sharing (as in traditional PKI) and identity-based encryption (IBE). However, ABE suffers from key-redistribution complexity: since decryption keys depend on attributes rather than identities, malicious users might leak attribute information, enabling unauthorized access.
+
+
+Ciphertext-policy ABE (CP-ABE)
+In CP-ABE, the encryptor controls the access policy for the ciphertext. The process includes Setup, Encrypt, KeyGen, and Decrypt algorithms; the encryptor defines an access structure that must match a user's attributes before decryption is allowed.
+
+
+Key-policy ABE (KP-ABE)
+In KP-ABE, the sender encrypts under a set of attributes, and the user's private key is issued to match a policy describing which ciphertexts they may decrypt. KP-ABE shifts access-control responsibility partially to the key-issuer rather than the encryptor. While it provides flexibility, the policy disclosure may weaken privacy guarantees.
+
+
+Fully Homomorphic Encryption (FHE)
+Fully Homomorphic Encryption allows arbitrary computation on ciphertext without decryption. It is emerging as a high-security option for cloud environments, including voting systems. While promising, it remains largely experimental.
+
+
+Searchable Encryption (SE)
+Searchable encryption enables secure search on encrypted data. It has symmetric and public-key variants. While it supports functionality over encrypted data, it introduces extra attack surfaces, especially when attribute indexing is involved.
+
+
+Compliance
+Numerous laws and regulations govern the storage and use of data. In the US these include privacy and data-protection laws, the Payment Card Industry Data Security Standard (PCI DSS), the Health Insurance Portability and Accountability Act (HIPAA), the Sarbanes-Oxley Act, the Federal Information Security Management Act of 2002 (FISMA), and the Children's Online Privacy Protection Act of 1998. Similar standards exist in other jurisdictions (e.g., Singapore's Multi-Tier Cloud Security Standard).
+Similar laws may apply in different legal jurisdictions and may differ markedly from those in the US. Cloud service users must often understand the legal and regulatory differences between the jurisdictions. For example, data stored by a cloud service provider (CSP) may be located in, say, Singapore and mirrored in the US.
+
+Business continuity and data recovery
+Cloud providers have business continuity and data recovery plans in place to ensure service continuity and data protection.
+Log and audit trail
+In addition to producing logs and audit trails, cloud providers work with their customers to secure these logs and ensure they're accessible for forensic investigation (e.g., eDiscovery).
+Unique compliance requirements
+In addition to the requirements on customers, data centers used by cloud providers may be subject to additional compliance obligations. Using a cloud service provider (CSP) can lead to extra security concerns around data jurisdiction since customer or tenant data may not remain in the same location or provider's cloud.
+
+
+Legal and contractual issues
+
+Aside from the security and compliance issues already discussed, cloud providers and their customers negotiate terms around liability (stipulating how incidents involving data loss or compromise will be resolved, for example), intellectual property, and end-of-service (when data and applications are ultimately returned to the customer). These issues are typically addressed in service-level agreements (SLAs).
+
+
+Public records
+Legal issues may also include records-keeping requirements in the public sector, where agencies must retain and make available electronic records in a specific fashion.
+
+
+See also
+Computer security
+Common Vulnerabilities and Exposures
+
+
+References
+
+
+Further reading
+Mowbray, Miranda (15 April 2009). "The Fog over the Grimpen Mire: Cloud Computing and the Law". SCRIPT-ed. 6 (1): 132–146. doi:10.2966/scrip.060109.132.
+Mather, Tim; Kumaraswamy, Subra; Latif, Shahed (2009). Cloud Security and Privacy: An Enterprise Perspective on Risks and Compliance. O'Reilly Media, Inc. ISBN 978-0-596-80276-9.
+Winkler, Vic (2011). Securing the Cloud: Cloud Computer Security Techniques and Tactics. Elsevier. ISBN 978-1-59749-592-9.
+Ottenheimer, Davi (2012). Securing the Virtual Environment: How to Defend the Enterprise Against Attack. Wiley. ISBN 978-1-118-15548-6.
+BS ISO/IEC 27017: "Information technology. Security techniques. Code of practice for information security controls based on ISO/IEC 27002 for cloud services." (2015)
+BS ISO/IEC 27018: "Information technology. Security techniques. Code of practice for protection of personally identifiable information (PII) in public clouds acting as PII processors." (2014)
+BS ISO/IEC 27036-4: "Information technology. Security techniques. Information security for supplier relationships. Guidelines for security of cloud services" (2016)
+
+
+External links
+DoD Cloud Computing Security Requirements Guide (CC SRG)
+
+
+Archive
+Archived 2018-10-21 at the Wayback Machine

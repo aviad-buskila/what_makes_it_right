@@ -25,6 +25,7 @@ Question: {question}
 Answer:"""
 
 RAG_PROMPT = """\
+You are a {persona}.
 The following {reference_label} may or may not be relevant to the question below.
 Use them only if they directly support your reasoning. If they are not relevant, ignore them and rely on your own knowledge.
 

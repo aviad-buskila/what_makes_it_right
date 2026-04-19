@@ -5,6 +5,8 @@ Sources (all public, authoritative, machine-readable):
   - MITRE CWE                — CSV export of all weaknesses
   - NIST SP 800-53 r5        — OSCAL JSON (controls catalog)
   - OWASP Top 10 (2021)      — markdown from the official OWASP repo
+  - NIST SP 800-63B          — Digital Identity Guidelines (authentication)
+  - Wikipedia security       — Curated security concept articles (plain text)
 
 Each source is converted into plain-text "documents" with a short header
 (ID + title) so the downstream chunker sees coherent, self-contained text.
@@ -17,6 +19,7 @@ from __future__ import annotations
 import csv
 import io
 import json
+import re
 import urllib.request
 import zipfile
 from pathlib import Path
@@ -37,7 +40,77 @@ SOURCES = {
     "owasp_top10_root": (
         "https://raw.githubusercontent.com/OWASP/Top10/master/2021/docs/en/"
     ),
+    "nist_800_63b": "https://pages.nist.gov/800-63-3/sp800-63b.html",
+    "wikipedia_api": "https://en.wikipedia.org/w/api.php",
 }
+
+# Security topics that align with CyberMetric question themes:
+# certification-level concepts, frameworks, cryptography, network security.
+WIKIPEDIA_SECURITY_TOPICS = [
+    "Information security",
+    "CIA triad",
+    "Authentication",
+    "Authorization",
+    "Access control",
+    "Principle of least privilege",
+    "Defence in depth (computing)",
+    "Zero trust security model",
+    "Threat model",
+    "STRIDE (security)",
+    "Cryptography",
+    "Symmetric-key algorithm",
+    "Public-key cryptography",
+    "Hash function",
+    "Digital signature",
+    "Advanced Encryption Standard",
+    "RSA (cryptosystem)",
+    "Elliptic-curve cryptography",
+    "Transport Layer Security",
+    "Public key infrastructure",
+    "Salt (cryptography)",
+    "Rainbow table",
+    "Password",
+    "Multi-factor authentication",
+    "Biometrics",
+    "Firewall (computing)",
+    "Intrusion detection system",
+    "Virtual private network",
+    "Network security",
+    "IEEE 802.11",
+    "Wireless security",
+    "Denial-of-service attack",
+    "Man-in-the-middle attack",
+    "Replay attack",
+    "SQL injection",
+    "Cross-site scripting",
+    "Cross-site-request forgery",
+    "Buffer overflow",
+    "Zero-day vulnerability",
+    "Malware",
+    "Ransomware",
+    "Phishing",
+    "Social engineering (security)",
+    "Penetration test",
+    "Vulnerability (computing)",
+    "Exploit (computer security)",
+    "Disaster recovery",
+    "Business continuity planning",
+    "Incident management",
+    "Computer forensics",
+    "Security information and event management",
+    "Cloud computing security",
+    "Kerberos (protocol)",
+    "NIST Cybersecurity Framework",
+    "ISO/IEC 27001",
+    "Payment Card Industry Data Security Standard",
+    "Steganography",
+    "Cryptanalysis",
+    "Honeypot (computing)",
+    "Demilitarized zone (computing)",
+    "Security operations center",
+    "Vulnerability scanner",
+    "Patch (computing)",
+]
 
 OWASP_TOP10_2021 = [
     ("A01_2021-Broken_Access_Control.md", "A01:2021 — Broken Access Control"),
@@ -59,11 +132,15 @@ OWASP_TOP10_2021 = [
 ]
 
 
+_DEFAULT_HEADERS = {"User-Agent": "CyberRAG-research-bot/1.0 (academic)"}
+
+
 def _fetch(url: str, cache_path: Path, binary: bool = False) -> bytes | str:
     if not cache_path.exists():
         cache_path.parent.mkdir(parents=True, exist_ok=True)
         print(f"Fetching {url}")
-        with urllib.request.urlopen(url, timeout=120) as resp:
+        req = urllib.request.Request(url, headers=_DEFAULT_HEADERS)
+        with urllib.request.urlopen(req, timeout=120) as resp:
             data = resp.read()
         cache_path.write_bytes(data)
     raw = cache_path.read_bytes()
@@ -191,6 +268,70 @@ def _load_owasp_top10(cache_dir: Path) -> list[dict[str, str]]:
     return docs
 
 
+def _load_nist_800_63b(cache_dir: Path) -> list[dict[str, str]]:
+    """Load NIST SP 800-63B (Digital Identity Guidelines — Authentication).
+
+    Covers password policy, MFA, authenticator requirements — topics that
+    appear frequently in CyberMetric questions about NIST guidance.
+    """
+    cache_path = cache_dir / "nist_800_63b.html"
+    raw = _fetch(SOURCES["nist_800_63b"], cache_path)
+    html = raw if isinstance(raw, str) else raw.decode("utf-8", "replace")
+
+    # Strip tags and collapse whitespace.
+    text = re.sub(r"<[^>]+>", " ", html)
+    text = re.sub(r"&[a-zA-Z]+;", " ", text)
+    text = re.sub(r"\s+", " ", text).strip()
+
+    return [{"id": "nist_800_63b", "text": f"NIST SP 800-63B | Digital Identity Guidelines — Authentication\n\n{text}"}]
+
+
+def _load_wikipedia_security(cache_dir: Path) -> list[dict[str, str]]:
+    """Fetch plain-text extracts for curated security topics from Wikipedia.
+
+    Wikipedia covers certification-level concepts (STRIDE, CIA triad, least
+    privilege, cryptographic primitives, disaster recovery, etc.) that map
+    well onto CyberMetric's definitional question style.
+    """
+    docs: list[dict[str, str]] = []
+    cache_dir.mkdir(parents=True, exist_ok=True)
+    base_url = SOURCES["wikipedia_api"]
+    headers = {"User-Agent": "CyberRAG-research-bot/1.0 (academic)"}
+
+    for topic in WIKIPEDIA_SECURITY_TOPICS:
+        safe_name = topic.replace(" ", "_").replace("/", "_")
+        cache_path = cache_dir / f"wiki_{safe_name}.txt"
+
+        if cache_path.exists():
+            text = cache_path.read_text(encoding="utf-8")
+        else:
+            params = (
+                f"?action=query&titles={urllib.request.quote(topic)}"
+                "&prop=extracts&explaintext=1&exsectionformat=plain&format=json"
+            )
+            try:
+                req = urllib.request.Request(base_url + params, headers=headers)
+                with urllib.request.urlopen(req, timeout=30) as resp:
+                    data = json.loads(resp.read())
+                pages = data.get("query", {}).get("pages", {})
+                page = next(iter(pages.values()), {})
+                text = (page.get("extract") or "").strip()
+                if not text:
+                    continue
+                cache_path.write_text(text, encoding="utf-8")
+            except Exception as exc:
+                print(f"Wikipedia fetch failed for '{topic}': {exc}. Skipping.")
+                continue
+
+        if text:
+            docs.append({
+                "id": f"wiki_{safe_name}",
+                "text": f"Wikipedia | {topic}\n\n{text}",
+            })
+
+    return docs
+
+
 def load_cybersecurity_corpus(
     cache_dir: str | None = "data/cyber_kb",
     include: tuple[str, ...] = ("attack", "cwe", "nist", "owasp"),
@@ -227,6 +368,14 @@ def load_cybersecurity_corpus(
                 "structure may have changed; verify SOURCES['owasp_top10_root']."
             )
         corpus.extend(owasp_docs)
+    if "nist63b" in include:
+        nist63b_docs = _load_nist_800_63b(cache_root / "nist63b")
+        print(f"  NIST 800-63B: {len(nist63b_docs)} documents")
+        corpus.extend(nist63b_docs)
+    if "wiki" in include:
+        wiki_docs = _load_wikipedia_security(cache_root / "wiki")
+        print(f"  Wikipedia:    {len(wiki_docs)} documents")
+        corpus.extend(wiki_docs)
 
     if max_corpus_size is not None and len(corpus) > max_corpus_size:
         import random

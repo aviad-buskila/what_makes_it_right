@@ -1,0 +1,139 @@
+A public key infrastructure (PKI) is a set of roles, policies, hardware, software and procedures needed to create, manage, distribute, use, store and revoke digital certificates and manage public-key encryption. 
+The purpose of a PKI is to facilitate the secure electronic transfer of information for a range of network activities such as e-commerce, internet banking and confidential email. It is required for activities where simple passwords are an inadequate authentication method and more rigorous proof is required to confirm the identity of the parties involved in the communication and to validate the information being transferred.
+In cryptography, a PKI is an arrangement that binds public keys with respective identities of entities (like people and organizations). The binding is established through a process of registration and issuance of certificates at and by a certificate authority (CA). Depending on the assurance level of the binding, this may be carried out by an automated process or under human supervision. When done over a network, this requires using a secure certificate enrollment or certificate management protocol such as CMP.
+The PKI role that may be delegated by a CA to assure valid and correct registration is called a registration authority (RA). An RA is responsible for accepting requests for digital certificates and authenticating the entity making the request. The Internet Engineering Task Force's RFC 3647 defines an RA as "An entity that is responsible for one or more of the following functions: the identification and authentication of certificate applicants, the approval or rejection of certificate applications, initiating certificate revocations or suspensions under certain circumstances, processing subscriber requests to revoke or suspend their certificates, and approving or rejecting requests by subscribers to renew or re-key their certificates. RAs, however, do not sign or issue certificates (i.e., an RA is delegated certain tasks on behalf of a CA)." While Microsoft may have referred to a subordinate CA as an RA, this is incorrect according to the X.509 PKI standards. RAs do not have the signing authority of a CA and only manage the vetting and provisioning of certificates.  So in the Microsoft PKI case, the RA functionality is provided either by the Microsoft Certificate Services web site or through Active Directory Certificate Services that enforces Microsoft Enterprise CA, and certificate policy through certificate templates and manages certificate enrollment (manual or auto-enrollment). In the case of Microsoft Standalone CAs, the function of RA does not exist since all of the procedures controlling the CA are based on the administration and access procedure associated with the system hosting the CA and the CA itself rather than Active Directory. Most non-Microsoft commercial PKI solutions offer a stand-alone RA component.
+An entity must be uniquely identifiable within each CA domain on the basis of information about that entity. A third-party validation authority (VA) can provide this entity information on behalf of the CA.
+The X.509 standard defines the most commonly used format for public key certificates.
+
+
+Capabilities
+PKI provides "trust services" - in plain terms trusting the actions or outputs of entities, be they people or computers. Trust service objectives respect one or more of the following capabilities: Confidentiality, Integrity and Authenticity (CIA).
+Confidentiality: Assurance that no entity can maliciously or unwittingly view a payload in clear text. Data is encrypted to make it secret, such that even if it was read, it appears as gibberish.  Perhaps the most common use of PKI for confidentiality purposes is in the context of Transport Layer Security (TLS).  TLS is a capability underpinning the security of data in transit, i.e. during transmission. A classic example of TLS for confidentiality is when using a web browser to log on to a service hosted on an internet based web site by entering a password.
+Integrity: Assurance that if an entity changed (tampered) with transmitted data in the slightest way, it would be obvious it happened as its integrity would have been compromised.  Often it is not of utmost importance to prevent the integrity being compromised (tamper proof), however, it is of utmost importance that if integrity is compromised there is clear evidence of it having done so (tamper evident).
+Authenticity: Assurance that an entity has: i) certainty of what it's connecting to; and / or ii) can evidence its own legitimacy when connecting to a protected service. The former is labelled as server certificate authentication, typically employed when logging on at a web server. The latter is designated as client certificate authentication, for instance used when logging on with a smart card hosting a digital certificate and private key.
+
+
+Design
+Public-key cryptography is a cryptographic technique that enables entities to securely communicate on an insecure public network, and reliably verify the identity of an entity via digital signatures.
+A public key infrastructure (PKI) is a system for the creation, storage, and distribution of digital certificates, which are used to verify that a particular public key belongs to a certain entity. The PKI creates digital certificates that map public keys to entities, securely stores these certificates in a central repository and revokes them if needed.
+A PKI consists of:
+
+A certificate authority (CA), which stores, issues and signs the digital certificates;
+A registration authority (RA), which verifies the identity of entities requesting their digital certificates to be stored at the CA;
+A central directory, a secure location in which keys are stored and indexed;
+A certificate management system, which manages things like the access to stored certificates or the delivery of the certificates to be issued;
+A certificate policy, which states the PKI's requirements concerning its procedures. Its purpose is to allow outsiders to analyze the PKI's trustworthiness.
+
+
+Methods of certification
+
+
+Certificate authorities
+
+The primary role of the CA is to digitally sign and publish the public key bound to a given user.  This is done using the CA's own private key, so that trust in the user key relies on one's trust in the validity of the CA's key.  When the CA is a third party separate from the user and the system, then it is called the Registration Authority (RA), which may or may not be separate from the CA. The key-to-user binding is established, depending on the level of assurance the binding has, by software or under human supervision.
+The term trusted third party (TTP) may also be used for certificate authority (CA). Moreover, PKI is itself often used as a synonym for a CA implementation.
+
+
+Certificate revocation
+
+A certificate may be revoked before it expires, which signals that it is no longer valid. Without revocation, an attacker would be able to exploit such a compromised or mis-issued certificate until expiry. Hence, revocation is an important part of a public key infrastructure. Revocation is performed by the issuing certificate authority, which produces a cryptographically authenticated statement of revocation.
+For distributing revocation information to clients, timeliness of the discovery of revocation (and hence the window for an attacker to exploit a compromised certificate) trades off against resource usage in querying revocation statuses and privacy concerns. If revocation information is unavailable (either due to accident or an attack), clients must decide whether to fail-hard and treat a certificate as if it is revoked (and so degrade availability) or to fail-soft and treat it as unrevoked (and allow attackers to sidestep revocation).
+Due to the cost of revocation checks and the availability impact from potentially-unreliable remote services, Web browsers limit the revocation checks they will perform, and will fail-soft where they do. Certificate revocation lists are too bandwidth-costly for routine use, and the Online Certificate Status Protocol presents connection latency and privacy issues. Other schemes have been proposed but have not yet been successfully deployed to enable fail-hard checking.
+
+
+Issuer market share
+In this model of trust relationships, a CA is a trusted third party – trusted both by the subject (owner) of the certificate and by the party relying upon the certificate.
+According to NetCraft report from 2015, the industry standard for monitoring active Transport Layer Security (TLS) certificates, states that "Although the global [TLS] ecosystem is competitive, it is dominated by a handful of major CAs — three certificate authorities (Symantec, Sectigo, GoDaddy) account for three-quarters of all issued [TLS] certificates on public-facing web servers. The top spot has been held by Symantec (or VeriSign before it was purchased by Symantec) ever since [our] survey began, with it currently accounting for just under a third of all certificates. To illustrate the effect of differing methodologies, amongst the million busiest sites Symantec issued 44% of the valid, trusted certificates in use — significantly more than its overall market share."
+Following major issues in how certificate issuing was managed, all major players gradually distrusted Symantec-issued certificates, starting in 2017 and completed in 2021.
+
+
+Temporary certificates and single sign-on
+This approach involves a server that acts as an offline certificate authority within a single sign-on system. A single sign-on server will issue digital certificates into the client system, but never stores them. Users can execute programs, etc. with the temporary certificate. It is common to find this solution variety with X.509-based certificates.
+Starting Sep 2020, TLS Certificate Validity reduced to 13 Months.
+
+
+Web of trust
+
+An alternative approach to the problem of public authentication of public key information is the web-of-trust scheme, which uses self-signed certificates and third-party attestations of those certificates. The singular term "web of trust" does not imply the existence of a single web of trust, or common point of trust, but rather one of any number of potentially disjoint "webs of trust". Examples of implementations of this approach are PGP (Pretty Good Privacy) and GnuPG (an implementation of OpenPGP, the standardized specification of PGP). Because PGP and implementations allow the use of e-mail digital signatures for self-publication of public key information, it is relatively easy to implement one's own web of trust.
+One of the benefits of the web of trust, such as in PGP, is that it can interoperate with a PKI CA fully trusted by all parties in a domain (such as an internal CA in a company) that is willing to guarantee certificates, as a trusted introducer.  If the "web of trust" is completely trusted then, because of the nature of a web of trust, trusting one certificate is granting trust to all the certificates in that web.  A PKI is only as valuable as the standards and practices that control the issuance of certificates and including PGP or a personally instituted web of trust could significantly degrade the trustworthiness of that enterprise's or domain's implementation of PKI.
+The web of trust concept was first put forth by PGP creator Phil Zimmermann in 1992 in the manual for PGP version 2.0:
+
+ As time goes on, you will accumulate keys from other people that you may want to designate as trusted introducers.  Everyone else will each choose their own trusted introducers. And everyone will gradually accumulate and distribute with their key a collection of certifying signatures from other people, with the expectation that anyone receiving it will trust at least one or two of the signatures.  This will cause the emergence of a decentralized fault-tolerant web of confidence for all public keys.
+
+
+Simple public key infrastructure
+
+Another alternative, which does not deal with public authentication of public key information, is the simple public key infrastructure (SPKI), which grew out of three independent efforts to overcome the complexities of X.509 and PGP's web of trust. SPKI does not associate users with persons, since the key is what is trusted, rather than the person. SPKI does not use any notion of trust, as the verifier is also the issuer. This is called an "authorization loop" in SPKI terminology, where authorization is integral to its design. This type of PKI is specially useful for making integrations of PKI that do not rely on third parties for certificate authorization, certificate information, etc.; a good example of this is an air-gapped network in an office.
+
+
+Decentralized PKI
+Decentralized identifiers (DIDs) eliminate dependence on centralized registries for identifiers as well as centralized certificate authorities for key management, which is the standard in hierarchical PKI. In cases where the DID registry is a distributed ledger, each entity can serve as its own root authority. This architecture is referred to as decentralized PKI (DPKI).
+
+
+History
+
+Developments in PKI occurred in the early 1970s at the British intelligence agency GCHQ, where James Ellis, Clifford Cocks and others made important discoveries related to encryption algorithms and key distribution. Because developments at GCHQ are highly classified, the results of this work were kept secret and not publicly acknowledged until the mid-1990s.
+The public disclosure of both secure key exchange and asymmetric key algorithms in 1976 by Diffie, Hellman, Rivest, Shamir, and Adleman changed secure communications entirely. With the further development of high-speed digital electronic communications (the Internet and its predecessors), a need became evident for ways in which users could securely communicate with each other, and as a further consequence of that, for ways in which users could be sure with whom they were actually interacting.
+Assorted cryptographic protocols were invented and analyzed within which the new cryptographic primitives could be effectively used. With the invention of the World Wide Web and its rapid spread, the need for authentication and secure communication became still more acute. Commercial reasons alone (e.g., e-commerce, online access to proprietary databases from web browsers) were sufficient. Taher Elgamal and others at Netscape developed the SSL protocol ('https' in Web URLs); it included key establishment, server authentication (prior to v3, one-way only), and so on. A PKI structure was thus created for Web users/sites wishing secure communications.
+Vendors and entrepreneurs saw the possibility of a large market, started companies (or new projects at existing companies), and began to agitate for legal recognition and protection from liability. An American Bar Association technology project published an extensive analysis of some of the foreseeable legal aspects of PKI operations (see ABA digital signature guidelines), and shortly thereafter, several U.S. states (Utah being the first in 1995) and other jurisdictions throughout the world began to enact laws and adopt regulations. Consumer groups raised questions about privacy, access, and liability considerations, which were more taken into consideration in some jurisdictions than in others.
+The enacted laws and regulations differed, there were technical and operational problems in converting PKI schemes into successful commercial operation, and progress has been much slower than pioneers had imagined it would be.
+By the first few years of the 21st century, the underlying cryptographic engineering was clearly not easy to deploy correctly. Operating procedures (manual or automatic) were not easy to correctly design (nor even if so designed, to execute perfectly, which the engineering required). The standards that existed were insufficient.
+PKI vendors have found a market, but it is not quite the market envisioned in the mid-1990s, and it has grown both more slowly and in somewhat different ways than were anticipated. PKIs have not solved some of the problems they were expected to, and several major vendors have gone out of business or been acquired by others. PKI has had the most success in government implementations; the largest PKI implementation to date is the Defense Information Systems Agency (DISA) PKI infrastructure for the Common Access Cards program.
+
+
+Uses
+PKIs of one type or another, and from any of several vendors, have many uses, including providing public keys and bindings to user identities, which are used for:
+
+Encryption and/or sender authentication of e-mail messages (e.g., using OpenPGP or S/MIME);
+Encryption and/or authentication of documents (e.g., the XML Signature or XML Encryption standards if documents are encoded as XML);
+Authentication of users to applications (e.g., smart card logon, client authentication with SSL/TLS);
+Bootstrapping secure communication protocols, such as Internet key exchange (IKE) and SSL/TLS. In both of these, initial set-up of a secure channel (a "security association") uses asymmetric key—i.e., public key—methods, whereas actual communication uses faster symmetric key—i.e., secret key—methods;
+Mobile signatures are electronic signatures that are created using a mobile device and rely on signature or certification services in a location independent telecommunication environment;
+Internet of things requires secure communication between mutually trusted devices. A public key infrastructure enables devices to obtain and renew X.509 certificates, which are used to establish trust between devices and encrypt communications using TLS.
+
+
+Open source implementations
+OpenSSL is the simplest form of CA and tool for PKI. It is a toolkit, developed in C, that is included in all major Linux distributions, and can be used both to build your own (simple) CA and to PKI-enable applications. (Apache licensed)
+EJBCA is a full-featured, enterprise-grade, CA implementation developed in Java. It can be used to set up a CA both for internal use and as a service. (LGPL licensed)
+XiPKI, CA and OCSP responder. With SHA-3 support, implemented in Java. (Apache licensed)
+XCA is a graphical interface, and database. XCA uses OpenSSL for the underlying PKI operations.
+DogTag is a full featured CA developed and maintained as part of the Fedora Project.
+CFSSL open source toolkit developed by CloudFlare for signing, verifying, and bundling TLS certificates. (BSD 2-clause licensed)
+Vault tool for securely managing secrets (TLS certificates included) developed by HashiCorp. (Mozilla Public License 2.0 licensed)
+Boulder, an ACME-based CA written in Go. Boulder is the software that runs Let's Encrypt.
+
+
+Criticism
+
+Some argue that purchasing certificates for securing websites by SSL/TLS and securing software by code signing is a costly venture for small businesses.  However, the emergence of free alternatives, such as Let's Encrypt, has changed this. HTTP/2, the latest version of HTTP protocol, allows unsecured connections in theory;  in practice, major browser companies have made it clear that they would support this protocol only over a PKI secured TLS connection. Web browser implementation of HTTP/2 including Chrome, Firefox, Opera, and Edge supports HTTP/2 only over TLS by using the ALPN extension of the TLS protocol. This would mean that, to get the speed benefits of HTTP/2, website owners would be forced to purchase SSL/TLS certificates controlled by corporations.
+Currently the majority of web browsers are shipped with pre-installed intermediate certificates issued and signed by a certificate authority, by public keys certified by so-called root certificates. This means browsers need to carry a large number of different certificate providers, increasing the risk of a key compromise.
+When a key is known to be compromised, it could be fixed by revoking the certificate, but such a compromise is not easily detectable and can be a huge security breach. Browsers have to issue a security patch to revoke intermediary certificates issued by a compromised root certificate authority.
+
+
+See also
+Cryptographic agility (crypto-agility)
+Certificate Management Protocol (CMP)
+Certificate Management over CMS (CMC)
+Simple Certificate Enrollment Protocol (SCEP)
+Enrollment over Secure Transport (EST)
+Automatic Certificate Management Environment (ACME)
+Resource Public Key Infrastructure (RPKI)
+
+
+References
+
+
+Works cited
+Chung, Taejoong; Lok, Jay; Chandrasekaran, Balakrishnan; Choffnes, David; Levin, Dave; Maggs, Bruce M.; Mislove, Alan; Rula, John; Sullivan, Nick; Wilson, Christo (2018). "Is the Web Ready for OCSP Must-Staple?" (PDF). Proceedings of the Internet Measurement Conference 2018. pp. 105–118. doi:10.1145/3278532.3278543. ISBN 9781450356190. S2CID 53223350.
+Larisch, James; Choffnes, David; Levin, Dave; Maggs, Bruce M.; Mislove, Alan; Wilson, Christo (2017). "CRLite: A Scalable System for Pushing All TLS Revocations to All Browsers". 2017 IEEE Symposium on Security and Privacy (SP). pp. 539–556. doi:10.1109/sp.2017.17. ISBN 978-1-5090-5533-3. S2CID 3926509.
+Sheffer, Yaron; Saint-Andre, Pierre; Fossati, Thomas (November 2022). Recommendations for Secure Use of Transport Layer Security (TLS) and Datagram Transport Layer Security (DTLS). IETF. doi:10.17487/RFC9325. RFC 9325.
+Smith, Trevor; Dickinson, Luke; Seamons, Kent (2020). "Let's Revoke: Scalable Global Certificate Revocation". Proceedings 2020 Network and Distributed System Security Symposium. doi:10.14722/ndss.2020.24084. ISBN 978-1-891562-61-7. S2CID 211268930.
+
+
+Further reading
+Choudhury, Suranjan; Bhatnagar, Kartik; Haque, Wasim (2002). Public key infrastructure: implementation and design. Professional mindware. New York, NY: M&T Books. ISBN 978-0-7645-4879-6.
+Schmeh, Klaus (2003). Cryptography and public key infrastructure on the Internet. Chichester, West Sussex, England: Wiley. ISBN 0-470-84745-X.
+
+
+External links
+Market share trends for SSL certificate authorities (W3Techs)

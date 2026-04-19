@@ -1,0 +1,118 @@
+Authentication (from Greek: αὐθεντικός authentikos, "real, genuine", from αὐθέντης authentes, "author") is the act of proving an assertion, such as the identity of a computer system user. In contrast with identification, the act of indicating a person or thing's identity, authentication is the process of verifying that identity.
+Authentication is relevant to multiple fields. In art, antiques, and anthropology, a common problem is verifying that a given artifact was produced by a certain person, or in a certain place (i.e. to assert that it is not counterfeit), or in a given period of history (e.g. by determining the age via carbon dating). In computer science, verifying a user's identity is often required to allow access to confidential data or systems. It might involve validating personal identity documents.
+
+
+In art, antiques and anthropology
+
+Authentication can be considered to be of three types:
+The first type of authentication is accepting proof of identity given by a credible person who has first-hand evidence that the identity is genuine. When authentication is required for art or physical objects, this proof could be a friend, family member, or colleague attesting to the item's provenance, perhaps by having witnessed the item in its creator's possession. With autographed sports memorabilia, this could involve someone attesting that they witnessed the object being signed. A vendor selling branded items implies authenticity, while they may not have evidence that every step in the supply chain was authenticated. 
+The second type of authentication is comparing the attributes of the object itself to what is known about objects of that origin. For example, an art expert might look for similarities in the style of painting, check the location and form of a signature, or compare the object to an old photograph. An archaeologist, on the other hand, might use carbon dating to verify the age of an artifact, do a chemical and spectroscopic analysis of the materials used, or compare the style of construction or decoration to other artifacts of similar origin. The physics of sound and light, and comparison with a known physical environment, can be used to examine the authenticity of audio recordings, photographs, or videos. Documents can be verified as being created on ink or paper readily available at the time of the item's implied creation.
+Attribute comparison may be vulnerable to forgery. In general, it relies on the facts that creating a forgery indistinguishable from a genuine artifact requires expert knowledge, that mistakes are easily made, and that the amount of effort required to do so is considerably greater than the amount of profit that can be gained from the forgery.
+In art and antiques, certificates are of great importance for authenticating an object of interest and value. Certificates can, however, also be forged, and the authentication of these poses a problem. For instance, the son of Han van Meegeren, the well-known art-forger, forged the work of his father and provided a certificate for its provenance as well.
+Criminal and civil penalties for fraud, forgery, and counterfeiting can reduce the incentive for falsification, depending on the risk of getting caught.
+Currency and other financial instruments commonly use this second type of authentication method. Bills, coins, and cheques incorporate hard-to-duplicate physical features, such as fine printing or engraving, distinctive feel, watermarks, and holographic imagery, which are easy for trained receivers to verify.
+The third type of authentication relies on documentation or other external affirmations. In criminal courts, the rules of evidence often require establishing the chain of custody of evidence presented. This can be accomplished through a written evidence log, or by testimony from the police detectives and forensics staff that handled it. Some antiques are accompanied by certificates attesting to their authenticity. Signed sports memorabilia is usually accompanied by a certificate of authenticity. These external records have their own problems of forgery and perjury and are also vulnerable to being separated from the artifact and lost.
+
+
+In commercial products
+ Consumer goods such as pharmaceuticals, perfume, and clothing can use all forms of authentication to prevent counterfeit goods from taking advantage of a popular brand's reputation. As mentioned above, having an item for sale in a reputable store implicitly attests to it being genuine, the first type of authentication. The second type of authentication might involve comparing the quality and craftsmanship of an item, such as an expensive handbag, to genuine articles. The third type of authentication could be the presence of a trademark on the item, which is a legally protected marking, or any other identifying feature which aids consumers in the identification of genuine brand-name goods. With software, companies have taken great steps to protect from counterfeiters, including adding holograms, security rings, security threads and color shifting ink.
+Counterfeit products are often offered to consumers as being authentic. Counterfeit consumer goods, such as electronics, music, apparel, and counterfeit medications, have been sold as being legitimate. Efforts to control the supply chain and educate consumers help ensure that authentic products are sold and used. Even security printing on packages, labels, and nameplates, however, is subject to counterfeiting.
+In their anti-counterfeiting technology guide, the EUIPO Observatory on Infringements of Intellectual Property Rights categorizes the main anti-counterfeiting technologies on the market currently into five main categories: electronic, marking, chemical and physical, mechanical, and technologies for digital media.
+Products or their packaging can include a variable QR Code. A QR Code alone is easy to verify but offers a weak level of authentication as it offers no protection against counterfeits unless scan data is analyzed at the system level to detect anomalies. To increase the security level, the QR Code can be combined with a digital watermark or copy detection pattern that are robust to copy attempts and can be authenticated with a smartphone.
+A secure key storage device can be used for authentication in consumer electronics, network authentication, license management, supply chain management, etc. Generally, the device to be authenticated needs some sort of wireless or wired digital connection to either a host system or a network. Nonetheless, the component being authenticated need not be electronic in nature as an authentication chip can be mechanically attached and read through a connector to the host e.g. an authenticated ink tank for use with a printer. For products and services that these secure coprocessors can be applied to, they can offer a solution that can be much more difficult to counterfeit than most other options while at the same time being more easily verified.
+
+
+Packaging
+Packaging and labeling can be engineered to help reduce the risks of counterfeit consumer goods or the theft and resale of products. Some package constructions are more difficult to copy and some have pilfer indicating seals. Counterfeit goods, unauthorized sales (diversion), material substitution and tampering can all be reduced with these anti-counterfeiting technologies. Packages may include authentication seals and use security printing to help indicate that the package and contents are not counterfeit; these too are subject to counterfeiting. Packages also can include anti-theft devices, such as dye-packs, RFID tags, or electronic article surveillance tags that can be activated or detected by devices at exit points and require specialized tools to deactivate. Anti-counterfeiting technologies that can be used with packaging include:
+
+Taggant fingerprinting – uniquely coded microscopic materials that are verified from a database
+Encrypted micro-particles – unpredictably placed markings (numbers, layers and colors) not visible to the human eye
+Holograms – graphics printed on seals, patches, foils or labels and used at the point of sale for visual verification
+Micro-printing – second-line authentication often used on currencies
+Serialized barcodes
+UV printing – marks only visible under UV light
+Track and trace systems – use codes to link products to the database tracking system
+Water indicators – become visible when contacted with water
+DNA tracking – genes embedded onto labels that can be traced
+Color-shifting ink or film – visible marks that switch colors or texture when tilted
+Tamper evident seals and tapes – destructible or graphically verifiable at point of sale
+2d barcodes – data codes that can be tracked
+RFID chips
+NFC chips
+
+
+In literature
+In literacy, authentication is a readers’ process of questioning the veracity of an aspect of literature and then verifying those questions via research. The fundamental question for authentication of literature is – Does one believe it? Related to that, an authentication project is therefore a reading and writing activity in which students document the relevant research process. It builds students' critical literacy. The documentation materials for literature go beyond narrative texts and likely include informational texts, primary sources, and multimedia. The process typically involves both internet and hands-on library research. When authenticating historical fiction in particular, readers consider the extent that the major historical events, as well as the culture portrayed (e.g., the language, clothing, food, gender roles), are believable for the period.
+Literary forgery can involve imitating the style of a famous author. If an original manuscript, typewritten text, or recording is available, then the medium itself (or its packaging – anything from a box to e-mail headers) can help prove or disprove the authenticity of the document. However, text, audio, and video can be copied into new media, possibly leaving only the informational content itself to use in authentication. Various systems have been invented to allow authors to provide a means for readers to reliably authenticate that a given message originated from or was relayed by them. These involve authentication factors like:
+
+A difficult-to-reproduce physical artifact, such as a seal, signature, watermark, special stationery, or fingerprint.
+A shared secret, such as a passphrase, in the content of the message.
+An electronic signature; public-key infrastructure is often used to cryptographically guarantee that a message has been signed by the holder of a particular private key.
+The opposite problem is the detection of plagiarism, where information from a different author is passed off as a person's own work. A common technique for proving plagiarism is the discovery of another copy of the same or very similar text, which has different attribution. In some cases, excessively high quality or a style mismatch may raise suspicion of plagiarism.
+
+
+In computer science
+The process of authentication is distinct from that of authorization. Whereas authentication is the process of verifying that "you are who you say you are", authorization is the process of verifying that "you are permitted to do what you are trying to do". While authorization often happens immediately after authentication (e.g., when logging into a computer system), this does not mean authorization presupposes authentication: an anonymous agent could be authorized to a limited action set. Similarly, the establishment of the authorization can occur long before the authorization decision occurs.
+A user can be given access to secure systems based on user credentials that imply authenticity.  A network administrator can give a user a password, or provide the user with a key card or other access devices to allow system access. In this case, authenticity is implied but not guaranteed. 
+Most secure internet communication relies on centralized authority-based trust relationships, such as those used in HTTPS, where public certificate authorities (CAs) vouch for the authenticity of websites. This same centralized trust model underpins protocols like OIDC (OpenID Connect) where identity providers (e.g., Google) authenticate users on behalf of relying applications. In contrast, decentralized peer-based trust, also known as a web of trust, is commonly used for personal services such as secure email or file sharing. In systems like PGP, trust is established when individuals personally verify and sign each other’s cryptographic keys, without relying on a central authority.
+These systems use cryptographic protocols that, in theory, are not vulnerable to spoofing as long as the originator’s private key remains uncompromised. Importantly, even if the key owner is unaware of a compromise, the cryptographic failure still invalidates trust. However, while these methods are currently considered secure, they are not provably unbreakable—future mathematical or computational advances (such as quantum computing or new algorithmic attacks) could expose vulnerabilities. If that happens, it could retroactively undermine trust in past communications or agreements. For example, a digitally signed contract might be challenged if the signature algorithm is later found to be insecure..
+
+
+Authentication factors
+
+The ways in which someone may be authenticated fall into three categories, based on what is known as the factors of authentication: something the user knows, something the user has, and something the user is. Each authentication factor covers a range of elements used to authenticate or verify a person's identity before being granted access, approving a transaction request, signing a document or other work product, granting authority to others, and establishing a chain of authority.
+Security research has determined that for a positive authentication, elements from at least two, and preferably all three, factors should be verified. The three factors (classes) and some of the elements of each factor are:
+
+Knowledge: Something the user knows (e.g., a password, partial password, passphrase, personal identification number (PIN), challenge–response (the user must answer a question or pattern), security question).
+Ownership: Something the user has (e.g., wrist band, ID card, security token, implanted device, cell phone with a built-in hardware token, software token, or cell phone holding a software token).
+Inherence: Something the user is or does (e.g., fingerprint, retinal pattern, DNA sequence (there are assorted definitions of what is sufficient), signature, face, voice, unique bio-electric signals, or other biometric identifiers). Historically, fingerprints have been used as the most authoritative method of authentication, but court cases in the US and elsewhere have raised fundamental doubts about fingerprint reliability. Outside of the legal system as well, fingerprints are easily spoofable, with British Telecom's top computer security official noting that "few" fingerprint readers have not already been tricked by one spoof or another. Hybrid or two-tiered authentication methods offer a compelling solution, such as private keys encrypted by fingerprint inside of a USB device.
+
+
+Single-factor authentication
+As the weakest level of authentication, only a single component from one of the three categories of factors is used to authenticate an individual's identity. The use of only one factor does not offer much protection from misuse or malicious intrusion. This type of authentication is not recommended for financial or personally relevant transactions that warrant a higher level of security.
+
+
+Multi-factor authentication
+
+Multi-factor authentication involves two or more authentication factors (something you know, something you have, or something you are). Two-factor authentication is a special case of multi-factor authentication involving exactly two factors.
+For example, using a bank card (something the user has) along with a PIN (something the user knows) provides two-factor authentication. Business networks may require users to provide a password (knowledge factor) and a pseudorandom number from a security token (ownership factor). Access to a very-high-security system might require a mantrap screening of height, weight, facial, and fingerprint checks (several inherence factor elements) plus a PIN and a day code (knowledge factor elements), but this is still a two-factor authentication.
+
+
+Authentication types
+
+
+Strong authentication
+The United States government's National Information Assurance Glossary defines strong authentication as a layered authentication approach relying on two or more authenticators to establish the identity of an originator or receiver of information.
+The European Central Bank (ECB) has defined strong authentication as "a procedure based on two or more of the three authentication factors". The factors that are used must be mutually independent and at least one factor must be "non-reusable and non-replicable", except in the case of an inherence factor and must also be incapable of being stolen off the Internet. In the European, as well as in the US-American understanding, strong authentication is very similar to multi-factor authentication or 2FA, but exceeding those with more rigorous requirements.
+The FIDO Alliance has been striving to establish technical specifications for strong authentication.
+
+
+Continuous authentication
+Conventional computer systems authenticate users only at the initial log-in session, which can be the cause of a critical security flaw. To resolve this problem, systems need continuous user authentication methods that continuously monitor and authenticate users based on some biometric trait(s). A study used behavioural biometrics based on writing styles as a continuous authentication method.
+Recent research has shown the possibility of using smartphones sensors and accessories to extract some behavioral attributes such as touch dynamics, keystroke dynamics and gait recognition. These attributes are known as behavioral biometrics and could be used to verify or identify users implicitly and continuously on smartphones. The authentication systems that have been built based on these behavioral biometric traits are known as active or continuous authentication systems.
+
+
+Digital authentication
+The term digital authentication, also known as electronic authentication or e-authentication, refers to a group of processes where the confidence for user identities is established and presented via electronic methods to an information system. The digital authentication process creates technical challenges because of the need to authenticate individuals or entities remotely over a network.
+The American National Institute of Standards and Technology (NIST) has created a generic model for digital authentication that describes the processes that are used to accomplish secure authentication:
+
+Enrollment – an individual applies to a credential service provider (CSP) to initiate the enrollment process. After successfully proving the applicant's identity, the CSP allows the applicant to become a subscriber.
+Authentication – After becoming a subscriber, the user receives an authenticator e.g., a token and credentials, such as a user name. He or she is then permitted to perform online transactions within an authenticated session with a relying party, where they must provide proof that he or she possesses one or more authenticators.
+Life-cycle maintenance – the CSP is charged with the task of maintaining the user's credential over the course of its lifetime, while the subscriber is responsible for maintaining his or her authenticator(s).
+The authentication of information can pose special problems with electronic communication, such as vulnerability to man-in-the-middle attacks, whereby a third party taps into the communication stream, and poses as each of the two other communicating parties, in order to intercept information from each. Extra identity factors can be required to authenticate each party's identity.
+
+
+See also
+Authentication (law)
+Authentication protocol
+Electronic signature
+Authorization
+OpenID
+
+
+References
+
+
+External links
+National Institute of Standards and Technology, U.S. Department of Commerce (August 2013). "Electronic Authentication Guideline – NIST Special Publication 800-63-2" (PDF). Archived (PDF) from the original on 2013-10-03.
+"New NIST Publications Describe Standards for Identity Credentials and Authentication Systems"

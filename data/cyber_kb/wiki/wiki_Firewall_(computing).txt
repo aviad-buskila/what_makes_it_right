@@ -1,0 +1,110 @@
+In computing, a firewall is a network security system that monitors and controls incoming and outgoing network traffic based on configurable security rules. A firewall typically establishes a barrier between a trusted network and an untrusted network, such as the Internet or between several VLANs. Firewalls can be categorized as network-based or host-based.
+
+
+History
+The term firewall originally referred to a wall to confine a fire within a line of adjacent buildings. Later uses refer to similar structures, such as the metal sheet separating the engine compartment of a vehicle or aircraft from the passenger compartment. The term was applied in the 1980s to network technology  that emerged when the Internet was fairly new in terms of its global use and connectivity. The predecessors to firewalls for network security were routers used in the 1980s. Because they already segregated networks, routers could filter packets crossing them.
+Before it was used in real-life computing, the term appeared in John Badham's 1983 computer‑hacking movie WarGames, spoken by the bearded and bespectacled programmer named Paul Richter, which possibly inspired its later use.
+One of the earliest commercially successful firewall and network address translation (NAT) products was the PIX (Private Internet eXchange) Firewall, invented in 1994 by Network Translation Inc., a startup founded and run by John Mayes. The PIX Firewall technology was coded by Brantley Coile as a consultant software developer. Recognizing the emerging IPv4 address depletion problem, they designed the PIX to enable organizations to securely connect private networks to the public internet using a limited number of registered IP addresses. The innovative PIX solution quickly gained industry acclaim, earning the prestigious "Hot Product of the Year" award from Data Communications Magazine in January 1995. Cisco Systems, seeking to expand into the rapidly growing network security market, subsequently acquired Network Translation Inc. in November 1995 to obtain the rights to the PIX technology. The PIX became one of Cisco's flagship firewall product lines before eventually being succeeded by the Adaptive Security Appliance (ASA) platform introduced in 2005.
+
+
+Types of firewalls
+
+Firewalls are categorized as a network-based or a host-based system. Network-based firewalls are positioned between two or more networks, typically between the local area network (LAN) and wide area network (WAN), their basic function being to control the flow of data between connected networks. They are either a software appliance running on general-purpose hardware, a hardware appliance running on special-purpose hardware, or a virtual appliance running on a virtual host controlled by a hypervisor. Firewall appliances may also offer non-firewall functionality, such as DHCP or VPN services. Host-based firewalls are deployed directly on the host itself to control network traffic or other computing resources. This can be a daemon or service as a part of the operating system or an agent application for protection.
+
+
+Packet filter
+The first reported type of network firewall is called a packet filter which inspects packets transferred between computers. The firewall maintains an access-control list which dictates what packets will be looked at and what action should be applied, if any, with the default action set to silent discard. Three basic actions regarding the packet consist of a silent discard, discard with Internet Control Message Protocol or TCP reset response to the sender, and forward to the next hop. Packets may be filtered by source and destination IP addresses, protocol, or source and destination ports. The bulk of Internet communication in 20th and early 21st century used either Transmission Control Protocol (TCP) or User Datagram Protocol (UDP) in conjunction with well-known ports, enabling firewalls of that era to distinguish between specific types of traffic such as web browsing, remote printing, email transmission, and file transfers.
+The first paper published on firewall technology was in 1987 when engineers from Digital Equipment Corporation (DEC) developed filter systems known as packet filter firewalls. At AT&T Bell Labs, Bill Cheswick and Steve Bellovin continued their research in packet filtering and developed a working model for their own company based on their original first-generation architecture. In 1992, Steven McCanne and
+Van Jacobson released a paper on BSD Packet Filter (BPF) while at Lawrence Berkeley Laboratory.
+
+
+Connection tracking
+
+From 1989 to 1990, three colleagues from AT&T Bell Laboratories, Dave Presotto, Janardan Sharma, and Kshitij Nigam, developed the second generation of firewalls, calling them circuit-level gateways.
+Second-generation firewalls perform the work of their first-generation predecessors but also maintain knowledge of specific conversations between endpoints by remembering which port number the two IP addresses are using at layer 4 (transport layer) of the OSI model for their conversation, allowing examination of the overall exchange between the nodes.
+
+
+Application layer
+
+Marcus Ranum, Wei Xu, and Peter Churchyard released an application firewall known as Firewall Toolkit (FWTK) in October 1993. This became the basis for Gauntlet firewall at Trusted Information Systems.
+The key benefit of application layer filtering is that it can understand certain applications and protocols such as File Transfer Protocol (FTP), Domain Name System (DNS), or Hypertext Transfer Protocol (HTTP). This allows it to identify unwanted applications or services using a non standard port, or detect if an allowed protocol is being abused. It can also provide unified security management including enforced encrypted DNS and virtual private networking.
+As of 2012, the next-generation firewall provides a wider range of inspection at the application layer, extending deep packet inspection functionality to include, but is not limited to:
+
+Web filtering
+Intrusion prevention systems
+User identity management
+Web application firewall
+Content inspection and heuristic analysis
+TLS Inspection
+
+
+Endpoint specific
+Endpoint-based application firewalls function by determining whether a process should accept any given connection. Application firewalls filter connections by examining the process ID of data packets against a rule set for the local process involved in the data transmission. Application firewalls accomplish their function by hooking into socket calls to filter the connections between the application layer and the lower layers. Application firewalls that hook into socket calls are also referred to as socket filters.
+
+
+Firewall Policies
+At the core of a firewall's operation are the policies that govern its decision-making process. These policies, collectively known as firewall rules, are the specific guidelines that determine the traffic allowed or blocked across a network's boundaries.
+Firewall rules are based on the evaluation of network packets against predetermined security criteria. A network packet, which carries data across networks, must match certain attributes defined in a rule to be allowed through the firewall. These attributes commonly include:
+
+Direction: Inbound or outbound traffic
+Source: Where the traffic originates (IP address, range, network, or zone)
+Destination: Where the traffic is headed (IP address, range, network, or zone)
+Port: Network ports specific to various services (e.g., port 80 for HTTP)
+Protocol: The type of network protocol (e.g., TCP, UDP, ICMP)
+Applications: L7 inspection or grouping av services.
+Action: Whether to allow, deny, drop, or require further inspection for the traffic
+
+
+Zones
+Zones are logical segments within a network that group together devices with similar security requirements. By partitioning a network into zones, such as "Technical", "WAN", "LAN", "Public," "Private," "DMZ", and "Wireless," administrators can enforce policies that control the flow of traffic between them. Each zone has its own level of trust and is governed by specific firewall rules that regulate the ingress and egress of data.
+A typical default is to allow all traffic from LAN to WAN, and to drop all traffic from WAN to LAN.
+
+
+Services
+In networking terms, services are specific functions typically identified by a network port and protocol. Common examples include HTTP/HTTPS (web traffic) on ports 80 and 443, FTP (file transfer) on port 21, and SMTP (email) on port 25. Services are the engines behind the applications users depend on. From a security aspect, controlling access to services is crucial because services are common targets for exploitation. Firewalls employ rules that stipulate which services should be accessible, to whom, and in what context. For example, a firewall might be configured to block incoming FTP requests to prevent unauthorized file uploads but allow outgoing HTTPS requests for web browsing.
+
+
+Applications
+Applications refer to the software systems that users interact with while on the network. They can range from web browsers and email clients to complex database systems and cloud-based services. In network security, applications are important because different types of traffic can pose varying security risks. Thus, firewall rules can be crafted to identify and control traffic based on the application generating or receiving it. By using application awareness, firewalls can allow, deny, or limit traffic for specific applications according to organizational policies and compliance requirements, thereby mitigating potential threats from vulnerable or undesired applications.
+Application can both be a grouping of services, or a L7 inspection.
+
+
+USER ID
+Implementing firewall rules based on IP addresses alone is often insufficient due to the dynamic nature of user location and device usage. User ID will be translated to an IP address.
+This is where the concept of "User ID" makes a significant impact. User ID allows firewall rules to be crafted based on individual user identities, rather than just fixed source or destination IP addresses. This enhances security by enabling more granular control over who can access certain network resources, regardless of where they are connecting from or what device they are using.
+The User ID technology is typically integrated into firewall systems through the use of directory services such as Active Directory, LDAP, RADIUS or TACACS+. These services link the user's login information to their network activities. By doing this, the firewall can apply rules and policies that correspond to user groups, roles, or individual user accounts instead of purely relying on the network topology.
+
+
+Example of Using User ID in Firewall Rules
+Consider a school that wants to restrict access to a social media server from students. They can create a rule in the firewall that utilises User ID information to enforce this policy.
+
+Directory Service Configuration — First, the firewall must be configured to communicate with the directory service that stores user group memberships. In this case,  an Active Directory server.
+User Identification — The firewall maps network traffic to specific user IDs by interpreting authentication logs. When a user logs on, the firewall associates that login with the user's IP address.
+Define User Groups — Within the firewall's management interface, define user groups based on the directory service. For example, create groups such as "Students".
+Create Firewall Rule:
+Source: User ID (e.g., Students)
+Destination: list of IP addresses
+Service/Application: Allowed services (e.g., HTTP, HTTPS)
+Action: Deny
+Implement Default Allow Rule:
+Source: LAN zone
+Destination: WAN zone
+Service/Application: Any
+Action: Allow
+With this setup, only users who authenticate and are identified as members of "Students" are denied to access social media servers. All other traffic, starting from LAN interfaces, will be allowed.
+
+
+Configuration
+Setting up a firewall is a complex and error-prone task. A network may face security issues due to configuration errors.
+Firewall policies are typically configured according to the type of network in use, such as public or private environments. Administrators define rules that permit or restrict traffic in order to reduce exposure to threats like unauthorized access, malware, or other forms of cyberattack.
+
+
+See also
+
+
+References
+
+
+External links
+Evolution of the Firewall Industry – discusses different architectures, how packets are processed and provides a timeline of the evolution.
+A History and Survey of Network Firewalls Archived 2017-08-30 at the Wayback Machine – provides an overview of firewalls at various ISO levels, with references to original papers where early firewall work was reported.

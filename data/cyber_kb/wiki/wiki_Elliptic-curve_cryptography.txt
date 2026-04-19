@@ -1,0 +1,1013 @@
+Elliptic-curve cryptography (ECC) is an approach to public-key cryptography based on the algebraic structure of elliptic curves over finite fields. ECC allows smaller keys to provide equivalent security, compared to cryptosystems based on modular exponentiation in finite fields, such as the RSA cryptosystem and  ElGamal cryptosystem.
+Elliptic curves are applicable for key agreement, digital signatures, pseudo-random generators and other tasks. Indirectly, they can be used for encryption by combining the key agreement with a symmetric encryption scheme. They are also used in several integer factorization algorithms that have applications in cryptography, such as Lenstra elliptic-curve factorization.
+
+
+History
+
+The use of elliptic curves in cryptography was suggested independently by Neal Koblitz and Victor S. Miller in 1985. Elliptic curve cryptography algorithms entered wide use starting in 2004.
+In 1999, U.S. NIST recommended fifteen elliptic curves. Specifically, FIPS 186-4 has ten recommended finite fields:
+
+Five prime fields 
+  
+    
+      
+        
+          
+            F
+          
+          
+            p
+          
+        
+      
+    
+    {\displaystyle \mathbb {F} _{p}}
+  
+ for certain primes p of sizes 192, 224, 256, 384, and 521 bits. For each of the prime fields, one elliptic curve is recommended.
+Five binary fields 
+  
+    
+      
+        
+          
+            F
+          
+          
+            
+              2
+              
+                m
+              
+            
+          
+        
+      
+    
+    {\displaystyle \mathbb {F} _{2^{m}}}
+  
+ for m equal 163, 233, 283, 409, and 571. For each of the binary fields, one elliptic curve and one Koblitz curve was selected.
+The NIST recommendation thus contains a total of five prime curves and ten binary curves. The curves were chosen for optimal security and implementation efficiency.
+At the RSA Conference 2005, the National Security Agency (NSA) announced Suite B, which exclusively uses ECC for digital signature generation and key exchange. The suite is intended to protect both classified and unclassified national security systems and information. National Institute of Standards and Technology (NIST) has endorsed elliptic curve cryptography in its Suite B set of recommended algorithms, specifically elliptic-curve Diffie–Hellman (ECDH) for key exchange and Elliptic Curve Digital Signature Algorithm (ECDSA) for digital signature.  The NSA allows their use for protecting information classified up to top secret with 384-bit keys.
+Recently, a large number of cryptographic primitives based on bilinear mappings on various elliptic curve groups, such as the Weil and Tate pairings, have been introduced. Schemes based on these primitives provide efficient identity-based encryption as well as pairing-based signatures, signcryption, key agreement, and proxy re-encryption.
+Elliptic curve cryptography is used successfully in numerous popular protocols, such as Transport Layer Security and Bitcoin.
+
+
+Security concerns
+In 2013, The New York Times stated that Dual Elliptic Curve Deterministic Random Bit Generation (or Dual_EC_DRBG) had been included as a NIST national standard due to the influence of NSA, which had included a deliberate weakness in the algorithm and the recommended elliptic curve. RSA Security in September 2013 issued an advisory recommending that its customers discontinue using any software based on Dual_EC_DRBG. In the wake of the exposure of Dual_EC_DRBG as "an NSA undercover operation", cryptography experts have also expressed concern over the security of the NIST recommended elliptic curves, suggesting a return to encryption based on non-elliptic-curve groups.
+
+Additionally, in August 2015, the NSA announced that it plans to replace Suite B with a new cipher suite due to concerns about quantum computing attacks on ECC.
+
+
+Patents
+
+While the RSA patent expired in 2000, there may be patents in force covering certain aspects of ECC technology, including at least one ECC scheme (ECMQV). However, RSA Laboratories and Daniel J. Bernstein have argued that the US government elliptic curve digital signature standard (ECDSA; NIST FIPS 186-3) and certain practical ECC-based key exchange schemes (including ECDH) can be implemented without infringing those patents.
+
+
+Elliptic curve theory
+For the purposes of this article, an elliptic curve is a plane curve over a finite field (rather than the real numbers) which consists of the points satisfying the equation
+
+  
+    
+      
+        
+          y
+          
+            2
+          
+        
+        =
+        
+          x
+          
+            3
+          
+        
+        +
+        a
+        x
+        +
+        b
+        ,
+      
+    
+    {\displaystyle y^{2}=x^{3}+ax+b,}
+  
+
+along with a distinguished point at infinity, denoted ∞. The coordinates here are to be chosen from a fixed finite field of characteristic not equal to 2 or 3, or the curve equation would be somewhat more complicated.
+This set of points, together with the group operation of elliptic curves, is an abelian group, with the point at infinity as an identity element. The structure of the group is inherited from the divisor group of the underlying algebraic variety:
+
+  
+    
+      
+        
+          Div
+          
+            0
+          
+        
+        ⁡
+        (
+        E
+        )
+        →
+        
+          Pic
+          
+            0
+          
+        
+        ⁡
+        (
+        E
+        )
+        ≃
+        E
+        .
+      
+    
+    {\displaystyle \operatorname {Div} ^{0}(E)\to \operatorname {Pic} ^{0}(E)\simeq E.}
+  
+
+
+Application to cryptography
+Public-key cryptography is based on the intractability of certain mathematical problems. Early public-key systems, such as RSA's 1983 patent, based their security on the assumption that it is difficult to factor a large integer composed of two or more large prime factors which are far apart. For later elliptic-curve-based protocols, the base assumption is that finding the discrete logarithm of a random elliptic curve element with respect to a publicly known base point is infeasible (the computational Diffie–Hellman assumption): this is the "elliptic curve discrete logarithm problem" (ECDLP). The security of elliptic curve cryptography depends on the ability to compute a point multiplication and the inability to compute the multiplicand given the original point and product point. The size of the elliptic curve, measured by the total number of discrete integer pairs satisfying the curve equation, determines the difficulty of the problem.
+The primary benefit promised by elliptic curve cryptography over alternatives such as RSA is a smaller key size, reducing storage and transmission requirements. For example, a 256-bit elliptic curve public key should provide comparable security to a 3072-bit RSA public key.
+
+
+Cryptographic schemes
+Several discrete logarithm-based protocols have been adapted to elliptic curves, replacing the group 
+  
+    
+      
+        (
+        
+          
+            Z
+          
+          
+            p
+          
+        
+        
+          )
+          
+            ×
+          
+        
+      
+    
+    {\displaystyle (\mathbb {Z} _{p})^{\times }}
+  
+ with an elliptic curve:
+
+The Elliptic-curve Diffie–Hellman (ECDH) key agreement scheme is based on the Diffie–Hellman scheme,
+The Elliptic Curve Integrated Encryption Scheme (ECIES), also known as Elliptic Curve Augmented Encryption Scheme or simply the Elliptic Curve Encryption Scheme,
+The Elliptic Curve Digital Signature Algorithm (ECDSA) is based on the Digital Signature Algorithm,
+The deformation scheme using Harrison's p-adic Manhattan metric,
+The Edwards-curve Digital Signature Algorithm (EdDSA) is based on Schnorr signature and uses twisted Edwards curves,
+The ECMQV key agreement scheme is based on the MQV key agreement scheme,
+The ECQV implicit certificate scheme.
+
+
+Implementation
+Some common implementation considerations include:
+
+
+Domain parameters
+To use ECC, all parties must agree on all the elements defining the elliptic curve, that is, the domain parameters of the scheme. The size of the field used is typically either prime (and denoted as p) or is a power of two (
+  
+    
+      
+        
+          2
+          
+            m
+          
+        
+      
+    
+    {\displaystyle 2^{m}}
+  
+); the latter case is called the binary case, and this case necessitates the choice of an auxiliary curve denoted by f.  Thus the field is defined by p in the prime case and the pair of m and f in the binary case. The elliptic curve is defined by the constants a and b used in its defining equation. Finally, the cyclic subgroup is defined by its generator (a.k.a. base point) G. For cryptographic application, the order of G, that is the smallest positive number n such that 
+  
+    
+      
+        n
+        G
+        =
+        
+          
+            O
+          
+        
+      
+    
+    {\displaystyle nG={\mathcal {O}}}
+  
+ (the point at infinity of the curve, and the identity element), is normally prime. Since n is the size of a subgroup of 
+  
+    
+      
+        E
+        (
+        
+          
+            F
+          
+          
+            p
+          
+        
+        )
+      
+    
+    {\displaystyle E(\mathbb {F} _{p})}
+  
+ it follows from Lagrange's theorem that the number 
+  
+    
+      
+        h
+        =
+        
+          
+            1
+            n
+          
+        
+        
+          |
+        
+        E
+        (
+        
+          
+            F
+          
+          
+            p
+          
+        
+        )
+        
+          |
+        
+      
+    
+    {\displaystyle h={\frac {1}{n}}|E(\mathbb {F} _{p})|}
+  
+ is an integer. In cryptographic applications, this number h, called the cofactor, must be small (
+  
+    
+      
+        h
+        ≤
+        4
+      
+    
+    {\displaystyle h\leq 4}
+  
+) and, preferably, 
+  
+    
+      
+        h
+        =
+        1
+      
+    
+    {\displaystyle h=1}
+  
+. To summarize: in the prime case, the domain parameters are 
+  
+    
+      
+        (
+        p
+        ,
+        a
+        ,
+        b
+        ,
+        G
+        ,
+        n
+        ,
+        h
+        )
+      
+    
+    {\displaystyle (p,a,b,G,n,h)}
+  
+; in the binary case, they are 
+  
+    
+      
+        (
+        m
+        ,
+        f
+        ,
+        a
+        ,
+        b
+        ,
+        G
+        ,
+        n
+        ,
+        h
+        )
+      
+    
+    {\displaystyle (m,f,a,b,G,n,h)}
+  
+.
+Unless there is an assurance that domain parameters were generated by a party trusted with respect to their use, the domain parameters must be validated before use.
+The generation of domain parameters is not usually done by each participant because this involves computing the number of points on a curve which is time-consuming and troublesome to implement. As a result, several standard bodies published domain parameters of elliptic curves for several common field sizes. Such domain parameters are commonly known as "standard curves" or "named curves"; a named curve can be referenced either by name or by the unique object identifier defined in the standard documents:
+
+NIST, Recommended Elliptic Curves for Government Use
+SECG, SEC 2: Recommended Elliptic Curve Domain Parameters
+ECC Brainpool (RFC 5639), ECC Brainpool Standard Curves and Curve Generation Archived 2018-04-17 at the Wayback Machine
+SECG test vectors are also available. NIST has approved many SECG curves, so there is a significant overlap between the specifications published by NIST and SECG. EC domain parameters may be specified either by value or by name.
+If, despite the preceding admonition, one decides to construct one's own domain parameters, one should select the underlying field and then use one of the following strategies to find a curve with appropriate (i.e., near prime) number of points using one of the following methods:
+
+Select a random curve and use a general point-counting algorithm, for example, Schoof's algorithm or the Schoof–Elkies–Atkin algorithm,
+Select a random curve from a family which allows easy calculation of the number of points (e.g., Koblitz curves), or
+Select the number of points and generate a curve with this number of points using the complex multiplication technique.
+Several classes of curves are weak and should be avoided:
+
+Curves over 
+  
+    
+      
+        
+          
+            F
+          
+          
+            
+              2
+              
+                m
+              
+            
+          
+        
+      
+    
+    {\displaystyle \mathbb {F} _{2^{m}}}
+  
+ with non-prime m are vulnerable to Weil descent attacks.
+Curves such that n divides 
+  
+    
+      
+        
+          p
+          
+            B
+          
+        
+        −
+        1
+      
+    
+    {\displaystyle p^{B}-1}
+  
+ (where p is the characteristic of the field: q for a prime field, or 
+  
+    
+      
+        2
+      
+    
+    {\displaystyle 2}
+  
+ for a binary field) for sufficiently small B are vulnerable to Menezes–Okamoto–Vanstone (MOV) attack which applies usual discrete logarithm problem (DLP) in a small-degree extension field of 
+  
+    
+      
+        
+          
+            F
+          
+          
+            p
+          
+        
+      
+    
+    {\displaystyle \mathbb {F} _{p}}
+  
+ to solve ECDLP.  The bound B should be chosen so that discrete logarithms in the field 
+  
+    
+      
+        
+          
+            F
+          
+          
+            
+              p
+              
+                B
+              
+            
+          
+        
+      
+    
+    {\displaystyle \mathbb {F} _{p^{B}}}
+  
+ are at least as difficult to compute as discrete logs on the elliptic curve 
+  
+    
+      
+        E
+        (
+        
+          
+            F
+          
+          
+            q
+          
+        
+        )
+      
+    
+    {\displaystyle E(\mathbb {F} _{q})}
+  
+.
+Curves such that 
+  
+    
+      
+        
+          |
+        
+        E
+        (
+        
+          
+            F
+          
+          
+            q
+          
+        
+        )
+        
+          |
+        
+        =
+        q
+      
+    
+    {\displaystyle |E(\mathbb {F} _{q})|=q}
+  
+ are vulnerable to the attack that maps the points on the curve to the additive group of 
+  
+    
+      
+        
+          
+            F
+          
+          
+            q
+          
+        
+      
+    
+    {\displaystyle \mathbb {F} _{q}}
+  
+.
+
+
+Key sizes
+
+Because all the fastest known algorithms that allow one to solve the ECDLP (baby-step giant-step, Pollard's rho, etc.), need 
+  
+    
+      
+        O
+        (
+        
+          
+            n
+          
+        
+        )
+      
+    
+    {\displaystyle O({\sqrt {n}})}
+  
+ steps, it follows that the size of the underlying field should be roughly twice the security parameter. For example, for 128-bit security one needs a curve over 
+  
+    
+      
+        
+          
+            F
+          
+          
+            q
+          
+        
+      
+    
+    {\displaystyle \mathbb {F} _{q}}
+  
+, where 
+  
+    
+      
+        q
+        ≈
+        
+          2
+          
+            256
+          
+        
+      
+    
+    {\displaystyle q\approx 2^{256}}
+  
+. This can be contrasted with finite-field cryptography (e.g., DSA) which requires 3072-bit public keys and 256-bit private keys, and integer factorization cryptography (e.g., RSA) which requires a 3072-bit value of n, where the private key should be just as large. However, the public key may be smaller to accommodate efficient encryption, especially when processing power is limited.
+The hardest ECC scheme (publicly) broken to date had a 112-bit key for the prime field case and a 109-bit key for the binary field case. For the prime field case, this was broken in July 2009 using a cluster of over 200 PlayStation 3 game consoles and could have been finished in 3.5 months using this cluster when running continuously. The binary field case was broken in April 2004 using 2600 computers over 17 months.
+A current project is aiming at breaking the ECC2K-130 challenge by Certicom, by using a wide range of different hardware: CPUs, GPUs, FPGA.
+
+
+Projective coordinates
+A close examination of the addition rules shows that in order to add two points, one needs not only several additions and multiplications in 
+  
+    
+      
+        
+          
+            F
+          
+          
+            q
+          
+        
+      
+    
+    {\displaystyle \mathbb {F} _{q}}
+  
+ but also an inversion operation. The inversion (for given 
+  
+    
+      
+        x
+        ∈
+        
+          
+            F
+          
+          
+            q
+          
+        
+      
+    
+    {\displaystyle x\in \mathbb {F} _{q}}
+  
+ find 
+  
+    
+      
+        y
+        ∈
+        
+          
+            F
+          
+          
+            q
+          
+        
+      
+    
+    {\displaystyle y\in \mathbb {F} _{q}}
+  
+ such that 
+  
+    
+      
+        x
+        y
+        =
+        1
+      
+    
+    {\displaystyle xy=1}
+  
+) is one to two orders of magnitude slower than multiplication. However, points on a curve can be represented in different coordinate systems which do not require an inversion operation to add two points. Several such systems were proposed: in the projective system each point is represented by three coordinates 
+  
+    
+      
+        (
+        X
+        ,
+        Y
+        ,
+        Z
+        )
+      
+    
+    {\displaystyle (X,Y,Z)}
+  
+ using the following relation: 
+  
+    
+      
+        x
+        =
+        
+          
+            X
+            Z
+          
+        
+      
+    
+    {\displaystyle x={\frac {X}{Z}}}
+  
+, 
+  
+    
+      
+        y
+        =
+        
+          
+            Y
+            Z
+          
+        
+      
+    
+    {\displaystyle y={\frac {Y}{Z}}}
+  
+; in the Jacobian system a point is also represented with three coordinates 
+  
+    
+      
+        (
+        X
+        ,
+        Y
+        ,
+        Z
+        )
+      
+    
+    {\displaystyle (X,Y,Z)}
+  
+, but a different relation is used: 
+  
+    
+      
+        x
+        =
+        
+          
+            X
+            
+              Z
+              
+                2
+              
+            
+          
+        
+      
+    
+    {\displaystyle x={\frac {X}{Z^{2}}}}
+  
+, 
+  
+    
+      
+        y
+        =
+        
+          
+            Y
+            
+              Z
+              
+                3
+              
+            
+          
+        
+      
+    
+    {\displaystyle y={\frac {Y}{Z^{3}}}}
+  
+; in the López–Dahab system the relation is 
+  
+    
+      
+        x
+        =
+        
+          
+            X
+            Z
+          
+        
+      
+    
+    {\displaystyle x={\frac {X}{Z}}}
+  
+, 
+  
+    
+      
+        y
+        =
+        
+          
+            Y
+            
+              Z
+              
+                2
+              
+            
+          
+        
+      
+    
+    {\displaystyle y={\frac {Y}{Z^{2}}}}
+  
+; in the modified Jacobian system the same relations are used but four coordinates are stored and used for calculations 
+  
+    
+      
+        (
+        X
+        ,
+        Y
+        ,
+        Z
+        ,
+        a
+        
+          Z
+          
+            4
+          
+        
+        )
+      
+    
+    {\displaystyle (X,Y,Z,aZ^{4})}
+  
+; and in the Chudnovsky Jacobian system five coordinates are used 
+  
+    
+      
+        (
+        X
+        ,
+        Y
+        ,
+        Z
+        ,
+        
+          Z
+          
+            2
+          
+        
+        ,
+        
+          Z
+          
+            3
+          
+        
+        )
+      
+    
+    {\displaystyle (X,Y,Z,Z^{2},Z^{3})}
+  
+. Note that there may be different naming conventions, for example, IEEE P1363-2000 standard uses "projective coordinates" to refer to what is commonly called Jacobian coordinates. An additional speed-up is possible if mixed coordinates are used.
+
+
+Fast reduction
+Reduction modulo p (which is needed for addition and multiplication) can be executed much faster if the prime p is a pseudo-Mersenne prime (Solinas prime), that is 
+  
+    
+      
+        p
+        ≈
+        
+          2
+          
+            d
+          
+        
+      
+    
+    {\displaystyle p\approx 2^{d}}
+  
+; for example, 
+  
+    
+      
+        p
+        =
+        
+          2
+          
+            521
+          
+        
+        −
+        1
+      
+    
+    {\displaystyle p=2^{521}-1}
+  
+ (P-521) or 
+  
+    
+      
+        p
+        =
+        
+          2
+          
+            256
+          
+        
+        −
+        
+          2
+          
+            32
+          
+        
+        −
+        
+          2
+          
+            9
+          
+        
+        −
+        
+          2
+          
+            8
+          
+        
+        −
+        
+          2
+          
+            7
+          
+        
+        −
+        
+          2
+          
+            6
+          
+        
+        −
+        
+          2
+          
+            4
+          
+        
+        −
+        1.
+      
+    
+    {\displaystyle p=2^{256}-2^{32}-2^{9}-2^{8}-2^{7}-2^{6}-2^{4}-1.}
+  
+ (P-256) Compared to Barrett reduction, there can be an order of magnitude speed-up. The speed-up here is a practical rather than theoretical one, and derives from the fact that the moduli of numbers against numbers near powers of two can be performed efficiently by computers operating on binary numbers with bitwise operations.
+The curves over 
+  
+    
+      
+        
+          
+            F
+          
+          
+            p
+          
+        
+      
+    
+    {\displaystyle \mathbb {F} _{p}}
+  
+ with pseudo-Mersenne P-256 and P-384 are recommended by NIST. The NIST curves also use a = −3, which improves addition in Jacobian coordinates. However, this latter choice is suboptimal according to Bernstein and Lange, with other curves being likely more secure and run just as fast.
+The use of pseudo-Mersennes is not one suboptimal decision: Bernstein's more preferred curves use similar forms such as 
+  
+    
+      
+        p
+        =
+        
+          2
+          
+            255
+          
+        
+        −
+        19
+      
+    
+    {\displaystyle p=2^{255}-19}
+  
+ and 
+  
+    
+      
+        
+          2
+          
+            448
+          
+        
+        −
+        
+          2
+          
+            224
+          
+        
+        −
+        1
+      
+    
+    {\displaystyle 2^{448}-2^{224}-1}
+  
+.
+
+
+Security
+
+
+Side-channel attacks
+Unlike most other discrete logarithm problem (DLP) systems (where it is possible to use the same procedure for squaring and multiplication), the EC addition is significantly different for doubling (P = Q) and general addition (P ≠ Q) depending on the coordinate system used. Consequently, it is important to counteract side-channel attacks (e.g., timing or simple/differential power analysis attacks) using, for example, fixed pattern window (a.k.a. comb) methods (note that this does not increase computation time). Alternatively one can use an Edwards curve; this is a special family of elliptic curves for which doubling and addition can be done with the same operation. Another concern for ECC-systems is the danger of fault attacks, especially when running on smart cards.
+
+
+Backdoors
+Cryptographic experts have expressed concerns that the National Security Agency has inserted a kleptographic backdoor into at least one elliptic curve-based pseudo random generator. Internal memos leaked by former NSA contractor Edward Snowden suggest that the NSA put a backdoor in the Dual EC DRBG standard. One analysis of the possible backdoor concluded that an adversary in possession of the algorithm's secret key could obtain encryption keys given only 32 bytes of PRNG output.
+The SafeCurves project has been launched in order to catalog curves that are easy to implement securely and are designed in a fully publicly verifiable way to minimize the chance of a backdoor.
+
+
+Quantum computing attack
+Shor's algorithm can be used to break elliptic curve cryptography by computing discrete logarithms on a hypothetical quantum computer. The latest quantum resource estimates for breaking a curve with a 256-bit modulus (128-bit security level) are 2330 qubits and 126 billion Toffoli gates. For the binary elliptic curve case, 906 qubits are necessary (to break 128 bits of security). In comparison, using Shor's algorithm to break the RSA algorithm requires 4098 qubits and 5.2 trillion Toffoli gates for a 2048-bit RSA key, suggesting that ECC is an easier target for quantum computers than RSA. All of these figures vastly exceed any quantum computer that has ever been built, and estimates place the creation of such computers at a decade or more away.
+Supersingular Isogeny Diffie–Hellman Key Exchange claimed to provide a post-quantum secure form of elliptic curve cryptography by using isogenies to implement Diffie–Hellman key exchanges.  This key exchange uses much of the same field arithmetic as existing elliptic curve cryptography and requires computational and transmission overhead similar to many currently used public key systems. However, new classical attacks undermined the security of this protocol.
+In August 2015, the NSA announced that it planned to transition "in the not distant future" to a new cipher suite that is resistant to quantum attacks. "Unfortunately, the growth of elliptic curve use has bumped up against the fact of continued progress in the research on quantum computing, necessitating a re-evaluation of our cryptographic strategy."
+
+
+Invalid curve attack
+Implementations of ECC, used in some virtual machines, are susceptible to invalid curve attacks where processing invalid curves, over time, leaks enough information to reconstruct the complete PDH private key.
+
+
+Alternative representations
+Alternative representations of elliptic curves include:
+
+Hessian curves
+Edwards curves
+Twisted curves
+Twisted Hessian curves
+Twisted Edwards curve
+Doubling-oriented Doche–Icart–Kohel curve
+Tripling-oriented Doche–Icart–Kohel curve
+Jacobian curve
+Montgomery curves
+
+
+See also
+
+
+Notes
+
+
+References
+
+Jacques Vélu, Courbes elliptiques (...), Société Mathématique de France, 57, 1-152, Paris, 1978.
+
+
+External links
+Elliptic Curves at Stanford University
+Interactive introduction to elliptic curves and elliptic curve cryptography with Sage by Maike Massierer and the CrypTool team
+ Media related to Elliptic curve at Wikimedia Commons

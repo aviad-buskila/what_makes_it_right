@@ -1,0 +1,144 @@
+Kerberos () is a computer-network authentication protocol that works on the basis of tickets to allow nodes communicating over a non-secure network to prove their identity to one another in a secure manner. Its designers aimed it primarily at a client–server model, and it provides mutual authentication—both the user and the server verify each other's identity. Kerberos protocol messages are protected against eavesdropping and replay attacks.
+Kerberos builds on symmetric-key cryptography and requires a trusted third party, and optionally may use public-key cryptography during certain phases of authentication. Kerberos uses UDP port 88 by default.
+The protocol was named after the character Cerberus, also spelled Kerberos, from Greek mythology, the ferocious three-headed guard dog of Hades.
+
+
+History and development
+The Massachusetts Institute of Technology (MIT) developed Kerberos in 1988 to protect network services provided by Project Athena. Its first version was primarily designed by Steve Miller and Clifford Neuman based on the earlier Needham–Schroeder symmetric-key protocol. Kerberos versions 1 through 3 were experimental and not released outside of MIT.
+Kerberos version 4, the first public version, was released on January 24, 1989. Since Kerberos 4 was developed in the United States, and since it used the Data Encryption Standard (DES) encryption algorithm, U.S. export control restrictions prevented it from being exported to other countries. MIT created an exportable version of Kerberos 4 with all encryption code removed, called "Bones". Eric Young of Australia's Bond University reimplemented DES into Bones, in a version called "eBones", which could be freely used in any country. Sweden's Royal Institute of Technology released another reimplementation called KTH-KRB.
+Neuman and John Kohl published version 5 in 1993 with the intention of overcoming existing limitations and security problems.  Version 5 appeared as RFC 1510, which was then made obsolete by RFC 4120 in 2005.
+In 2005, the Internet Engineering Task Force (IETF) Kerberos working group updated specifications. Updates included:
+
+Encryption and Checksum Specifications (RFC 3961).
+Advanced Encryption Standard (AES) Encryption for Kerberos 5 (RFC 3962).
+A new edition of the Kerberos V5 specification "The Kerberos Network Authentication Service (V5)" (RFC 4120). This version obsoletes RFC 1510, clarifies aspects of the protocol and intended use in a more detailed and clearer explanation.
+A new edition of the Generic Security Services Application Program Interface (GSS-API) specification "The Kerberos Version 5 Generic Security Service Application Program Interface (GSS-API) Mechanism: Version 2" (RFC 4121).
+MIT makes an implementation of Kerberos freely available, under copyright permissions similar to those used for BSD. In 2007, MIT formed the Kerberos Consortium to foster continued development. Founding sponsors include vendors such as Oracle, Apple Inc., Google, Microsoft, Centrify Corporation and TeamF1 Inc., and academic institutions such as the Royal Institute of Technology in Sweden, Stanford University, MIT, and vendors such as CyberSafe offering commercially supported versions.
+
+
+Protocol
+
+
+Description
+The client authenticates itself to the Authentication Server (AS) which is part of the key distribution center (KDC). The KDC issues a ticket-granting ticket (TGT), which is time stamped and encrypts it using the ticket-granting service's (TGS) secret key and returns the encrypted result to the user's workstation.  This is done infrequently, typically at user logon; the TGT expires at some point although it may be transparently renewed by the user's session manager while they are logged in.
+When the client needs to communicate with a service on another node (a "principal", in Kerberos parlance), the client sends the TGT to the TGS, which is another component of the KDC and usually shares the same host as the authentication server. The service must have already been registered with the TGS with a Service Principal Name (SPN). The client uses the SPN to request access to this service. After verifying that the TGT is valid and that the user is permitted to access the requested service, the TGS issues a service ticket (ST) and session keys to the client. The client then sends the ticket to the service server (SS) along with its service request.
+
+The protocol is described in detail below.
+
+
+User Client-based Login without Kerberos
+A user enters a username and password on the client machine(s).  Other credential mechanisms like pkinit (RFC 4556) allow for the use of public keys in place of a password. The client transforms the password into the key of a symmetric cipher.  This either uses the built-in key scheduling, or a one-way hash, depending on the cipher-suite used.
+The server receives the username and symmetric cipher and compares it with the data from the database. Login was a success if the cipher matches the cipher that is stored for the user.
+
+
+Client Authentication
+The client sends a plaintext message of the user ID to the AS (Authentication Server) requesting services on behalf of the user. (Note: Neither the secret key nor the password is sent to the AS.)
+The AS checks to see whether the client is in its database. If it is, the AS generates the secret key by hashing the password of the user found at the database (e.g., Active Directory in Windows Server) and sends back the following two messages to the client:
+Message A: Client/TGS Session Key encrypted using the secret key of the client/user.
+Message B: Ticket-Granting-Ticket (TGT, which includes the client ID, client network address, ticket validity period, and the Client/TGS Session Key) encrypted using the secret key of the TGS.
+Once the client receives messages A and B, it attempts to decrypt message A with the secret key generated from the password entered by the user.  If the user entered password does not match the password in the AS database, the client's secret key will be different and thus unable to decrypt message A.  With a valid password and secret key the client decrypts message A to obtain the Client/TGS Session Key. This session key is used for further communications with the TGS. (Note: The client cannot decrypt Message B, as it is encrypted using TGS's secret key.)  At this point, the client has enough information to authenticate itself to the TGS.
+
+
+Client Service Authorization
+When requesting services, the client sends the following messages to the TGS:
+Message C: Composed of the message B (the encrypted TGT using the TGS secret key) and the ID of the requested service.
+Message D: Authenticator (which is composed of the client ID and the timestamp), encrypted using the Client/TGS Session Key (found by the client in Message A).
+Upon receiving messages C and D, the TGS retrieves message B out of message C. It decrypts message B using the TGS secret key. This gives it the Client/TGS Session Key and the client ID (both are in the TGT). Using this Client/TGS Session Key, the TGS decrypts message D (Authenticator) and compares the client IDs from messages B and D; if they match, the server sends the following two messages to the client:
+Message E: Client-to-server ticket (which includes the client ID, client network address, validity period, and Client/Server Session Key) encrypted using the service's secret key.
+Message F: Client/Server Session Key encrypted with the Client/TGS Session Key.
+
+
+Client Service Request
+Upon receiving messages E and F from TGS, the client has enough information to authenticate itself to the Service Server (SS).  The client connects to the SS and sends the following two messages:
+Message E: From the previous step (the Client-to-server ticket, encrypted using service's Secret key by the TGS).
+Message G: A new Authenticator, which includes the client ID, timestamp and is encrypted using Client/Server Session Key.
+The SS decrypts the ticket (message E) using its own secret key to retrieve the Client/Server Session Key. Using the sessions key, SS decrypts the Authenticator and compares client ID from messages E and G, if they match server sends the following message to the client to confirm its true identity and willingness to serve the client:
+Message H: The timestamp found in client's Authenticator (plus 1 in version 4, but not necessary in version 5), encrypted using the Client/Server Session Key.
+The client decrypts the confirmation (message H) using the Client/Server Session Key and checks whether the timestamp is correct. If so, then the client can trust the server and can start issuing service requests to the server.
+The server provides the requested services to the client.
+
+
+Support by operating systems
+
+
+Microsoft Windows
+Windows 2000 and later versions use Kerberos as their default authentication method. Some Microsoft additions to the Kerberos suite of protocols are documented in RFC 3244 "Microsoft Windows 2000 Kerberos Change Password and Set Password Protocols". RFC 4757 documents Microsoft's use of the RC4 cipher.  While Microsoft uses and extends the Kerberos protocol, it does not use the MIT software.
+Kerberos is used as the preferred authentication method: in general, joining a client to a Windows domain means enabling Kerberos as the default protocol for authentications from that client to services in the Windows domain and all domains with trust relationships to that domain.
+In contrast, when either client or server or both are not joined to a domain (or not part of the same trusted domain environment), Windows will instead use NTLM for authentication between client and server.
+Internet web applications can enforce Kerberos as an authentication method for domain-joined clients by using APIs provided under SSPI.
+Microsoft Windows and Windows Server include setspn, a command-line utility that can be used to read, modify, or delete the Service Principal Names (SPN) for an Active Directory service account.
+
+
+Unix and other operating systems
+Many Unix-like operating systems, including FreeBSD, Apple's macOS, Red Hat Enterprise Linux, Oracle's Solaris, IBM's AIX, HP-UX and others, include software for Kerberos authentication of users or services. A variety of non-Unix like operating systems such as z/OS, IBM i and OpenVMS also feature Kerberos support. Embedded implementation of the Kerberos V authentication protocol for client agents and network services running on embedded platforms is also available from companies.
+
+
+Drawbacks and limitations
+Kerberos has strict time requirements, which means that the clocks of the involved hosts must be synchronized within configured limits. The tickets have a time availability period, and if the host clock is not synchronized with the Kerberos server clock, the authentication will fail. The default configuration per MIT requires that clock times be no more than five minutes apart. In practice, Network Time Protocol daemons are usually used to keep the host clocks synchronized. Note that some servers (Microsoft's implementation being one of them) may return a KRB_AP_ERR_SKEW result containing the encrypted server time if both clocks have an offset greater than the configured maximum value. In that case, the client could retry by calculating the time using the provided server time to find the offset. This behavior is documented in RFC 4430.
+The administration protocol is not standardized and differs between server implementations. Password changes are described in RFC 3244.
+In case of symmetric cryptography adoption (Kerberos can work using symmetric or asymmetric (public-key) cryptography), since all authentications are controlled by a centralized key distribution center (KDC), compromise of this authentication infrastructure will allow an attacker to impersonate any user.
+Each network service that requires a different host name will need its own set of Kerberos keys. This complicates virtual hosting and clusters.
+Kerberos requires user accounts and services to have a trusted relationship to the Kerberos token server.
+The required client trust makes creating staged environments (e.g., separate domains for test environment, pre-production environment and production environment) difficult: Either domain trust relationships need to be created that prevent a strict separation of environment domains, or additional user clients need to be provided for each environment.
+
+
+Security
+The Data Encryption Standard (DES) cipher can be used in combination with Kerberos, but is no longer an Internet standard because it is weak. Security vulnerabilities exist in products that implement legacy versions of Kerberos which lack support for newer encryption ciphers like AES.
+
+
+See also
+
+Single sign-on
+Identity management
+SPNEGO
+S/Key
+Secure remote password protocol (SRP)
+Generic Security Services Application Program Interface (GSS-API)
+Host Identity Protocol (HIP)
+List of single sign-on implementations
+
+
+References
+
+General
+
+RFCs
+RFC 1510 The Kerberos Network Authentication Service (V5) [Obsolete]
+RFC 1964 The Kerberos Version 5 GSS-API Mechanism
+RFC 3961 Encryption and Checksum Specifications for Kerberos 5
+RFC 3962 Advanced Encryption Standard (AES) Encryption for Kerberos 5
+RFC 4120 The Kerberos Network Authentication Service (V5) [Current]
+RFC 4121 The Kerberos Version 5 Generic Security Service Application Program Interface (GSS-API) Mechanism: Version 2
+RFC 4537 Kerberos Cryptosystem Negotiation Extension
+RFC 4556 Public Key Cryptography for Initial Authentication in Kerberos (PKINIT)
+RFC 4557 Online Certificate Status Protocol (OCSP) Support for Public Key Cryptography for Initial Authentication in Kerberos (PKINIT)
+RFC 4757 The RC4-HMAC Kerberos Encryption Types Used by Microsoft Windows [Obsolete]
+RFC 5021 Extended Kerberos Version 5 Key Distribution Center (KDC) Exchanges over TCP
+RFC 5349 Elliptic Curve Cryptography (ECC) Support for Public Key Cryptography for Initial Authentication in Kerberos (PKINIT)
+RFC 5868 Problem Statement on the Cross-Realm Operation of Kerberos
+RFC 5896 Generic Security Service Application Program Interface (GSS-API): Delegate if Approved by Policy
+RFC 6111 Additional Kerberos Naming Constraints
+RFC 6112 Anonymity Support for Kerberos
+RFC 6113 A Generalized Framework for Kerberos Pre-Authentication
+RFC 6251 Using Kerberos Version 5 over the Transport Layer Security (TLS) Protocol
+RFC 6448 The Unencrypted Form of Kerberos 5 KRB-CRED Message
+RFC 6542 Kerberos Version 5 Generic Security Service Application Program Interface (GSS-API) Channel Binding Hash Agility
+RFC 6560 One-Time Password (OTP) Pre-Authentication
+RFC 6649 Deprecate DES, RC4-HMAC-EXP, and Other Weak Cryptographic Algorithms in Kerberos
+RFC 6784 Kerberos Options for DHCPv6
+RFC 6803 Camellia Encryption for Kerberos 5
+RFC 6806 Kerberos Principal Name Canonicalization and Cross-Realm Referrals
+RFC 6880 An Information Model for Kerberos Version 5
+RFC 8009 AES Encryption with HMAC-SHA2 for Kerberos 5
+
+
+Further reading
+
+
+External links
+
+Kerberos Consortium
+Kerberos page at MIT website
+Kerberos Working Group at IETF website
+Kerberos Sequence Diagram Archived 2015-03-26 at the Wayback Machine
+Heimdal/Kerberos implementation

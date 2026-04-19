@@ -1,0 +1,155 @@
+In computing, SQL injection is a code injection technique used to attack data-driven applications, in which malicious SQL statements are inserted into an entry field for execution (e.g. to dump the database contents to the attacker). SQL injection must exploit a security vulnerability in an application's software, for example, when user input is either incorrectly filtered for string literal escape characters embedded in SQL statements or user input is not strongly typed and unexpectedly executed. SQL injection is mostly known as an attack vector for websites but can be used to attack any type of SQL database.
+SQL injection attacks allow attackers to spoof identity, tamper with existing data, cause repudiation issues such as voiding transactions or changing balances, allow the complete disclosure of all data on the system, destroy the data or make it otherwise unavailable, and become administrators of the database server. Document-oriented NoSQL databases can also be affected by this security vulnerability.
+SQL injection remains a widely recognized security risk due to its potential to compromise sensitive data. The Open Web Application Security Project (OWASP) describes it as a vulnerability that occurs when applications construct database queries using unvalidated user input. Exploiting this flaw, attackers can execute unintended database commands, potentially accessing, modifying, or deleting data. OWASP outlines several mitigation strategies, including prepared statements, stored procedures, and input validation, to prevent user input from being misinterpreted as executable SQL code.
+
+
+History
+Discussions of SQL injection began in the late 1990's, including in a 1998 article in Phrack Magazine. SQL injection was ranked among the top 10 web application vulnerabilities of 2007 and 2010 by the Open Web Application Security Project (OWASP). In 2013, SQL injection was listed as the most critical web application vulnerability in the OWASP Top 10.
+In 2017, the OWASP Top 10 Application Security Risks grouped SQL injection under the broader category of "Injection," ranking it as the third most critical security threat. This category included various types of injection attacks, such as SQL, NoSQL, OS command, and LDAP injection. These vulnerabilities arise when an application processes untrusted data as part of a command or query, potentially allowing attackers to execute unintended actions or gain unauthorized access to data.
+By 2021, injection remained a widespread issue, detected in 94% of analyzed applications, with reported incidence rates reaching up to 19%. That year’s OWASP Top 10 further expanded the definition of injection vulnerabilities to include attacks targeting Object Relational Mapping (ORM) systems, Expression Language (EL), and Object Graph Navigation Library (OGNL). To address these risks, OWASP recommends strategies such as using secure APIs, parameterized queries, input validation, and escaping special characters to prevent malicious data from being executed as part of a query.
+
+
+Root cause
+
+SQL injection is a common security vulnerability that arises from letting attacker-supplied data become SQL code. This happens when programmers assemble SQL queries either by string interpolation or by concatenating SQL commands with user supplied data. Therefore, injection relies on the fact that SQL statements consist of both data used by the SQL statement and commands that control how the SQL statement is executed. For example, in the SQL statement select * from person where name = 'susan' and age = 2 the string 'susan' is data and the fragment and age = 2 is an example of a command (the value 2 is also data in this example).
+SQL injection occurs when specially crafted user input is processed by the receiving program in a way that allows the input to exit a data context and enter a command context. This allows the attacker to alter the structure of the SQL statement which is executed.
+As a simple example, imagine that the data 'susan' in the above statement was provided by user input. The user entered the string 'susan' (without the apostrophes) in a web form text entry field, and the program used string concatenation statements to form the above SQL statement from the three fragments select * from person where name=', the user input of 'susan', and ' and age = 2.
+Now imagine that instead of entering 'susan' the attacker entered ' or 1=1; --.
+The program will use the same string concatenation approach with the 3 fragments of select * from person where name=', the user input of ' or 1=1; --, and ' and age = 2 and construct the statement select * from person where name='' or 1=1; --' and age = 2. Many databases will ignore the text after the '--' string as this denotes a comment. The structure of the SQL command is now select * from person where name='' or 1=1; and this will select all person rows rather than just those named 'susan' whose age is 2. The attacker has managed to craft a data string which exits the data context and entered a command context.
+
+
+Ways to exploit
+Although the root cause of all SQL injections is the same, there are different techniques to exploit it. Some of them are discussed below:
+
+
+Getting direct output or action
+Imagine a program creates a SQL statement using the following string assignment command :
+var statement = "SELECT * FROM users WHERE name = '" + userName + "'";
+This SQL code is designed to pull up the records of the specified username from its table of users. However, if the "userName" variable is crafted in a specific way by a malicious user, the SQL statement may do more than the code author intended. For example, setting the "userName" variable as:
+
+' OR '1'='1
+or using comments to even block the rest of the query (there are three types of SQL comments). All three lines have a space at the end:
+
+' OR '1'='1' --
+' OR '1'='1' {
+' OR '1'='1' /* 
+renders one of the following SQL statements by the parent language:
+
+If this code were to be used in authentication procedure then this example could be used to force the selection of every data field (*) from all users rather than from one specific user name as the coder intended, because the evaluation of '1'='1' is always true.
+The following value of "userName" in the statement below would cause the deletion of the "users" table as well as the selection of all data from the "userinfo" table (in essence revealing the information of every user), using an API that allows multiple statements:
+a';DROP TABLE users; SELECT * FROM userinfo WHERE 't' = 't
+This input renders the final SQL statement as follows and specified:
+
+While most SQL server implementations allow multiple statements to be executed with one call in this way, some SQL APIs such as PHP's mysql_query() function do not allow this for security reasons. This prevents attackers from injecting entirely separate queries, but doesn't stop them from modifying queries.
+
+
+Blind SQL injection
+Blind SQL injection is used when a web application is vulnerable to a SQL injection, but the results of the injection are not visible to the attacker. The page with the vulnerability may not be one that displays data but will display differently depending on the results of a logical statement injected into the legitimate SQL statement called for that page. This type of attack has traditionally been considered time-intensive because a new statement needed to be crafted for each bit recovered, and depending on its structure, the attack may consist of many unsuccessful requests. Recent advancements have allowed each request to recover multiple bits, with no unsuccessful requests, allowing for more consistent and efficient extraction. There are several tools that can automate these attacks once the location of the vulnerability and the target information has been established.
+
+
+Conditional responses
+One type of blind SQL injection forces the database to evaluate a logical statement on an ordinary application screen. As an example, a book review website uses a query string to determine which book review to display. So the URL https://books.example.com/review?id=5 would cause the server to run the query
+
+from which it would populate the review page with data from the review with ID 5, stored in the table bookreviews. The query happens completely on the server; the user does not know the names of the database, table, or fields, nor does the user know the query string. The user only sees that the above URL returns a book review. A hacker can load the URLs https://books.example.com/review?id=5' OR '1'='1 and https://books.example.com/review?id=5' AND '1'='2, which may result in queries
+
+respectively. If the original review loads with the "1=1" URL and a blank or error page is returned from the "1=2" URL, and the returned page has not been created to alert the user the input is invalid, or in other words, has been caught by an input test script, the site is likely vulnerable to an SQL injection attack as the query will likely have passed through successfully in both cases. The hacker may proceed with this query string designed to reveal the version number of MySQL running on the server: https://books.example.com/review?id=5 AND substring(@@version, 1, INSTR(@@version, '.') - 1)=4, which would show the book review on a server running MySQL 4 and a blank or error page otherwise. The hacker can continue to use code within query strings to achieve their goal directly, or to glean more information from the server in hopes of discovering another avenue of attack.
+
+
+Second-order SQL injection
+Second-order SQL injection occurs when an application only guards its SQL against immediate user input, but has a less strict policy when dealing with data already stored in the system. Therefore, although such application would manage to safely process the user input and store it without issue, it would store the malicious SQL statement as well. Then, when another part of that application would use that data in a query that isn't protected from SQL injection, this malicious statement might get executed. This attack requires more knowledge of how submitted values are later used. Automated web application security scanners would not easily detect this type of SQL injection and may need to be manually instructed where to check for evidence that it is being attempted.
+In order to protect from this kind of attack, all SQL processing must be uniformly secure, despite the data source.
+
+
+SQL injection mitigation
+SQL injection is a well-known attack that can be mitigated with established security measures. However, a 2015 cyberattack on British telecommunications company TalkTalk exploited an SQL injection vulnerability, compromising the personal data of approximately 400,000 customers. The BBC reported that security experts expressed surprise that a major company remained vulnerable to such an exploit.
+A variety of defensive measures exist to mitigate SQL injection risks by preventing attackers from injecting malicious SQL code into database queries. Core mitigation strategies, as outlined by OWASP, include parameterized queries, input validation, and least privilege access controls, which limit the ability of user input to alter SQL queries and execute unintended commands. In addition to preventive measures, detection techniques help identify potential SQL injection attempts. Methods such as pattern matching, software testing, and grammar analysis examine query structures and user inputs to detect irregularities that may indicate an injection attempt.
+
+
+Core mitigation
+
+
+Parameterized statements
+
+Most development platforms support parameterized statements, also known as placeholders or bind variables, to securely handle user input instead of embedding it in SQL queries. These placeholders store only values of a defined type, preventing input from altering the query structure. As a result, SQL injection attempts are processed as unexpected input rather than executable code. With parametrized queries, SQL code remains separate from user input, and each parameter is passed as a distinct value, preventing it from being interpreted as part of the SQL statement.
+
+
+Allow-list input validation
+Allow-list input validation ensures that only explicitly defined inputs are accepted, reducing the risk of injection attacks. Unlike deny-lists, which attempt to block known malicious patterns but can be bypassed, allow-lists specify valid input and reject everything else. This approach is particularly effective for structured data, such as dates and email addresses, where strict validation rules can be applied. While input validation alone does not prevent SQL injection and other attacks, it can act as an additional safeguard by identifying and filtering unauthorized input before it reaches an SQL query.
+
+
+Least privilege
+According to OWASP, the principle of least privilege helps mitigate SQL injection risks by ensuring database accounts have only the minimum permissions necessary. Read-only accounts should not have modification privileges, and application accounts should never have administrative access. Restricting database permissions is a key part of this approach, as limiting access to system tables and restricting user roles can reduce the risk of SQL injection attacks. Separating database users for different functions, such as authentication and data modification, further limits potential damage from SQL injection attacks.
+Restricting database permissions on the web application's database login further reduces the impact of SQL injection vulnerabilities. Ensuring that accounts have only the necessary access, such as restricting SELECT permissions on critical system tables, can mitigate potential exploits. 
+On Microsoft SQL Server, limiting SELECT access to system tables can prevent SQL injection attacks that attempt to modify database schema or inject malicious scripts. For example, the following permissions restrict a database user from accessing system objects:
+
+
+Supplementary mitigation
+
+
+Object relational mappers
+Object–relational mapping (ORM) frameworks provide an object-oriented interface for interacting with relational databases. While ORMs typically offer built-in protections against SQL injection, they can still be vulnerable if not properly implemented. Some ORM-generated queries may allow unsanitized input, leading to injection risks. Additionally, many ORMs allow developers to execute raw SQL queries, which if improperly handled can introduce SQL injection vulnerabilities.
+
+
+Deprecated/secondary approaches
+String escaping is generally discouraged as a primary defense against SQL injection. OWASP describes this approach as "frail compared to other defenses" and notes that it may not be effective in all situations. Instead, OWASP recommends using "parameterized queries, stored procedures, or some kind of Object Relational Mapper (ORM) that builds your queries for you" as more reliable methods for mitigating SQL injection risks.
+
+
+String escaping
+One of the traditional ways to prevent injections is to add every piece of data as a quoted string and escape all characters, that have special meaning in SQL strings, in that data. The manual for an SQL DBMS explains which characters have a special meaning, which allows creating a comprehensive blacklist of characters that need translation. For instance, every occurrence of a single quote (') in a string parameter must be prepended with a backslash (\) so that the database understands the single quote is part of a given string, rather than its terminator. PHP's MySQLi module provides the mysqli_real_escape_string() function to escape strings according to MySQL semantics; in the following example the username is a string parameter, and therefore it can be protected by means of string escaping:
+
+Besides, not every piece of data can be added to SQL as a string literal (MySQL's LIMIT clause arguments or table/column names for example) and in this case escaping string-related special characters will do no good whatsoever, leaving resulting SQL open to injections.
+
+
+Examples
+In February 2002, Jeremiah Jacks discovered that Guess.com was vulnerable to an SQL injection attack, permitting anyone able to construct a properly-crafted URL to pull down 200,000+ names, credit card numbers and expiration dates in the site's customer database.
+On November 1, 2005, a teenaged hacker used SQL injection to break into the site of a Taiwanese information security magazine from the Tech Target group and steal customers' information.
+On January 13, 2006, Russian computer criminals broke into a Rhode Island government website and allegedly stole credit card data from individuals who have done business online with state agencies.
+On September 19, 2007 and January 26, 2009 the Turkish hacker group "m0sted" used SQL injection to exploit Microsoft's SQL Server to hack web servers belonging to McAlester Army Ammunition Plant and the US Army Corps of Engineers respectively.
+On April 13, 2008, the Sexual and Violent Offender Registry of Oklahoma shut down its website for "routine maintenance" after being informed that 10,597 Social Security numbers belonging to sex offenders had been downloaded via an SQL injection attack.
+On August 17, 2009, the United States Department of Justice charged an American citizen, Albert Gonzalez, and two unnamed Russians with the theft of 130 million credit card numbers using an SQL injection attack. In reportedly "the biggest case of identity theft in American history", the man stole cards from a number of corporate victims after researching their payment processing systems. Among the companies hit were credit card processor Heartland Payment Systems, convenience store chain 7-Eleven, and supermarket chain Hannaford Brothers.
+In July 2010, a South American security researcher who goes by the handle "Ch Russo" obtained sensitive user information from popular BitTorrent site The Pirate Bay. He gained access to the site's administrative control panel and exploited an SQL injection vulnerability that enabled him to collect user account information, including IP addresses, MD5 password hashes and records of which torrents individual users have uploaded.
+From July 24 to 26, 2010, attackers from Japan and China used an SQL injection to gain access to customers' credit card data from Neo Beat, an Osaka-based company that runs a large online supermarket site. The attack also affected seven business partners including supermarket chains Izumiya Co, Maruetsu Inc, and Ryukyu Jusco Co. The theft of data affected a reported 12,191 customers. As of August 14, 2010 it was reported that there have been more than 300 cases of credit card information being used by third parties to purchase goods and services in China.
+On September 19 during the 2010 Swedish general election a voter attempted a code injection by hand writing SQL commands as part of a write-in vote.
+On November 8, 2010 the British Royal Navy website was compromised by a Romanian hacker named TinKode using SQL injection.
+On April 11, 2011, Barracuda Networks was compromised using an SQL injection flaw. Email addresses and usernames of employees were among the information obtained.
+Over a period of 4 hours on April 27, 2011, an automated SQL injection attack occurred on Broadband Reports website that was able to extract 8% of the username/password pairs: 8,000 random accounts of the 9,000 active and 90,000 old or inactive accounts.
+On June 1, 2011, "hacktivists" of the group LulzSec were accused of using SQL injection to steal coupons, download keys, and passwords that were stored in plaintext on Sony's website, accessing the personal information of a million users.
+In June 2011, PBS was hacked by LulzSec, most likely through use of SQL injection; the full process used by hackers to execute SQL injections was described in this Imperva blog.
+In July 2012 a hacker group was reported to have stolen 450,000 login credentials from Yahoo!. The logins were stored in plain text and were allegedly taken from a Yahoo subdomain, Yahoo! Voices. The group breached Yahoo's security by using a "union-based SQL injection technique".
+On October 1, 2012, a hacker group called "Team GhostShell" published the personal records of students, faculty, employees, and alumni from 53 universities, including Harvard, Princeton, Stanford, Cornell, Johns Hopkins, and the University of Zurich on pastebin.com. The hackers claimed that they were trying to "raise awareness towards the changes made in today's education", bemoaning changing education laws in Europe and increases in tuition in the United States.
+On November 4, 2013, hacktivist group "RaptorSwag" allegedly compromised 71 Chinese government databases using an SQL injection attack on the Chinese Chamber of International Commerce. The leaked data was posted publicly in cooperation with Anonymous.
+In August 2014, Milwaukee-based computer security company Hold Security disclosed that it uncovered a theft of confidential information from nearly 420,000 websites through SQL injections. The New York Times confirmed this finding by hiring a security expert to check the claim.
+In October 2015, an SQL injection attack was used to steal the personal details of 156,959 customers from British telecommunications company TalkTalk's servers, exploiting a vulnerability in a legacy web portal.
+In early 2021, 70 gigabytes of data was exfiltrated from the far-right website Gab through an SQL injection attack. The vulnerability was introduced into the Gab codebase by Fosco Marotto, Gab's CTO. A second attack against Gab was launched the next week using OAuth2 tokens stolen during the first attack.
+In May 2023, a widespread SQL injection attack targeted MOVEit, a widely used file-transfer service. The attacks, attributed to the Russian-speaking cybercrime group Clop, compromised multiple global organizations, including payroll provider Zellis, British Airways, the BBC, and UK retailer Boots. Attackers exploited a critical vulnerability, installing a custom webshell called "LemurLoot" to rapidly access and exfiltrate large volumes of data.
+In 2024, a pair of security researchers discovered an SQL injection vulnerability in the FlyCASS system, used by the Transportation Security Administration (TSA) to verify airline crew members. Exploiting this flaw provided unauthorized administrative access, potentially allowing the addition of false crew records. The TSA stated that its verification procedures did not solely depend on this database.
+
+
+In popular culture
+A 2007 xkcd cartoon involved a character Robert'); DROP TABLE Students;-- named to carry out an SQL injection. As a result of this cartoon, SQL injection is sometimes informally referred to as "Bobby Tables".
+Unauthorized login to websites by means of SQL injection forms the basis of one of the subplots in J.K. Rowling's 2012 novel The Casual Vacancy.
+In 2014, an individual in Poland legally renamed his business to Dariusz Jakubowski x'; DROP TABLE users; SELECT '1 in an attempt to disrupt operation of spammers' harvesting bots.
+The 2015 game Hacknet has a hacking program called SQL_MemCorrupt. It is described as injecting a table entry that causes a corruption error in an SQL database, then queries said table, causing an SQL database crash and core dump.
+
+
+See also
+Code injection
+Cross-site scripting
+Metasploit Project
+OWASP Open Web Application Security Project
+Prompt injection, a similar concept applied to artificial intelligence
+SGML entity
+Uncontrolled format string
+w3af
+Web application security
+
+
+References
+
+
+External links
+OWASP SQL Injection Cheat Sheets, by OWASP.
+WASC Threat Classification - SQL Injection Entry, by the Web Application Security Consortium.
+Why SQL Injection Won't Go Away Archived November 9, 2012, at the Wayback Machine, by Stuart Thomas.
+SDL Quick security references on SQL injection by Bala Neerumalla.
+How security flaws work: SQL injection

@@ -1,0 +1,52 @@
+Network security is an umbrella term to describe security controls, policies, processes and practices adopted to prevent, detect and monitor unauthorized access, misuse, modification, or denial of a computer network and network-accessible resources. Network security involves the authorization of access to data in a network, which is controlled by the network administrator. Users choose or are assigned an ID and password or other authenticating information that allows them access to information and programs within their authority. Network security covers a variety of computer networks, both public and private, that are used in everyday jobs: conducting transactions and communications among businesses, government agencies and individuals. Networks can be private, such as within a company, and others which might be open to public access. Network security is involved in organizations, enterprises, and other types of institutions. It does as its title explains: it secures the network, as well as protecting and overseeing operations being done. The most common and simple way of protecting a network resource is by assigning it a unique name and a corresponding password.
+
+
+Network security concept
+Network security starts with authentication, commonly with a username and a password. Since this requires just one detail authenticating the user name—i.e., the password—this is sometimes termed one-factor authentication. With two-factor authentication, something the user 'has' is also used (e.g., a security token or 'dongle', an ATM card, or a mobile phone); and with three-factor authentication, something the user 'is' is also used (e.g., a fingerprint or retinal scan).
+Once authenticated, a firewall enforces access policies such as what services are allowed to be accessed by the network users. Though effective to prevent unauthorized access, this component may fail to check potentially harmful content such as computer worms or Trojans being transmitted over the network. Anti-virus software or an intrusion prevention system (IPS) help detect and inhibit the action of such malware. An anomaly-based intrusion detection system may also monitor the network like wireshark traffic and may be logged for audit purposes and for later high-level analysis. Newer systems combining unsupervised machine learning with full network traffic analysis can detect active network attackers from malicious insiders or targeted external attackers that have compromised a user machine or account.
+Communication between two hosts using a network may be encrypted to maintain security and privacy.
+Honeypots, essentially decoy network-accessible resources, may be deployed in a network as surveillance and early-warning tools, as the honeypots are not normally accessed for legitimate purposes. Honeypots are placed at a point in the network where they appear vulnerable and undefended, but they are actually isolated and monitored. Techniques used by the attackers that attempt to compromise these decoy resources are studied during and after an attack to keep an eye on new exploitation techniques. Such analysis may be used to further tighten security of the actual network being protected by the honeypot. A honeypot can also direct an attacker's attention away from legitimate servers. A honeypot encourages attackers to spend their time and energy on the decoy server while distracting their attention from the data on the real server. Similar to a honeypot, a honeynet is a network set up with intentional vulnerabilities. Its purpose is also to invite attacks so that the attacker's methods can be studied and that information can be used to increase network security. A honeynet typically contains one or more honeypots.
+Previous research on network security was mostly about using tools to secure transactions and information flow, and how well users knew about and used these tools. However, more recently, the discussion has expanded to consider information security in the broader context of the digital economy and society. This is indicative of network security topics covering not just individual users and tools, but also conversations about the larger culture of information security in our digital world.
+
+
+Security management
+Security management for networks is different for all kinds of situations. A home or small office may only require basic security while large businesses may require high-maintenance and advanced software and hardware to prevent malicious attacks from hacking and spamming. In order to minimize susceptibility to malicious attacks from external threats to the network, corporations often employ tools which carry out network security verifications. These tools can also mitigate and detect internal human behavior such as insider threats and email storms. The human element is often the weakest link in any network security system, as evidenced by a study in 2014 which found that employees often do not see themselves as part of their organization's information security effort and often take actions that impede organizational changes.
+
+
+Types of attack
+Networks are subject to attacks from malicious sources. Attacks can be from one of two categories: passive and active.
+A passive attack occurs when a malicious actor intercepts data traveling across a network, usually without generating any kind of alerts. It can be difficult or impossible to know if this kind of attack has occurred. For example, a wardriving attack can wirelessly detect the four-way handshake between an access point and a client, and crack the password offline without the owner of the access point ever knowing.
+An active attack occurs when a malicious actor initiates commands targeting the network or network resources. This is generally meant to disrupt the network's normal operation, conduct reconnaissance, or attempt lateral movements to find and gain access to assets available via the network.
+Types of attacks include:
+
+Passive
+Network
+Wiretapping – Third-party monitoring of electronic communicationsPages displaying short descriptions of redirect targets
+Passive Port scanner – Application designed to probe for open ports
+Idle scan – Method of attacking a remote computer
+Encryption – Process of converting plaintext to ciphertext
+Traffic analysis – Process of intercepting and examining messages
+Active:
+Network virus (router viruses)
+Eavesdropping – Act of secretly listening to the private conversation of others
+Data modification
+
+
+See also
+
+
+References
+
+
+Further reading
+Case Study: Network Clarity Archived 2016-05-27 at the Wayback Machine, SC Magazine 2014
+Cisco. (2011). What is network security?. Retrieved from cisco.com Archived 2016-04-14 at the Wayback Machine
+Security of the Internet Archived 1998-04-15 at the Wayback Machine (The Froehlich/Kent Encyclopedia of Telecommunications vol. 15. Marcel Dekker, New York, 1997, pp. 231–255.)
+Introduction to Network Security Archived 2014-12-02 at the Wayback Machine, Matt Curtin, 1997.
+Security Monitoring with Cisco Security MARS, Gary Halleen/Greg Kellogg, Cisco Press, Jul. 6, 2007. ISBN 1587052709
+Self-Defending Networks: The Next Generation of Network Security, Duane DeCapite, Cisco Press, Sep. 8, 2006. ISBN 1587052539
+Security Threat Mitigation and Response: Understanding CS-MARS, Dale Tesch/Greg Abelar, Cisco Press, Sep. 26, 2006. ISBN 1587052601
+Securing Your Business with Cisco ASA and PIX Firewalls, Greg Abelar, Cisco Press, May 27, 2005. ISBN 1587052148
+Deploying Zone-Based Firewalls, Ivan Pepelnjak, Cisco Press, Oct. 5, 2006. ISBN 1587053101
+Network Security: PRIVATE Communication in a PUBLIC World, Charlie Kaufman | Radia Perlman | Mike Speciner, Prentice-Hall, 2002.  ISBN 9780137155880
+Network Infrastructure Security, Angus Wong and Alan Yeung, Springer, 2009. ISBN 978-1-4419-0165-1

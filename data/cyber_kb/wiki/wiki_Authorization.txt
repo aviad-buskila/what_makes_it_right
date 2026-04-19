@@ -1,0 +1,38 @@
+Authorization or authorisation (see spelling differences), in information security, computer security and IAM (Identity and Access Management), is the function of specifying rights/privileges for accessing resources, in most cases through an access policy, and then deciding whether a particular subject has privilege to access a particular resource. Examples of subjects include human users, computer software and other hardware on the computer. Examples of resources include individual files or an item's data, computer programs, computer devices and functionality provided by computer applications. For example, user accounts for human resources staff are typically configured with authorization for accessing employee records.
+Authorization is closely related to access control, which is what enforces the authorization policy by deciding whether access requests to resources from (authenticated) consumers shall be approved (granted) or disapproved (rejected). 
+Authorization should not be confused with authentication, which is the process of verifying someone's identity.
+
+
+Overview
+IAM consists the following two phases: the configuration phase where a user account is created and its corresponding access authorization policy is defined, and the usage phase where user authentication takes place followed by access control to ensure that the user/consumer only gets access to resources for which they are authorized. Hence, access control in computer systems and networks relies on access authorization specified during configuration.  
+Authorization is the responsibility of an authority, such as a department manager, within the application domain, but is often delegated to a custodian such as a system administrator. Authorizations are expressed as access policies in some types of "policy definition application", e.g. in the form of an access control list or a capability, or a policy administration point e.g. XACML. 
+Broken authorization is often listed as the number one risk in web applications. On the basis of the "principle of least privilege", consumers should only be authorized to access whatever they need to do their jobs, and nothing more.
+"Anonymous consumers" or "guests", are consumers that have not been required to authenticate. They often have limited authorization. On a distributed system, it is often desirable to grant access without requiring a unique identity. Familiar examples of access tokens include keys, certificates and tickets: they grant access without proving identity.
+
+
+Implementation
+A widely used framework for authorizing applications is OAuth 2. It provides a standardized way for third-party applications to obtain limited access to a user's resources without exposing their credentials.
+In modern systems, a widely used model for authorization is role-based access control (RBAC) where authorization is defined by granting subjects one or more roles, and then checking that the resource being accessed has been assigned at least one of those roles. However, with the rise of social media, Relationship-based access control is gaining more prominence.
+Even when access is controlled through a combination of authentication and access control lists, the problems of maintaining the authorization data is not trivial, and often represents as much administrative burden as managing authentication credentials. It is often necessary to change or remove a user's authorization: this is done by changing or deleting the corresponding access rules on the system. Using atomic authorization is an alternative to per-system authorization management, where a trusted third party securely distributes authorization information.
+
+
+Related interpretations
+
+
+Public policy
+In public policy, authorization is a feature of trusted systems used for security or social control.
+
+
+Banking
+In banking, an authorization is a hold placed on a customer's account when a purchase is made using a debit card or credit card.
+
+
+Publishing
+
+In publishing, sometimes public lectures and other freely available texts are published without the approval of the author. These are called unauthorized texts. An example is the 2002  'The Theory of Everything: The Origin and Fate of the Universe' , which was collected from Stephen Hawking's lectures and published without his permission as per copyright law.
+
+
+See also
+
+
+References

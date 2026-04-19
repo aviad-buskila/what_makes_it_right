@@ -1,0 +1,98 @@
+In cryptography and computer security, a man-in-the-middle (MITM) attack, or on-path attack, is a cyberattack where the attacker secretly relays and possibly alters the communications between two parties who believe that they are directly communicating with each other, where in actuality the attacker has inserted themselves between the two user parties.
+One example of a MITM attack is active eavesdropping, in which the attacker makes independent connections with the victims and relays messages between them to make them believe they are talking directly to each other over a private connection, when in fact the entire conversation is controlled by the attacker. In this scenario, the attacker must be able to intercept all relevant messages passing between the two victims and inject new ones. This is straightforward in many circumstances; for example, an attacker within range of a Wi-Fi access point hosting a network without encryption could insert themselves as a man in the middle.
+As it aims to circumvent mutual authentication, a MITM attack can succeed only when the attacker impersonates each endpoint sufficiently well to satisfy their expectations. Most cryptographic protocols include some form of endpoint authentication specifically to prevent MITM attacks. For example, TLS can authenticate one or both parties using a mutually trusted certificate authority.
+
+
+Example
+
+Suppose Alice wishes to communicate with Bob. Meanwhile, Mallory wishes to intercept the conversation to eavesdrop (breaking confidentiality) with the option to deliver a false message to Bob under the guise of Alice (breaking non-repudiation). Mallory would perform a man-in-the-middle attack as described in the following sequence of events.
+
+Alice sends a message to Bob, which is intercepted by Mallory:
+Alice "Hi Bob, it's Alice. Give me your key." →     Mallory     Bob
+Mallory relays this message to Bob; Bob cannot tell it is not really from Alice:
+Alice     Mallory "Hi Bob, it's Alice. Give me your key." →     Bob
+Bob responds with his encryption key:
+Alice     Mallory     ← [Bob's key] Bob
+Mallory replaces Bob's key with her own, and relays this to Alice, claiming that it is Bob's key:
+Alice     ← [Mallory's key] Mallory     Bob
+Alice encrypts a message with what she believes to be Bob's key, thinking that only Bob can read it:
+Alice "Meet me at the bus stop!" [encrypted with Mallory's key] →     Mallory     Bob
+However, because it was actually encrypted with Mallory's key, Mallory can decrypt it, read it, modify it (if desired), re-encrypt with Bob's key, and forward it to Bob:
+Alice     Mallory "Meet me at the park!" [encrypted with Bob's key] →     Bob
+Bob thinks that this message is a secure communication from Alice.
+This example shows the need for Alice and Bob to have a means to ensure that they are truly each using each other's public keys, and not the public key of an attacker. Otherwise, such attacks are generally possible, in principle, against any message sent using public-key technology.
+
+
+Types of MITM
+There are several attack types that can fall into the category of MITM. The most notable are:
+
+HTTPS Spoofing: The attacker tricks the victim into believing their connection is secure by substituting a fake SSL/TLS certificate.
+SSL/TLS Stripping: Downgrades HTTPS traffic to HTTP, intercepting and reading unencrypted data.
+ARP Spoofing: Sends fake ARP messages to associate the attacker’s MAC address with a target IP, intercepting local network traffic.
+DNS Spoofing/Poisoning: Redirects DNS queries to malicious servers, leading victims to fake websites.
+Session Hijacking: Steals session cookies or tokens to impersonate a legitimate user in an active session.
+Man-in-the-Browser (MITB): Malware alters browser activity, intercepting or manipulating transactions in real-time.
+Wi-Fi MITM (Evil Twin Attack): Creates a fake Wi-Fi hotspot to intercept communications from connected devices.
+Email Hijacking: Intercepts email exchanges to manipulate or steal sensitive information.
+Replay Attacks: Captures and retransmits valid data to repeat actions or disrupt communication.
+Fake Certificate Authority (CA): Uses a fraudulent CA to sign fake certificates, tricking victims into trusting malicious connections.
+
+
+Defense and detection
+MITM attacks can be prevented or detected by two means: authentication and tamper detection. Authentication provides some degree of certainty that a given message has come from a legitimate source. Tamper detection merely shows evidence that a message may have been altered and has broken integrity.
+
+
+Authentication
+All cryptographic systems that are secure against MITM attacks provide some method of authentication for messages. Most require an exchange of information (such as public keys) in addition to the message over a secure channel. Such protocols, often using key-agreement protocols, have been developed with different security requirements for the secure channel, though some have attempted to remove the requirement for any secure channel at all.
+A public key infrastructure, such as Transport Layer Security, may harden Transmission Control Protocol against MITM attacks. In such structures, clients and servers exchange certificates which are issued and verified by a trusted third party called a certificate authority (CA). If the original key to authenticate this CA has not been itself the subject of a MITM attack, then the certificates issued by the CA may be used to authenticate the messages sent by the owner of that certificate. Use of mutual authentication, in which both the server and the client validate the other's communication, covers both ends of a MITM attack. If the server or client's identity is not verified or deemed as invalid, the session will end. However, the default behavior of most connections is to only authenticate the server, which means mutual authentication is not always employed and MITM attacks can still occur.
+Attestments, such as verbal communications of a shared value (as in ZRTP), or recorded attestments such as audio/visual recordings of a public key hash are used to ward off MITM attacks, as visual media is much more difficult and time-consuming to imitate than simple data packet communication. However, these methods require a human in the loop in order to successfully initiate the transaction.
+HTTP Public Key Pinning (HPKP), sometimes called "certificate pinning", helps prevent a MITM attack in which the certificate authority itself is compromised, by having the server provide a list of "pinned" public key hashes during the first transaction. Subsequent transactions then require one or more of the keys in the list must be used by the server in order to authenticate that transaction.
+DNSSEC extends the DNS protocol to use signatures to authenticate DNS records, preventing simple MITM attacks from directing a client to a malicious IP address.
+
+
+Tamper detection
+Latency examination can potentially detect the attack in certain situations, such as with long calculations that lead into tens of seconds like hash functions. To detect potential attacks, parties check for discrepancies in response times. For example: Say that two parties normally take a certain amount of time to perform a particular transaction. If one transaction, however, were to take an abnormal length of time to reach the other party, this could be indicative of a third party's presence interfering with the connection and inserting additional latency in the transaction.
+Quantum cryptography, in theory, provides tamper-evidence for transactions through the no-cloning theorem. Protocols based on quantum cryptography typically authenticate part or all of their classical communication with an unconditionally secure authentication scheme. As an example Wegman-Carter authentication.
+
+
+Forensic analysis
+Captured network traffic from what is suspected to be an attack can be analyzed in order to determine whether there was an attack and, if so, determine the source of the attack. Important evidence to analyze when performing network forensics on a suspected attack includes:
+
+IP address of the server
+DNS name of the server
+X.509 certificate of the server
+Whether the certificate has been self signed
+Whether the  certificate has been signed by a trusted certificate authority
+Whether the certificate has been revoked
+Whether the certificate has been changed recently
+Whether other clients, elsewhere on the Internet, received the same certificate
+
+
+Notable instances
+A Stingray phone tracker is a cellular phone surveillance device that mimics a wireless carrier cell tower in order to force all nearby mobile phones and other cellular data devices to connect to it. The tracker relays all communications back and forth between cellular phones and cell towers.
+In 2011, a security breach of the Dutch certificate authority DigiNotar resulted in the fraudulent issuing of certificates. Subsequently, the fraudulent certificates were used to perform MITM attacks.
+In 2013, Nokia's Xpress Browser was revealed to be decrypting HTTPS traffic on Nokia's proxy servers, giving the company clear text access to its customers' encrypted browser traffic. Nokia responded by saying that the content was not stored permanently, and that the company had organizational and technical measures to prevent access to private information.
+In 2017, Equifax withdrew its mobile phone apps following concern about MITM vulnerabilities.
+Bluetooth, a wireless communication protocol, has also been susceptible to man-in-the-middle attacks due to its wireless transmission of data.
+Other notable real-life implementations include the following:
+
+DSniff –  the first public implementation of MITM attacks against SSL and SSHv1
+Fiddler2 HTTP(S) diagnostic tool
+NSA impersonation of Google
+Superfish malware
+Forcepoint Content Gateway –  used to perform inspection of SSL traffic at the proxy
+Comcast uses MITM attacks to inject JavaScript code to 3rd party web pages, showing their own ads and messages on top of the pages
+2015 Kazakhstan man-in-the-middle attack
+
+
+See also
+
+
+Notes
+
+
+References
+
+
+External links
+Finding Hidden Threats by Decrypting SSL Archived October 18, 2017, at the Wayback Machine (PDF). SANS Institute.

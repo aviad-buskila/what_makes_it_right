@@ -1,0 +1,66 @@
+Threat modeling is a process by which potential threats, such as structural vulnerabilities or the absence of appropriate safeguards, can be identified and enumerated, and countermeasures prioritized. The purpose of threat modeling is to provide defenders with a systematic analysis of what controls or defenses need to be included, given the nature of the system, the probable attacker's profile, the most likely attack vectors, and the assets most desired by an attacker. Threat modeling answers questions like "Where am I most vulnerable to attack?", "What are the most relevant threats?", and "What do I need to do to safeguard against these threats?".
+Conceptually, most people incorporate some form of threat modeling in their daily life and don't even realize it. Commuters use threat modeling to consider what might go wrong during the morning journey to work and to take preemptive action to avoid possible accidents. Children engage in threat modeling when determining the best path toward an intended goal while avoiding the playground bully. In a more formal sense, threat modeling has been used to prioritize military defensive preparations since antiquity.
+
+
+Evolution of technology-centric threat modeling
+Shortly after shared computing made its debut in the early 1960s, individuals began seeking ways to exploit security vulnerabilities for personal gain. As a result, engineers and computer scientists soon began developing threat modeling concepts for information technology systems.
+Early technology-centered threat modeling methodologies were based on the concept of architectural patterns first presented by Christopher Alexander in 1977. In 1988 Robert Barnard developed and successfully applied the first profile for an IT-system attacker.
+In 1994, Edward Amoroso put forth the concept of a "threat tree" in his book, "Fundamentals of Computer Security Technology." The concept of a threat tree was based on decision tree diagrams. Threat trees graphically represent how a potential threat to an IT system can be exploited.
+Independently, similar work was conducted by the NSA and DARPA on a structured graphical representation of how specific attacks against IT-systems could be executed. The resulting representation was called "attack trees." In 1998 Bruce Schneier published his analysis of cyber risks utilizing attack trees in his paper entitled "Toward a Secure System Engineering Methodology". The paper proved to be a seminal contribution in the evolution of threat modeling for IT-systems. In Schneier's analysis, the attacker's goal is represented as a "root node," with the potential means of reaching the goal represented as "leaf nodes." Utilizing the attack tree in this way allowed cybersecurity professionals to systematically consider multiple attack vectors against any defined target.
+In 1999, Microsoft cybersecurity professionals Loren Kohnfelder and Praerit Garg developed a model for considering attacks relevant to the Microsoft Windows development environment.  (STRIDE is an acrostic for: Spoofing identity, Tampering with data, Repudiation, Information disclosure, Denial of service, Elevation of privilege) The resultant mnemonic helps security professionals systematically determine how a potential attacker could utilize any threat included in STRIDE.
+In 2003, OCTAVE (Operationally Critical Threat, Asset, and Vulnerability Evaluation) method, an operations-centric threat modeling methodology, was introduced with a focus on organizational risk management.
+In 2004, Frank Swiderski and Window Snyder wrote "Threat Modeling," published by Microsoft Press. In it they developed the concept of using threat models to create secure applications.
+In 2014, Ryan Stillions expressed the idea that cyber threats should be expressed with different semantic levels, and proposed the DML (Detection Maturity Level) model. An attack is an instantiation of a threat scenario which is caused by a specific attacker with a specific goal in mind and a strategy for reaching that goal. The goal and strategy represent the highest semantic levels of the DML model. This is followed by the TTP (Tactics, Techniques and Procedures) which represent intermediate semantic levels. The lowest semantic levels of the DML model are the tools used by the attacker, host and observed network artifacts such as packets and payloads, and finally atomic indicators such as IP addresses at the lowest semantic level. Current SIEM (Security Information and Event Management) tools typically only provide indicators at the lowest semantic levels. There is therefore a need to develop SIEM tools that can provide threat indicators at higher semantic levels.
+
+
+Threat Modeling Manifesto
+The threat modeling manifesto is a document published in 2020 by threat modeling authorities in order to clearly state the core values and principles that every threat modeler should know and follow.
+In 2024 the same group of authors followed up the Manifesto with a Threat Modeling Capabilities document, which "...provides a catalog of capabilities to help you cultivate value from your Threat Modeling practice".
+
+
+Threat modeling frameworks
+Conceptually, a threat modeling practice flows from a methodology. Numerous threat modeling methodologies are available for implementation. Typically, threat modeling has been implemented using one of five approaches independently: asset-centric, attacker-centric, software-centric, value and stakeholder-centric, and hybrid. Based on the volume of published online content, the methodologies discussed below are the most well known.
+
+
+STRIDE
+The STRIDE was created in 1999 at Microsoft as a mnemonic for developers to find 'threats to our products'. STRIDE can be used as a simple prompt or checklist, or in more structured approaches such as STRIDE per element.  STRIDE, Patterns and Practices, and Asset/entry point were amongst the threat modeling approaches developed and published by Microsoft.   References to "the" Microsoft methodology commonly mean STRIDE and Data Flow Diagrams.
+
+
+PASTA
+The Process for Attack Simulation and Threat Analysis (PASTA) is a seven-step, risk-centric methodology. It provides a seven-step process for aligning business objectives and technical requirements, taking into account compliance issues and business analysis. The intent of the method is to provide a dynamic threat identification, enumeration, and scoring process. Once the threat model is completed, security subject matter experts develop a detailed analysis of the identified threats. Finally, appropriate security controls can be enumerated. This methodology is intended to provide an attacker-centric view of the application and infrastructure from which defenders can develop an asset-centric mitigation strategy.
+
+
+'The Hybrid' Threat Modeling Method
+Researchers created this method to combine the positive elements of different methodologies. This methodology combines different methodologies, including SQUARE and the Security Cards and Personae Non Gratae.
+
+
+Generally accepted technology threat modeling processes
+All IT-related threat modeling processes start with creating a visual representation of the application, infrastructure or both being analyzed. The application or infrastructure is decomposed into various elements to aid in the analysis. Once completed, the visual representation is used to identify and enumerate potential threats. Further analysis of the model regarding risks associated with identified threats, prioritization of threats, and enumeration of the appropriate mitigating controls depends on the methodological basis for the threat model process being utilized. Threat modeling approaches can focus on the system in use, attackers, or assets. 
+
+
+Visual representations based on data flow diagrams
+
+Most threat modeling approaches use data flow diagrams (DFD). DFDs were developed in the 1970s as tool for system engineers to communicate, on a high level, how an application caused data to flow, be stored, and manipulated by the infrastructure upon which the application runs. Traditionally, DFDs utilize only four unique symbols: data flows, data stores, processes, and interactors. In the early 2000s, an additional symbol, trust boundaries, were added to improve the usefulness of DFDs for threat modeling.
+Once the application-infrastructure system is decomposed into its five elements, security experts consider each identified threat entry point against all known threat categories. Once the potential threats are identified, mitigating security controls can be enumerated or additional analysis can be performed.
+
+
+Threat modeling tools
+Microsoft's free Threat Modeling Tool (formerly SDL Threat Modeling Tool), also uses the Microsoft threat modeling methodology, is based on DFD and identifies threats based on the STRIDE threat classification system. It is mainly intended for general use.
+IriusRisk provides both a community and a commercial version of the tool. This tool focuses on creating and maintaining a living threat model throughout the SDLC. It drives the process using fully customizable questionnaires and risk model libraries, and connects to several other different tools (OWASP ZAP, BDD-Security, Threadfix) to enable automation.
+securiCAD is a threat modeling and risk management tool from the Scandinavian company foreseeti. It is intended for enterprise cybersecurity management, from CISO to security engineer, including technician. securiCAD performs automated attack simulations on current and future IT architectures, identifies and quantifies risks globally, including structural vulnerabilities, and provides decision support based on results. securiCAD is available in commercial and community editions.
+SD Elements by Security Compass is a software security requirements management platform that includes automated threat modeling capabilities. A set of threats is generated by filling out a short questionnaire on the application's technical details and compliance factors. Countermeasures are included in the form of actionable tasks for developers that can be tracked and managed across the SDLC.
+OWASP Threat Dragon is a modeling tool used to create threat model diagrams as part of a secure development lifecycle. Threat Dragon follows the values and principles of the threat modeling manifesto. It can be used to record possible threats and decide on their mitigations, as well as giving a visual indication of the threat model components and threat surfaces. Threat Dragon runs either as a web application or as a desktop application. Threat Dragon supports STRIDE / LINDDUN / CIA / DIE / PLOT4ai, provides modeling diagrams and implements a rule engine to auto-generate threats and their mitigations.
+OWASP pytm is a Pythonic framework for threat modeling and the first Threat-Model-as-Code tool: The system is first defined in Python using the elements and properties described in the pytm framework. Based on this definition, pytm can generate a Data Flow Diagram (DFD), a Sequence Diagram and most important of all, threats to the system.
+
+
+Further fields of application
+Threat modeling is being applied not only to IT but also to other areas such as vehicle, building and home automation. In this context, threats to security and privacy like information about the inhabitant's movement profiles, working times, and health situations are modeled as well as physical or network-based attacks. The latter could make use of more and more available smart building features, i.e., sensors (e.g., to spy on the inhabitant) and actuators (e.g., to unlock doors).
+
+
+Regulatory applications
+Threat modeling is increasingly referenced in regulatory frameworks as a component of required risk analysis processes.
+The Health Insurance Portability and Accountability Act (HIPAA) Security Rule requires covered entities and business associates to conduct an accurate and thorough assessment of the potential risks and vulnerabilities to the confidentiality, integrity, and availability of electronic protected health information (45 CFR 164.308(a)(1)(ii)(A)). The December 2024 Notice of proposed rulemaking (NPRM) to overhaul the HIPAA Security Rule would make this requirement more prescriptive by mandating that regulated entities identify reasonably anticipated threats to ePHI through a documented process that considers threat sources, threat events, and predisposing conditions specific to their environment, closely aligning the requirement with formal threat modeling methodologies.
+The National Institute of Standards and Technology (NIST) SP 800-53 includes the RA-3 (Risk Assessment) control, which requires organizations to identify threats to and vulnerabilities of organizational information systems, a process that maps directly to threat modeling activities. The NIST Cybersecurity Framework 2.0 similarly incorporates threat identification and analysis within its "Identify" function.
+
+
+References

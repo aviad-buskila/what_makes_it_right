@@ -1,7 +1,8 @@
 experiment:
-  name: "cyber_mcq_comparison_3_100_exp"
-  repetitions: 3
-  max_questions: 100       # null = full split; pilot with 100
+  # name: "cyber_mcq_comparison_1_10_0.5_test"
+  name: "a"
+  repetitions: 1
+  max_questions: 30     # null = full split; pilot with 100
   random_seed: 42
   temperature: 0.2
   timeout_per_query: 30
@@ -21,19 +22,19 @@ models:
   - name: "foundation-sec-8b"
     ollama_id: "hf.co/fdtn-ai/Foundation-Sec-8B-Q4_K_M-GGUF:Q4_K_M"
     category: "small_domain"
-  - name: "qwen2.5-7b"
-    ollama_id: "qwen2.5:7b"
-    category: "small_general"
+  # - name: "qwen2.5-7b"
+  #   ollama_id: "qwen2.5:7b"
+  #   category: "small_general"
 
 rag:
-  top_k: 5
+  top_k: 1
   chunk_size: 512
   chunk_overlap: 50
   embedding_model: "nomic-embed-text"
   collection_name: "cyber_kb"
-  max_distance: 0.30
+  max_distance: 0.3
   corpus_source: "cybersecurity"
-  corpus_include: ["attack", "cwe", "nist", "owasp"]
+  corpus_include: ["attack", "cwe", "nist", "owasp", "nist63b", "wiki"]
   persist_dir: "data/chroma_cyber"
 
 storage:

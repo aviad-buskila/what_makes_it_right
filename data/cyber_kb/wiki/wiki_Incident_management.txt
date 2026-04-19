@@ -1,0 +1,89 @@
+An incident is an event that could lead to loss of, or disruption to, an organization's operations, services, or functions. Incident management (IcM) refers to the activities an organization undertakes to identify, analyze, and correct hazards to prevent future recurrence. These incidents within a structured organization are normally dealt with by either an incident response team (IRT), an incident management team (IMT), or Incident Command System (ICS). Without effective incident management, an incident can disrupt business operations, information security, IT systems, employees, customers, or other vital business functions.
+
+
+Description
+An incident is an event that may lead to the loss of, or disruption to, an organization's operations, services or functions. Incident management (IcM) is a term describing the activities of an organization to identify, analyze, and correct hazards to prevent a future re-occurrence. If not managed, an incident can escalate into an emergency, crisis or disaster. Incident management is therefore the process of limiting the potential disruption caused by such an event, followed by a return to business as usual. Without effective incident management, an incident can disrupt business operations, information security, IT systems, employees, customers, or other vital business functions.
+
+
+Physical incident management
+National Fire Protection Association states that incident management can be described as, '[a]n IMS [incident management system] is "the combination of facilities, equipment, personnel, procedures and communications operating within a common organizational structure, designed to aid in the management of resources during incidents".
+Physical incident management is the real-time response that may last for hours, days, or longer. The United Kingdom Cabinet Office has produced the National Recovery Guidance (NRG), which is aimed at local responders as part of the implementation of the Civil Contingencies Act 2004 (CCA). It describes the response as the following: "Response encompasses the actions taken to deal with the immediate effects of an emergency. In many scenarios, it is likely to be relatively short and to last for a matter of hours or days – rapid implementation of arrangements for collaboration, coordination and communication is, therefore, vital. Response encompasses the effort to deal not only with the direct effects of the emergency itself (eg fighting fires, rescuing individuals) but also the indirect effects (eg disruption, media interest)".
+International Organization for Standardization (ISO), which is the world's largest developer of international standards also makes a point in the description of its risk management, principles and guidelines document ISO 31000:2009 that, "Using ISO 31000 can help organizations increase the likelihood of achieving objectives, improve the identification of opportunities and threats and effectively allocate and use resources for risk treatment". This again shows the importance of not just good planning but the effective allocation of resources to treat the risk.
+
+
+Incident management in critical infrastructure
+Incident management in critical infrastructure environments involves coordinated response activities designed to protect essential services whose disruption may impact public safety, economic stability, or national security. Unlike incident management in purely informational or corporate IT contexts, critical infrastructure incidents often involve operational technology, physical processes, safety systems, and regulatory obligations.
+Critical infrastructure incident management typically emphasizes early detection, structured escalation, cross-functional coordination, and continuity of operations. Incidents may originate from cyber events, physical failures, human error, natural hazards, or combined (hybrid) causes, requiring integrated response across engineering, operations, security, executive leadership, and external authorities.
+Because infrastructure sectors are highly interdependent, incident management approaches in these environments often account for cascading effects across energy, communications, transportation, healthcare, and other essential services. As a result, planning and response activities commonly incorporate predefined roles, decision authorities, communication protocols, and recovery objectives aligned with safety and resilience requirements.
+
+
+Computer security incident management
+
+Today, an important role is played by a Computer Security Incident Response Team (CSIRT), due to the rise of internet crime, and is a common example of an incident faced by companies in developed nations all across the world. For example, if an organization discovers that an intruder has gained unauthorized access to a computer system, the CSIRT would analyze the situation, determine the breadth of the compromise, and take corrective action.
+Currently, over half of the world's hacking attempts on Trans National Corporations (TNCs) have taken place in North America (57%). 23% of attempts take place in Europe. Having a well-rounded Computer Security Incident Response team is important to provide a secure environment for any organization, and has become a critical part of the overall design for many modern networking teams.
+
+
+Roles
+Incidents within a structured organization are normally dealt with by either an incident response team (IRT), or an incident management team (IMT). These are often designated beforehand or during the event and are placed in control of the organization while the incident is being addressed, to restore normal functions. The incident commander manages the response to a security incident and leads the members of the incident response team(s) through the process, as defined by the Incident Command System (ICS).
+Usually, as part of the wider management process in private organizations, incident management is followed by post-incident analysis where it is determined why the incident happened despite precautions and controls. This analysis is normally overseen by the leaders of the organization, with the view of preventing a repetition of the incident through precautionary measures and often changes in policy. This information is then used as feedback to further develop the security policy and/or its practical implementation. In the United States, the National Incident Management System, developed by the Department of Homeland Security, integrates effective practices in emergency management into a comprehensive national framework. This often results in a higher level of contingency planning, exercise and training, as well as an evaluation of the management of the incident.
+
+
+Frameworks and lifecycle approaches
+Incident management frameworks for critical infrastructure commonly follow a lifecycle-based approach that includes incident detection, classification, response coordination, containment, recovery, and post-incident review. These frameworks are designed to support timely decision-making while balancing safety, operational continuity, and regulatory compliance.
+In critical infrastructure contexts, such frameworks often integrate elements from emergency management systems, cybersecurity incident response practices, and operational risk management models. The goal is to enable organizations to respond effectively under high-consequence conditions while maintaining control over complex technical and organizational dependencies.
+Practitioner-oriented literature provides detailed guidance on applying lifecycle-based incident management frameworks within industrial and critical infrastructure environments, including considerations for operational technology, safety, and cross-sector coordination.
+
+
+Root cause analysis
+
+
+Human factors
+
+During the root cause analysis, human factors should be assessed. James Reason conducted a study into the understanding of adverse effects of human factors. The study found that major incident investigations, such as Piper Alpha and Kings Cross Underground Fire, made it clear that the causes of the accidents were distributed widely within and outside the organization. There are two types of events: active failure—an action that has immediate effects and has the likelihood to cause an accident—and latent or delayed action—events can take years to have an effect and are usually combined with triggering events that then cause the accident.
+Latent failures are created as the result of decisions taken at the higher echelons of an organisation. Their damaging consequences may lie dormant for a long time, only becoming evident when they combine with local triggering factors (e.g., the spring tide, the loading difficulties at Zeebrugge harbour, etc.) to breach the system's defences. Decisions taken in the higher echelons of an organization can trigger the events towards an accident becoming more likely, the planning, scheduling, forecasting, designing, policymaking, etc., can have a slow burning effect. The actual unsafe act that triggers an accident can be traced back through the organization and the subsequent failures can be exposed, showing the accumulation of latent failures within the system as a whole that led to the accident becoming more likely and ultimately happening. Better improvement action can be applied, and reduce the likelihood of the event happening again.
+
+
+Field-specific implementation
+
+
+IT service management
+Incident management is an important part of IT service management (ITSM) process area. The first goal of the incident management process is to restore a normal service operation as quickly as possible and to minimize the impact on business operations, thus ensuring that the best possible levels of service quality and availability are maintained. 'Normal service operation' is defined here as service operation within service-level agreement (SLA). It is one process area within the broader ITIL and ISO 20000 environment.
+ISO 20000 defines the objective of Incident management (part 1, 8.2) as: To restore agreed service to the business as soon as possible or to respond to service requests.
+ITIL 2011 defines an incident as:
+
+an unplanned interruption to an IT service or reduction in the quality of an IT service or a failure of a Configuration Item that has not yet impacted an IT service (for example failure of one disk from a mirror set).
+The ITIL incident management process ensures that normal service operation is restored as quickly as possible and the business impact is minimized. ITIL Service Operation. AXELOS. 30 May 2007. ISBN 978-0113310463.
+The main challenges and cause for problems in the Incident management are:
+
+Constantly increasing Alert and Event Noise
+Complex and Lengthy IT Problem Resolution Process
+Inability to effectively predict and prevent IT service degradations or outages
+
+
+Healthcare
+In the healthcare sector, incident management is governed by the Health Insurance Portability and Accountability Act (HIPAA) Security Rule, which requires covered entities and business associates to implement security incident procedures for detecting, reporting, and responding to security incidents involving electronic protected health information (ePHI). The HIPAA Breach Notification Rule further requires notification to affected individuals within 60 days when unsecured protected health information is compromised, with breaches affecting 500 or more individuals reported to HHS and the media.
+A December 2024 Notice of Proposed Rulemaking (NPRM) to update the HIPAA Security Rule would significantly expand healthcare incident management requirements, including mandatory written incident response plans, the ability to restore critical systems within 72 hours of an outage, and 24-hour notification of workforce access changes following a security incident. The proposed rule also mandates annual testing and revision of incident response and contingency plans.
+
+
+See also
+Incident Command System
+National Incident Management System in the United States
+Coordinated Regional Incident Management (Netherlands) in the Netherlands
+
+
+References
+
+
+External links
+National Incident Management System Consortium in the United States
+United Kingdom Government legislation, Civil Contingencies Act (CCA) 2004. (2012)
+Federal Emergency Management Agency (FEMA). (2012)
+
+
+Further reading
+Adam Krug (2014-09/16), "Incident Management Software System Case Studies", Case Studies 1 – 34
+Wearne S H & White-Hunt, K (2010), Managing the Urgent and Unexpected, Gower Publishing – Case studies
+
+
+Bibliography
+Bruton, Noel, How to Manage the IT Helpdesk — A Guide for User Support and Call Center Managers. ISBN 0-7506-4901-1.

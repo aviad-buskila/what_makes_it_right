@@ -65,8 +65,7 @@ class Retriever:
                 ranked.append((score, doc))
 
         if not ranked:
-            # Fallback: no strong lexical support, avoid flooding model with weak context.
-            return documents[:1]
+            return []
 
         ranked.sort(key=lambda x: x[0], reverse=True)
         return [doc for _, doc in ranked[:k]]

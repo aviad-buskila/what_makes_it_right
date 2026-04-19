@@ -1,0 +1,144 @@
+A virtual private network (VPN) is an overlay network that uses network virtualization to extend a private network across a public network, such as the Internet, via the use of encryption and tunneling protocols. In a VPN, a tunneling protocol is used to transfer network messages from one network host to another. 
+Host-to-network VPNs are commonly used by organizations to allow off-site users secure access to an office network over the Internet. Site-to-site VPNs connect two networks, such as an office network and a datacenter. Provider-provisioned VPNs isolate parts of the provider's own network infrastructure in virtual segments, in ways that make the contents of each segment private with respect to the others. Individuals also use VPNs to encrypt and anonymize their network traffic, with VPN services selling access to their own private networks.
+VPNs can enhance usage privacy by making an ISP unable to access the private data exchanged across the VPN. Through encryption, VPNs enhance confidentiality and reduce the risk of successful data sniffing attacks.
+
+
+Background
+
+A network is a group of communicating computers known as hosts, which communicate data to other hosts via communication protocols, as facilitated by networking hardware. Within a computer network, computers are identified by network addresses, which allow rule-based systems such as Internet Protocol to locate and identify hosts. Hosts may also have hostnames, memorable labels for the host nodes, which are rarely changed after initial assignment. The transmission medium that supports information exchange includes wired media like copper cables, optical fibers, and wireless radio-frequency media. The arrangement of hosts and hardware within a network architecture is known as the network topology.
+Apart from physical transmission media, networks comprise network nodes such as network interface controllers, repeaters, hubs, bridges, switches, routers, and modems:
+
+The network interface controller (NIC) is computer hardware that connects the computer to the network media. In Ethernet networks, each NIC has a unique Media Access Control (MAC) address, usually stored in the controller's permanent memory.
+A repeater is an electronic device that receives a network signal, cleans it of unnecessary noise and regenerates it. The signal is retransmitted at a higher power level, or to the other side of obstruction so that the signal can cover longer distances without degradation.
+An Ethernet repeater with multiple ports is known as an Ethernet hub. In addition to reconditioning and distributing network signals, a hub assists with collision detection and fault isolation for the network. Hubs and repeaters in LANs have been largely made obsolete by modern network switches.
+Unlike hubs, which forward communication to all ports, network switches forward frames only to the ports involved in the communication. Switches normally have numerous ports, facilitating a star topology for devices, and for cascading additional switches. Network bridges are analogous to a two-port switch.
+Bridges and switches operate at the data link layer of the OSI model and bridge traffic between two or more network segments to form a single local network. Both are devices that forward frames of data between ports based on the destination MAC address in each frame. Network segmentation through bridging and switching helps break down a large, congested network into an aggregation of smaller, more efficient networks.
+A router is an internetworking device that forwards packets between networks by processing the addressing or routing information included in the packet.
+Modems (modulator-demodulator) are used to connect network nodes via wire not originally designed for digital network traffic, or for wireless.
+
+
+Network communication
+A communication protocol is a set of rules for exchanging information over a network. Communication protocols have various characteristics, such as being connection-oriented or connectionless, or using circuit switching or packet switching.
+In a protocol stack, often constructed per the OSI model, communications functions are divided into protocol layers, where each layer leverages the services of the layer below it until the lowest layer controls the hardware that sends information across the media. The use of protocol layering is ubiquitous across the field of computer networking. An important example of a protocol stack is HTTP, the World Wide Web protocol. HTTP runs over TCP over IP, the Internet protocols, which in turn run over IEEE 802.11, the Wi-Fi protocol. This stack is used between a wireless router and a personal computer when accessing the web.
+Most modern computer networks use protocols based on packet-mode transmission. A network packet is a formatted unit of data carried by a packet-switched network. Packets consist of two types of data: control information and user data (payload). The control information provides data the network needs to deliver the user data, for example, source and destination network addresses, error detection codes, and sequencing information. Typically, control information is found in packet headers and trailers, with payload data in between.
+The Internet protocol suite, also called TCP/IP, is the foundation of all modern networking and the defining set of protocols for the Internet. It offers connection-less and connection-oriented services over an inherently unreliable network traversed by datagram transmission using Internet protocol (IP). At its core, the protocol suite defines the addressing, identification, and routing specifications for Internet Protocol Version 4 (IPv4) and for IPv6, the next generation of the protocol with a much enlarged addressing capability.
+
+
+Security
+VPNs do not make connected users anonymous or unidentifiable to the untrusted medium network provider, such as an internet service provider (ISP). However, VPNs can enhance usage privacy by making an ISP unable to access the private data exchanged across the VPN. Through encryption, VPNs enhance confidentiality and reduce the risk of successful data sniffing attacks. Data packets travelling across a VPN may also be secured by tamper proofing via a message authentication code, prevents the message from being altered or tampered without being rejected, enhancing data integrity.
+A number of other implementations exist to ensure authentication of connecting parties. Tunnel endpoints can be authenticated in various ways during the VPN access initiation, such as by the whitelisting of endpoint IP address. Authentication may also occur after actual tunnels are already active, for example, with a web captive portal. Remote-access VPNs may also use passwords, biometrics, two-factor authentication, or other cryptographic methods. Site-to-site VPNs often use passwords (pre-shared keys) or digital certificates.
+
+
+Split tunneling
+Split tunneling allows a user to access distinct security domains at the same time, using the same or different network connections. This connection state is usually facilitated through the simultaneous use of a LAN network interface controller (NIC), radio NIC, Wireless LAN NIC, and virtual private network client software application. Split tunneling is most commonly configured via the use of a remote-access VPN client, which allows the user to simultaneously connect to a nearby wireless network, resources on an off-site corporate network, as well as websites over the internet.
+Not every VPN allows split tunneling. Advantages of split tunneling include alleviating bottlenecks, conserving bandwidth (as internet traffic does not have to pass through the VPN server), and enabling a user to not have to continually connect and disconnect when remotely accessing resources.. Disadvantages include DNS leaks and potentially bypassing gateway-level security that might be in place within the company infrastructure. Internet service providers often use split tunneling to that implement for DNS hijacking purposes.
+
+
+Classification
+
+
+Topology
+A host-to-network configuration is analogous to joining one or more computers to a network to which they cannot be directly connected. This type of extension provides computer access to a local area network of a remote site, or any wider enterprise networks, such as an intranet. Each computer is in charge of activating its own tunnel towards the network it wants to join. The joined network is only aware of a single remote host for each tunnel. This may be employed for remote workers, or to enable people accessing their private home or company resources without exposing them on the public Internet. 
+A site-to-site configuration connects two networks. This configuration expands a network across geographically disparate locations. Tunneling is only done between gateway devices located at each network location. These devices then make the tunnel available to other local network hosts that aim to reach any host on the other side. This is useful to keep sites connected to each other in a stable manner, like office networks to their headquarters or datacenter. In this case, any side may be configured to initiate the communication as long as it knows how to reach the other. In the context of site-to-site configurations, the terms intranet and extranet are used to describe two different use cases. An intranet site-to-site VPN describes a configuration where the sites connected by the VPN belong to the same organization, whereas an extranet site-to-site VPN joins sites belonging to multiple organizations.
+A limitation of traditional VPNs is that they are point-to-point connections and do not tend to support broadcast domains. Therefore, communication, software, and networking that are based on layer 2 and broadcast packets (such as NetBIOS used in Windows networking) may not be fully supported as on a local area network. Variants on VPN such as Virtual Private LAN Service (VPLS) and layer 2 tunneling protocols are designed to overcome this limitation.
+
+
+Trusted and secure delivery networks
+Trusted VPNs do not use cryptographic tunneling; instead, they rely on the security of a single provider's network to protect the traffic. Multiprotocol Label Switching (MPLS) often overlays trusted VPNs, often with quality-of-service control over a trusted delivery network. A secure VPN either trusts the underlying delivery network or enforces security with an internal mechanism. Unless the trusted delivery network runs among physically secure sites only, both trusted and secure models need an authentication mechanism for users to gain access to the VPN.
+
+
+Types
+
+
+Mobile VPN
+Mobile virtual private networks are used in settings where an endpoint of the VPN is not fixed to a single IP address, but instead roams across various networks such as data networks from cellular carriers or between multiple Wi-Fi access points without dropping the secure VPN session or losing application sessions. Mobile VPNs are widely used in public safety where they give law-enforcement officers access to applications such as computer-assisted dispatch and criminal databases, and in other organizations with similar requirements such as field service management and healthcare.
+
+
+DMVPN
+Dynamic Multipoint Virtual Private Network (DMVPN) is a dynamic tunneling form of a virtual private network supported on Cisco IOS-based routers, Huawei AR G3 routers, and Unix-like operating systems.
+DMVPN provides the capability for creating a dynamic-mesh VPN network without having to statically pre-configure all possible tunnel end-point peers, such as IPsec and ISAKMP peers. DMVPN is initially configured to build a hub-and-spoke network by statically configuring the hubs (VPN headends) on the spokes; no change in the configuration on the hub is required to accept new spokes. Using this initial hub-and-spoke network, tunnels between spokes are dynamically built on demand without additional configuration on the hubs or spokes. This dynamic-mesh capability alleviates the need for any load on the hub to route data between the spoke networks.
+
+
+EVPN
+Ethernet VPN (EVPN) is a technology for carrying OSI layer 2 Ethernet traffic as a virtual private network using wide area network protocols. EVPN technologies include Ethernet over Multiprotocol Label Switching (MPLS) and Ethernet over Virtual Extensible LAN.
+
+
+MPLS VPN
+Multiprotocol Label Switching (MPLS) is a routing technique in telecommunications networks that directs data from one node to the next based on labels rather than network addresses. Whereas network addresses identify endpoints, MPLS labels identify established paths between endpoints. MPLS can encapsulate packets of various network protocols.
+In practice, MPLS is mainly used to forward IP protocol data units and Virtual Private LAN Service Ethernet traffic. Major applications of MPLS are telecommunications traffic engineering and MPLS VPN. MPLS works in conjunction with the Internet Protocol (IP) and its routing protocols, usually interior gateway protocols (IGPs) and supports the creation of dynamic, transparent virtual networks with support for traffic engineering, the ability to transport layer VPNs with overlapping address spaces, and for layer-2 pseudowires that are capable of transporting a variety of transport payloads (IPv4, IPv6, ATM, Frame Relay, etc.).
+
+
+VPLS
+Virtual Private LAN Service (VPLS) is a virtual private network technology that provides Ethernet-based multipoint-to-multipoint communication over IP or MPLS networks. It allows geographically dispersed sites to share an Ethernet broadcast domain by connecting sites (including both servers and clients) through pseudowires. The technologies that can be used as pseudo-wire can be Ethernet over MPLS, L2TPv3 or even GRE. There are two IETF standards-track RFCs (RFC 4761 and RFC 4762) describing VPLS establishment. In contrast to L2TPv3, which allows only point-to-point OSI layer 2 tunnels, VPLS allows any-to-any (multipoint) connectivity.
+
+
+PPVPN
+A provider-provisioned VPN (PPVPN) is a virtual private network (VPN) implemented by a connectivity service provider or large enterprise on a network they operate on their own, as opposed to a "customer-provisioned VPN" where the VPN is implemented by the customer who acquires the connectivity service on top of the technical specificities of the provider.
+
+
+Protocols
+
+A virtual private network is based on a tunneling protocol, and may be combined with other network or application protocols to provide additional security and capabilities.
+
+
+IPSec (1996)
+Internet Protocol Security (IPsec) is a standards-based security protocol, initially developed by the Internet Engineering Task Force (IETF) for IPv6, and was required in all standards-compliant implementations of IPv6 before RFC 6434 made it only a recommendation. It is also widely used with IPv4. 
+The design of IPSec meets most security goals: availability, integrity, and confidentiality. IPsec uses encryption, encapsulating an IP packet inside an IPsec packet. De-encapsulation happens at the end of the tunnel, where the original IP packet is decrypted and forwarded to its intended destination. IPsec is also often supported by network hardware accelerators, which makes IPsec VPN desirable for low-power scenarios, like always-on remote access VPN configurations.
+IPsec tunnels are set up by the Internet Key Exchange (IKE) protocol. IPsec tunnels made with IKE version 1 (also known as IKEv1 tunnels, or often just "IPsec tunnels") can be used alone to provide VPN but are often combined with the Layer 2 Tunneling Protocol (L2TP) to reuse existing L2TP-related implementations for more flexible authentication features (e.g. Xauth). 
+IKE version 2, which was created by Microsoft and Cisco, can be used alone to provide IPsec VPN functionality. Its primary advantages are the native support for authenticating via the Extensible Authentication Protocol (EAP) and that the tunnel can be seamlessly restored when the IP address of the associated host is changing, which is typical of a roaming mobile device, whether on 3G or 4G LTE networks. 
+
+
+TLS/SSL (1999)
+Transport Layer Security (SSL/TLS) can tunnel an entire network's traffic (as it does in the OpenVPN project and SoftEther VPN project) or secure an individual connection. A number of vendors provide remote-access VPN capabilities through TLS. A VPN based on TLS can connect from locations where the usual TLS web navigation (HTTPS) is supported without requiring additional configuration.
+
+
+OpenSSH (1999)
+OpenSSH offers VPN tunneling (distinct from port forwarding) to secure remote connections to a network, inter-network links, and remote systems. OpenSSH server provides a limited number of concurrent tunnels. The VPN feature itself does not support personal authentication. SSH is more often used to remotely connect to machines or networks instead of a site to site VPN connection.
+
+
+OpenVPN (2001)
+OpenVPN is a free and open-source VPN protocol based on the TLS protocol. It supports perfect forward-secrecy, and most modern secure cipher suites, like AES, Serpent, TwoFish, etc. It is currently being developed and updated by OpenVPN Inc., a non-profit providing secure VPN technologies.
+
+
+SSTP (2007)
+Secure Socket Tunneling Protocol (SSTP) is a form of VPN tunnel that provides a mechanism to transport Point-to-Point Protocol (PPP) traffic through an SSL/TLS channel.
+
+
+Wireguard (2015)
+WireGuard is a protocol designed to be more lightweight than OpenVPN. In 2020, WireGuard support was added to both the Linux and Android kernels, opening it up to adoption by VPN providers. By default, WireGuard utilizes the Curve25519 protocol for key exchange and ChaCha20-Poly1305 for encryption and message authentication, but also includes the ability to pre-share a symmetric key between the client and server.
+
+
+Other
+Datagram Transport Layer Security (DTLS) – used in Cisco AnyConnect VPN and in OpenConnect VPN to solve the issues TLS has with tunneling over TCP (SSL/TLS are TCP-based, and tunneling TCP over TCP can lead to big delays and connection aborts).
+Microsoft Point-to-Point Encryption (MPPE) works with the Point-to-Point Tunneling Protocol and in several compatible implementations on other platforms.
+Microsoft Secure Socket Tunneling Protocol (SSTP) tunnels Point-to-Point Protocol (PPP) or Layer 2 Tunneling Protocol traffic through an SSL/TLS channel (SSTP was introduced in Windows Server 2008 and in Windows Vista Service Pack 1).
+Multi Path Virtual Private Network (MPVPN). Ragula Systems Development Company owns the registered trademark "MPVPN".
+Crypto IP Encapsulation (CIPE) is a free and open-source VPN implementation for tunneling IPv4 packets over UDP via encapsulation. CIPE was developed for Linux operating systems by Olaf Titz, with a Windows port implemented by Damion K. Wilson. Development for CIPE ended in 2002.
+L2TP which is a standards-based replacement for two proprietary VPN protocols: Cisco's Layer 2 Forwarding (L2F) (obsolete as of 2009) and Microsoft's Point-to-Point Tunneling Protocol (PPTP).
+
+
+Native and third-party support
+Desktop, smartphone and other end-user device operating systems usually support configuring remote access VPN from their graphical or command-line tools. However, due to the variety of, often non standard, VPN protocols, there exist many third-party applications that implement additional protocols not yet or no longer natively supported by the OS. For instance, Android lacked native IPsec IKEv2 support until version 11, and users needed to install third-party apps in order to connect that kind of VPN. Conversely, Windows does not natively support plain IPsec IKEv1 remote access native VPN configuration (commonly used by Cisco and Fritz!Box VPN solutions).
+Network appliances, such as firewalls, often include VPN gateway functionality for either remote access or site-to-site configurations. Their administration interfaces often facilitate setting up virtual private networks with a selection of supported protocols. In some cases, like in the open source operating systems devoted to firewalls and network devices (like OpenWrt, IPFire, PfSense or OPNsense), it is possible to add support for additional VPN protocols by installing missing software components or third-party apps.
+Commercial appliances with VPN features based on proprietary hardware or software platforms usually support a consistent VPN protocol across their products, but do not allow customizations outside the use cases they implement. This is often the case for appliances that rely on hardware acceleration of VPNs to provide higher throughput or support a larger number of simultaneously connected users.
+
+
+Society and culture
+
+
+Individual users
+As of 2025, approximately 1.75 billion people used VPNs. By 2027, this market is projected to grow to $76 billion.
+
+
+See also
+
+Internet privacy
+Opportunistic encryption
+VPNLab
+
+
+References
+
+
+Further reading
+Kelly, Sean (August 2001). "Necessity is the mother of VPN invention". Communication News: 26–28. ISSN 0010-3632. Archived from the original on 17 December 2001.
