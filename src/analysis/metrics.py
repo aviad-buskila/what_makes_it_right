@@ -51,7 +51,10 @@ def consistency_by_setup(df: pd.DataFrame) -> pd.DataFrame:
     def _consistency(group):
         if len(group) == 0:
             return 0.0
-        most_common_count = group["extracted_answer"].value_counts().iloc[0]
+        counts = group["extracted_answer"].value_counts(dropna=False)
+        if counts.empty:
+            return 0.0
+        most_common_count = counts.iloc[0]
         return most_common_count / len(group)
 
     per_q = (
