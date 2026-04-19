@@ -51,9 +51,13 @@ def _load_questions(config, explicit_path: str | None) -> list[Question]:
     qpath = Path(explicit_path) if explicit_path else _default_questions_path(
         config.dataset.source
     )
-    if qpath.exists():
-        return load_questions(qpath)
-    print(f"Questions file not found at {qpath}, downloading...")
+    if qpath.exists() and qpath.stat().st_size > 0:
+        questions = load_questions(qpath)
+        if questions:
+            return questions
+        print(f"{qpath} contained no questions — re-downloading.")
+    print(f"Downloading {config.dataset.source} "
+          f"(variant={config.dataset.variant})...")
     questions = load_dataset_by_source(
         source=config.dataset.source,
         max_questions=config.max_questions,

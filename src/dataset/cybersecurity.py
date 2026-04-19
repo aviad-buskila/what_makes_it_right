@@ -66,8 +66,12 @@ def load_cybermetric(
     questions: list[Question] = []
     for idx, row in enumerate(raw_items):
         answers = row.get("answers") or {}
-        options = {letter.upper(): str(answers[letter]).strip()
-                   for letter in ("a", "b", "c", "d") if letter in answers}
+        # CyberMetric ships uppercase A/B/C/D; normalize case-insensitively so
+        # mirrors or future variants don't silently drop every row.
+        normalized = {str(letter).upper(): str(text).strip()
+                      for letter, text in answers.items()}
+        options = {letter: normalized[letter]
+                   for letter in ("A", "B", "C", "D") if letter in normalized}
         if len(options) != 4:
             continue
         gold = str(row.get("solution", "")).strip().upper()
@@ -83,6 +87,13 @@ def load_cybermetric(
         )
         _validate_correct_answer(q.id, q.correct_answer)
         questions.append(q)
+
+    if not questions:
+        raise RuntimeError(
+            f"CyberMetric loader parsed 0 questions from {file_name}. "
+            "The upstream JSON structure may have changed — expected items "
+            "with 'question', 'answers' (A/B/C/D), and 'solution' fields."
+        )
 
     if max_questions is not None and max_questions < len(questions):
         rng = random.Random(random_seed)

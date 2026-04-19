@@ -35,14 +35,22 @@ def main():
         config.dataset.source
     )
 
-    # Load or download questions
-    if questions_path.exists():
+    # Load or download questions. Treat a zero-byte / empty JSONL as missing
+    # so a stale file from a failed prior download gets replaced automatically.
+    needs_download = (
+        not questions_path.exists()
+        or questions_path.stat().st_size == 0
+    )
+    if not needs_download:
         print(f"Loading questions from {questions_path}...")
         questions = load_questions(questions_path)
-    else:
+        if not questions:
+            needs_download = True
+            print(f"{questions_path} contained no questions — re-downloading.")
+    if needs_download:
         print(
-            f"Questions file not found at {questions_path}, "
-            f"downloading from source={config.dataset.source}..."
+            f"Downloading questions (source={config.dataset.source}, "
+            f"variant={config.dataset.variant})..."
         )
         questions = load_dataset_by_source(
             source=config.dataset.source,
