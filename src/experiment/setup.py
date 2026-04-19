@@ -43,7 +43,7 @@ class ExperimentSetup:
         rag_suffix = "+RAG" if use_rag else ""
         self.name = f"{model_config.name}{rag_suffix}"
 
-    def answer(self, question: Question, pre_retrieved_chunks: list[str] | None = None) -> SetupResult:
+    def answer(self, question: Question, pre_retrieved_chunks: list[str] | None = None, repetition: int = 0) -> SetupResult:
         """Send a question to this setup and return the result.
 
         If ``pre_retrieved_chunks`` is provided it is used directly (no retrieval
@@ -67,12 +67,28 @@ class ExperimentSetup:
         else:
             prompt = build_base_prompt(question, domain=self.domain)
 
+        seed = hash((question.id, self.name, repetition)) & 0x7FFFFFFF
         response_text, latency = generate(
             model_id=self.model_config.ollama_id,
             prompt=prompt,
             temperature=self.temperature,
             timeout=self.timeout_per_query,
+            seed=seed,
         )
+
+        # Empty response: retry once with base prompt so the model can at least
+        # use its own knowledge. Avoids silent zero-score on a generation glitch.
+        if not response_text.strip() and context_chunks:
+            fallback_prompt = build_base_prompt(question, domain=self.domain)
+            fallback_seed = seed ^ 0xDEAD
+            response_text, latency = generate(
+                model_id=self.model_config.ollama_id,
+                prompt=fallback_prompt,
+                temperature=self.temperature,
+                timeout=self.timeout_per_query,
+                seed=fallback_seed,
+            )
+            context_chunks = None  # signal that RAG was not used
 
         answer = extract_answer(response_text)
         is_correct = answer is not None and answer == question.correct_answer

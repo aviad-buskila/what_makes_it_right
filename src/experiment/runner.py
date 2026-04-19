@@ -98,7 +98,7 @@ def run_experiment(
 
                         try:
                             pre_chunks = chunks if variant == "rag" else None
-                            result = setup.answer(question, pre_retrieved_chunks=pre_chunks)
+                            result = setup.answer(question, pre_retrieved_chunks=pre_chunks, repetition=rep)
                             record = ExperimentResult(
                                 question_id=question.id,
                                 setup_name=setup.name,

@@ -4,20 +4,24 @@ from src.dataset.loader import Question
 
 _DOMAIN_PERSONA = {
     "medical": "medical expert",
-    "cybersecurity": "cybersecurity expert",
+    "cybersecurity": (
+        "cybersecurity professional with broad expertise in information security "
+        "principles, network security, cryptography, and security standards "
+        "(CISSP/Security+ level)"
+    ),
 }
 
 _DOMAIN_REFERENCE_LABEL = {
     "medical": "medical reference passages",
     "cybersecurity": (
         "cybersecurity reference passages "
-        "(MITRE ATT&CK, CWE, NIST SP 800-53, OWASP)"
+        "(MITRE ATT&CK, CWE, NIST SP 800-53, NIST SP 800-63B, OWASP, Wikipedia)"
     ),
 }
 
 BASE_PROMPT = """\
 You are a {persona}. Answer the following multiple-choice question.
-Respond with ONLY the letter of the correct answer (A, B, C, or D) on the first line, followed by a brief explanation.
+Your response MUST start with exactly one letter — A, B, C, or D — on its own line, followed by a brief explanation.
 
 Question: {question}
 {options}
@@ -32,7 +36,7 @@ Use them only if they directly support your reasoning. If they are not relevant,
 {context}
 
 Answer the following multiple-choice question.
-Respond with ONLY the letter of the correct answer (A, B, C, or D) on the first line, followed by a brief explanation.
+Your response MUST start with exactly one letter — A, B, C, or D — on its own line, followed by a brief explanation.
 
 Question: {question}
 {options}
