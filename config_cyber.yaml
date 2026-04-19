@@ -1,10 +1,10 @@
 experiment:
-  name: "cyber_mcq_comparison_3_300"
+  name: "cyber_mcq_comparison_3_100_exp"
   repetitions: 3
-  max_questions: 300       # null = full split; pilot with 100
+  max_questions: 100       # null = full split; pilot with 100
   random_seed: 42
   temperature: 0.2
-  timeout_per_query: 120
+  timeout_per_query: 30
   record_failures: true
   domain: "cybersecurity"  # drives persona in base/RAG prompts
 
@@ -15,9 +15,9 @@ dataset:
 
 models:
   # Base-vs-domain pair analogous to gemma3:4b vs medgemma:4b.
-  - name: "llama3.1-8b"
-    ollama_id: "llama3.1:8b"
-    category: "small_general"
+  # - name: "llama3.1-8b"
+  #   ollama_id: "llama3.1:8b"
+  #   category: "small_general"
   - name: "foundation-sec-8b"
     ollama_id: "hf.co/fdtn-ai/Foundation-Sec-8B-Q4_K_M-GGUF:Q4_K_M"
     category: "small_domain"
