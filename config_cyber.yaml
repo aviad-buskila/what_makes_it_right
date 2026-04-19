@@ -1,7 +1,7 @@
 experiment:
   name: "cyber_mcq_comparison_full_3r_t0.3_k5_d0.3"
   repetitions: 3
-  max_questions: null     # null = full split; pilot with 100
+  max_questions: None     # null = full split; pilot with 100
   random_seed: 42
   temperature: 0.3
   timeout_per_query: 30

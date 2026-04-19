@@ -54,7 +54,7 @@ def main():
         )
         questions = load_dataset_by_source(
             source=config.dataset.source,
-            max_questions=config.max_questions,
+            max_questions=None,  # always save the full dataset
             random_seed=config.random_seed,
             cache_dir=config.dataset.cache_dir,
             split=config.dataset.split,
@@ -62,7 +62,7 @@ def main():
         )
         save_questions(questions, questions_path)
 
-    if config.max_questions and len(questions) > config.max_questions:
+    if config.max_questions is not None and len(questions) > config.max_questions:
         import random
         rng = random.Random(config.random_seed)
         questions = rng.sample(questions, config.max_questions)
