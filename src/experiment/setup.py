@@ -5,7 +5,7 @@ from dataclasses import dataclass
 from src.dataset.loader import Question
 from src.experiment.config import ModelConfig, RagConfig
 from src.llm.client import generate
-from src.llm.parser import extract_answer
+from src.llm.parser import extract_answer, normalize_answer_letter
 from src.llm.prompts import build_base_prompt, build_rag_prompt
 from src.rag.retriever import Retriever
 
@@ -91,7 +91,8 @@ class ExperimentSetup:
             context_chunks = None  # signal that RAG was not used
 
         answer = extract_answer(response_text)
-        is_correct = answer is not None and answer == question.correct_answer
+        gold_answer = normalize_answer_letter(question.correct_answer)
+        is_correct = answer is not None and gold_answer is not None and answer == gold_answer
 
         return SetupResult(
             response=response_text,

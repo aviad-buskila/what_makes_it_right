@@ -42,13 +42,19 @@ def generate_report(df: pd.DataFrame, output_dir: str = "results") -> str:
         _plot_significance_heatmap(pairwise, out / "pairwise_significance.png")
 
     # Build markdown
+    inferred_domain = _infer_domain_label(df)
+
     lines = [
         "# Experiment Report: What Makes It Right?",
         "",
         "## Research Question",
-        "What is more crucial for medical QA accuracy: model size, domain expertise, or retrieved knowledge?",
+        (
+            f"What is more crucial for {inferred_domain} multiple-choice QA accuracy: "
+            "model size, domain expertise, or retrieved knowledge?"
+        ),
         "",
         "## Setup Summary",
+        f"- **Domain (inferred)**: {inferred_domain}",
         f"- **Questions**: {df['question_id'].nunique()}",
         f"- **Repetitions per question**: {df.groupby(['question_id', 'setup_name']).size().mode().iloc[0]}",
         f"- **Total LLM calls**: {len(df)}",
@@ -126,7 +132,7 @@ def _plot_accuracy_bars(summary: pd.DataFrame, path: Path) -> None:
         capsize=5,
     )
     ax.set_ylabel("Accuracy (Majority Vote)")
-    ax.set_title("Medical QA Accuracy by Setup")
+    ax.set_title("MCQ Accuracy by Setup")
     ax.set_ylim(0, 1)
     plt.xticks(rotation=30, ha="right")
     plt.tight_layout()
@@ -169,3 +175,13 @@ def _plot_significance_heatmap(pairwise: pd.DataFrame, path: Path) -> None:
     plt.tight_layout()
     fig.savefig(path, dpi=150)
     plt.close(fig)
+
+
+def _infer_domain_label(df: pd.DataFrame) -> str:
+    """Best-effort domain label inferred from question ids."""
+    ids = set(df["question_id"].astype(str).str.lower().tolist())
+    if any(q.startswith("cybermetric_") or q.startswith("secqa_") for q in ids):
+        return "cybersecurity"
+    if any(q.startswith("medqa_") for q in ids):
+        return "medical"
+    return "the configured domain"

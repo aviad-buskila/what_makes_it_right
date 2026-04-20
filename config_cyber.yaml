@@ -1,10 +1,10 @@
 experiment:
-  name: "cyber_mcq_comparison_full_3r_t0.3_k5_d0.3"
-  repetitions: 3
-  max_questions: None     # null = full split; pilot with 100
+  name: "cyber_mcq_comparison_10q_1"
+  repetitions: 1
+  max_questions: 20     # null = full split; pilot with 100
   random_seed: 42
   temperature: 0.3
-  timeout_per_query: 30
+  timeout_per_query: 10
   record_failures: true
   domain: "cybersecurity"  # drives persona in base/RAG prompts
 
@@ -31,7 +31,7 @@ rag:
   chunk_overlap: 50
   embedding_model: "nomic-embed-text"
   collection_name: "cyber_kb"
-  max_distance: 0.3
+  max_distance: 0.25
   corpus_source: "cybersecurity"
   corpus_include: ["attack", "cwe", "nist", "owasp", "nist63b", "wiki"]
   persist_dir: "data/chroma_cyber"

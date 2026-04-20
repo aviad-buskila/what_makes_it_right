@@ -21,12 +21,16 @@ _DOMAIN_REFERENCE_LABEL = {
 
 BASE_PROMPT = """\
 You are a {persona}. Answer the following multiple-choice question.
-Your response MUST start with exactly one letter — A, B, C, or D — on its own line, followed by a brief explanation.
 
 Question: {question}
 {options}
 
-Answer:"""
+Output format: return ONLY valid JSON with exactly this schema:
+{{"answer":"A"}}
+Where "answer" must be one of: "A", "B", "C", "D".
+Do not output markdown fences, additional keys, or extra text.
+
+Answer JSON:"""
 
 RAG_PROMPT = """\
 You are a {persona}.
@@ -35,13 +39,16 @@ Use them only if they directly support your reasoning. If they are not relevant,
 
 {context}
 
-Answer the following multiple-choice question.
-Your response MUST start with exactly one letter — A, B, C, or D — on its own line, followed by a brief explanation.
-
 Question: {question}
 {options}
 
-Answer:"""
+Output format: return ONLY valid JSON with exactly this schema:
+{{"answer":"A"}}
+Where "answer" must be one of: "A", "B", "C", "D".
+Do not output markdown fences, additional keys, or extra text.
+If the context is not relevant, ignore it and still return the same JSON schema.
+
+Answer JSON:"""
 
 
 def _format_options(question: Question) -> str:

@@ -198,8 +198,15 @@ python scripts/run_experiment.py --config config_cyber_smoke.yaml
 Analyze a non-default experiment:
 
 ```bash
+# medical
 python scripts/analyze_results.py --experiment medical_mcq_comparison_try
+# cybersecurity
+python scripts/analyze_results.py --experiment cyber_mcq_comparison_3_100_exp
 ```
+
+Note: report wording is now domain-aware and inferred from `question_id` prefixes
+(`medqa_*`, `cybermetric_*`, `secqa_*`), so generated `results/report.md` is no
+longer hardcoded to medical phrasing.
 
 ## Reliability Features
 
