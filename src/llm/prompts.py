@@ -28,7 +28,7 @@ Question: {question}
 Output format: return ONLY valid JSON with exactly this schema:
 {{"answer":"A"}}
 Where "answer" must be one of: "A", "B", "C", "D".
-Do not output markdown fences, additional keys, or extra text.
+Do not output markdown fences, additional keys, or any explanatory text.
 
 Answer JSON:"""
 
@@ -47,6 +47,7 @@ Output format: return ONLY valid JSON with exactly this schema:
 Where "answer" must be one of: "A", "B", "C", "D".
 Do not output markdown fences, additional keys, or extra text.
 If the context is not relevant, ignore it and still return the same JSON schema.
+Do not output any explanation.
 
 Answer JSON:"""
 

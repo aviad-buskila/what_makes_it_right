@@ -14,6 +14,9 @@ The framework is **domain-agnostic**. Two domains are shipped out of the box:
 
 Each model runs in two modes (`base` and `+RAG`), questions are repeated, all runs are stored as JSONL, and a markdown report with plots and significance tests is generated.
 
+All prompts now enforce a strict machine-readable answer contract:
+`{"answer":"A|B|C|D"}` (no explanation text).
+
 ## Requirements
 
 - Python `>=3.11`
@@ -88,6 +91,7 @@ Edit the YAML config you want to run:
 - `experiment.max_questions`: subsample size (`null` for full split)
 - `experiment.temperature`: model temperature
 - `experiment.timeout_per_query`: per-call timeout
+- `experiment.answer_retry_attempts`: retries when output is not a valid answer letter
 - `experiment.record_failures`: whether failed calls are written to JSONL
 - `experiment.domain`: `"medical"` or `"cybersecurity"` — drives the prompt persona
 - `dataset.source`: `"medqa"` | `"cybermetric"` | `"secqa"`
@@ -96,7 +100,8 @@ Edit the YAML config you want to run:
 - `rag.corpus_source`: `"medqa"` or `"cybersecurity"`
 - `rag.corpus_include`: (cybersecurity only) any subset of `[attack, cwe, nist, owasp]` — enables per-source ablations
 - `rag.persist_dir`: ChromaDB directory (keep separate per domain, e.g. `data/chroma_cyber`)
-- `rag`: retrieval settings (`top_k`, chunking, embedding model, `max_distance`)
+- `rag.retrieval_mode`: `fast` (dense only), `balanced` (hybrid rerank), `best` (hybrid + lexical candidate expansion)
+- `rag`: retrieval settings (`top_k`, chunking, embedding model, `max_distance`, multipliers, rerank weights)
 
 ## Datasets
 
@@ -212,7 +217,9 @@ longer hardcoded to medical phrasing.
 
 - Retry with exponential backoff for generation and embedding calls
 - Per-call timeout support
+- Invalid-answer retry loop when model output is not `A/B/C/D`
 - One-time embedding-model ensure before RAG startup
+- Retrieval is performed once per question and reused across all RAG model variants
 - Per-sample exception handling so one failed call does not stop the experiment
 - Optional explicit failure rows in results (`succeeded=false`, `error_message`)
 - Correct-answer normalization to `A/B/C/D` with fail-fast validation

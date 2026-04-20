@@ -89,6 +89,11 @@ def main():
                 top_k=config.rag.top_k,
                 timeout_per_query=config.timeout_per_query,
                 max_distance=config.rag.max_distance,
+                retrieval_mode=config.rag.retrieval_mode,
+                dense_multiplier=config.rag.dense_multiplier,
+                lexical_multiplier=config.rag.lexical_multiplier,
+                rerank_alpha=config.rag.rerank_alpha,
+                min_lexical_overlap=config.rag.min_lexical_overlap,
             )
             print(f"RAG retriever loaded ({retriever.collection.count()} chunks)")
         except Exception as e:

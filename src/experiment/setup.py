@@ -30,6 +30,7 @@ class ExperimentSetup:
         rag_config: RagConfig | None = None,
         temperature: float = 0.7,
         timeout_per_query: int = 60,
+        answer_retry_attempts: int = 2,
         domain: str = "medical",
     ):
         self.model_config = model_config
@@ -38,6 +39,7 @@ class ExperimentSetup:
         self.rag_config = rag_config
         self.temperature = temperature
         self.timeout_per_query = timeout_per_query
+        self.answer_retry_attempts = max(1, answer_retry_attempts)
         self.domain = domain
 
         rag_suffix = "+RAG" if use_rag else ""
@@ -68,29 +70,28 @@ class ExperimentSetup:
             prompt = build_base_prompt(question, domain=self.domain)
 
         seed = hash((question.id, self.name, repetition)) & 0x7FFFFFFF
-        response_text, latency = generate(
-            model_id=self.model_config.ollama_id,
-            prompt=prompt,
-            temperature=self.temperature,
-            timeout=self.timeout_per_query,
-            seed=seed,
-        )
-
-        # Empty response: retry once with base prompt so the model can at least
-        # use its own knowledge. Avoids silent zero-score on a generation glitch.
-        if not response_text.strip() and context_chunks:
-            fallback_prompt = build_base_prompt(question, domain=self.domain)
-            fallback_seed = seed ^ 0xDEAD
+        response_text = ""
+        latency = 0.0
+        answer = None
+        current_prompt = prompt
+        for attempt in range(1, self.answer_retry_attempts + 1):
+            current_seed = seed ^ (attempt * 0x9E37)
             response_text, latency = generate(
                 model_id=self.model_config.ollama_id,
-                prompt=fallback_prompt,
+                prompt=current_prompt,
                 temperature=self.temperature,
                 timeout=self.timeout_per_query,
-                seed=fallback_seed,
+                seed=current_seed,
             )
-            context_chunks = None  # signal that RAG was not used
+            answer = extract_answer(response_text)
+            if answer is not None:
+                break
+            if attempt < self.answer_retry_attempts:
+                current_prompt = (
+                    f"{prompt}\n\nIMPORTANT: Invalid output detected. "
+                    "Return only JSON exactly like {\"answer\":\"A\"}."
+                )
 
-        answer = extract_answer(response_text)
         gold_answer = normalize_answer_letter(question.correct_answer)
         is_correct = answer is not None and gold_answer is not None and answer == gold_answer
 

@@ -33,6 +33,11 @@ class RagConfig:
     corpus_include: list[str] | None = None  # ablation knob for cyber sources
     persist_dir: str = "data/chroma_db"
     max_corpus_size: int | None = None
+    retrieval_mode: str = "balanced"  # "fast", "balanced", "best"
+    dense_multiplier: int = 4  # candidates = top_k * dense_multiplier
+    lexical_multiplier: int = 4  # lexical candidates = top_k * lexical_multiplier
+    rerank_alpha: float = 0.6  # dense weight in fusion score
+    min_lexical_overlap: float = 0.01  # minimum lexical overlap to keep candidate
 
 
 @dataclass
@@ -43,6 +48,7 @@ class ExperimentConfig:
     random_seed: int = 42
     temperature: float = 0.7
     timeout_per_query: int = 60
+    answer_retry_attempts: int = 2
     record_failures: bool = True
     domain: str = "medical"  # "medical" or "cybersecurity" — drives prompts
     models: list[ModelConfig] = field(default_factory=list)
@@ -69,6 +75,7 @@ def load_config(path: str | Path = "config.yaml") -> ExperimentConfig:
         random_seed=exp.get("random_seed", 42),
         temperature=exp.get("temperature", 0.7),
         timeout_per_query=exp.get("timeout_per_query", 60),
+        answer_retry_attempts=exp.get("answer_retry_attempts", 2),
         record_failures=exp.get("record_failures", True),
         domain=exp.get("domain", "medical"),
         models=models,

@@ -5,6 +5,7 @@ experiment:
   random_seed: 42
   temperature: 0.2
   timeout_per_query: 10
+  answer_retry_attempts: 2
   record_failures: true
   domain: "medical"
 
@@ -30,6 +31,11 @@ rag:
   embedding_model: "nomic-embed-text"
   collection_name: "medqa_textbooks"
   max_distance: 0.25  # cosine distance cutoff — chunks above this are discarded
+  retrieval_mode: "balanced"  # fast | balanced | best
+  dense_multiplier: 4
+  lexical_multiplier: 4
+  rerank_alpha: 0.6
+  min_lexical_overlap: 0.01
   corpus_source: "medqa"
   persist_dir: "data/chroma_db"
 

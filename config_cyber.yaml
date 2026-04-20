@@ -5,6 +5,7 @@ experiment:
   random_seed: 42
   temperature: 0.3
   timeout_per_query: 10
+  answer_retry_attempts: 2
   record_failures: true
   domain: "cybersecurity"  # drives persona in base/RAG prompts
 
@@ -32,6 +33,11 @@ rag:
   embedding_model: "nomic-embed-text"
   collection_name: "cyber_kb"
   max_distance: 0.25
+  retrieval_mode: "best"  # fast | balanced | best
+  dense_multiplier: 5
+  lexical_multiplier: 6
+  rerank_alpha: 0.55
+  min_lexical_overlap: 0.01
   corpus_source: "cybersecurity"
   corpus_include: ["attack", "cwe", "nist", "owasp", "nist63b", "wiki"]
   persist_dir: "data/chroma_cyber"
