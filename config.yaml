@@ -1,10 +1,10 @@
 experiment:
-  name: "medical_mcq_comparison_20q_1r_new_1"
-  repetitions: 1
-  max_questions: 20  # null = full test set, integer for subset (e.g. 200 for pilot)
+  name: "medical_mcq_comparison_100q_3r_new"
+  repetitions: 3
+  max_questions: 100  # null = full test set, integer for subset (e.g. 200 for pilot)
   random_seed: 42
   temperature: 0.2
-  timeout_per_query: 10
+  timeout_per_query: 30
   answer_retry_attempts: 2
   record_failures: true
   domain: "medical"

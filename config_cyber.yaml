@@ -1,10 +1,10 @@
 experiment:
-  name: "cyber_mcq_comparison_10q_1"
-  repetitions: 1
-  max_questions: 20     # null = full split; pilot with 100
+  name: "cyber_mcq_comparison_100q_3r_new"
+  repetitions: 3
+  max_questions: 100     # null = full split; pilot with 100
   random_seed: 42
   temperature: 0.3
-  timeout_per_query: 10
+  timeout_per_query: 30
   answer_retry_attempts: 2
   record_failures: true
   domain: "cybersecurity"  # drives persona in base/RAG prompts
