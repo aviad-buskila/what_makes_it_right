@@ -1,5 +1,5 @@
 experiment:
-  name: "medical_mcq_comparison_20q_1r"
+  name: "medical_mcq_comparison_20q_1r_new_1"
   repetitions: 1
   max_questions: 20  # null = full test set, integer for subset (e.g. 200 for pilot)
   random_seed: 42
