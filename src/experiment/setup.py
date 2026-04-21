@@ -43,7 +43,7 @@ class ExperimentSetup:
         self.domain = domain
 
         rag_suffix = "+RAG" if use_rag else ""
-        self.name = f"{model_config.name}{rag_suffix}"
+        self.name = f"{model_config.name}{rag_suffix}@t{self.temperature:g}"
 
     def answer(self, question: Question, pre_retrieved_chunks: list[str] | None = None, repetition: int = 0) -> SetupResult:
         """Send a question to this setup and return the result.

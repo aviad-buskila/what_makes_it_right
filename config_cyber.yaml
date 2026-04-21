@@ -1,5 +1,5 @@
 experiment:
-  name: "cyber_mcq_comparison_100q_3r_new"
+  name: "medical_mcq_comparison_test_temp_list_100_t0.1_0.3"
   repetitions: 3
   max_questions: 100     # null = full split; pilot with 100
   random_seed: 42
@@ -32,8 +32,9 @@ rag:
   chunk_overlap: 50
   embedding_model: "nomic-embed-text"
   collection_name: "cyber_kb"
-  max_distance: 0.25
+  max_distance: 0.3
   retrieval_mode: "best"  # fast | balanced | best
+  query_mode: "question_plus_options"  # question_only | question_plus_options | question_plus_top_terms
   dense_multiplier: 5
   lexical_multiplier: 6
   rerank_alpha: 0.55

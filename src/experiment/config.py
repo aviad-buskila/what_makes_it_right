@@ -38,6 +38,7 @@ class RagConfig:
     lexical_multiplier: int = 4  # lexical candidates = top_k * lexical_multiplier
     rerank_alpha: float = 0.6  # dense weight in fusion score
     min_lexical_overlap: float = 0.01  # minimum lexical overlap to keep candidate
+    query_mode: str = "question_only"  # question_only | question_plus_options | question_plus_top_terms
 
 
 @dataclass
@@ -46,7 +47,7 @@ class ExperimentConfig:
     repetitions: int = 5
     max_questions: int | None = None
     random_seed: int = 42
-    temperature: float = 0.7
+    temperature: float | list[float] = 0.7
     timeout_per_query: int = 60
     answer_retry_attempts: int = 2
     record_failures: bool = True
@@ -55,6 +56,16 @@ class ExperimentConfig:
     dataset: DatasetConfig = field(default_factory=DatasetConfig)
     rag: RagConfig = field(default_factory=RagConfig)
     results_dir: str = "results"
+
+    @property
+    def temperatures(self) -> list[float]:
+        """Return configured temperatures as a non-empty list."""
+        raw = self.temperature
+        if isinstance(raw, list):
+            vals = [float(v) for v in raw]
+        else:
+            vals = [float(raw)]
+        return vals or [0.7]
 
 
 def load_config(path: str | Path = "config.yaml") -> ExperimentConfig:

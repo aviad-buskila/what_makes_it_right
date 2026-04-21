@@ -27,6 +27,7 @@ def generate_report(df: pd.DataFrame, output_dir: str = "results") -> str:
     parse_fail = parse_failure_rate(df)
     pairwise = all_pairwise_tests(df)
     rag_tests = rag_effect_tests(df)
+    retrieval_diag = retrieval_diagnostics(df)
 
     # Add CIs to accuracy table
     acc["ci_lower"] = acc.apply(lambda r: wilson_ci(int(r["correct"]), int(r["total"]))[0], axis=1)
@@ -78,6 +79,11 @@ def generate_report(df: pd.DataFrame, output_dir: str = "results") -> str:
         "## Parse Failure Rate",
         "",
         summary[["setup_name", "parse_failure_rate"]].to_markdown(index=False, floatfmt=".4f"),
+        "",
+        "## Retrieval Diagnostics (RAG Rows)",
+        "",
+        f"- **RAG calls with non-empty context**: {retrieval_diag['pct_non_empty_context']:.2f}%",
+        f"- **Avg retrieved chunks per RAG call**: {retrieval_diag['avg_chunks_per_rag_call']:.2f}",
         "",
         "## Pairwise Statistical Tests (McNemar's)",
         "",
@@ -185,3 +191,22 @@ def _infer_domain_label(df: pd.DataFrame) -> str:
     if any(q.startswith("medqa_") for q in ids):
         return "medical"
     return "the configured domain"
+
+
+def retrieval_diagnostics(df: pd.DataFrame) -> dict[str, float]:
+    """Compute basic retrieval diagnostics from stored run rows."""
+    rag = df[df["has_rag"] == True].copy()
+    if rag.empty:
+        return {
+            "pct_non_empty_context": 0.0,
+            "avg_chunks_per_rag_call": 0.0,
+        }
+    chunk_counts = rag["retrieved_context"].apply(
+        lambda x: len(x) if isinstance(x, list) else 0
+    )
+    non_empty = (chunk_counts > 0).mean() * 100.0
+    avg_chunks = float(chunk_counts.mean())
+    return {
+        "pct_non_empty_context": float(non_empty),
+        "avg_chunks_per_rag_call": avg_chunks,
+    }

@@ -72,8 +72,10 @@ def main():
     print(f"Questions:     {len(questions)}")
     print(f"Repetitions:   {config.repetitions}")
     print(f"Models:        {[m.name for m in config.models]}")
-    print(f"Setups:        {len(config.models) * 2} (each model +/- RAG)")
-    total = len(questions) * config.repetitions * len(config.models) * 2
+    print(f"Temperatures:  {config.temperatures}")
+    setup_count = len(config.models) * 2 * len(config.temperatures)
+    print(f"Setups:        {setup_count} (each model +/- RAG x temperature)")
+    total = len(questions) * config.repetitions * setup_count
     print(f"Total calls:   {total}")
 
     # Initialize RAG retriever

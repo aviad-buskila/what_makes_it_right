@@ -14,24 +14,25 @@ def build_setups(config: ExperimentConfig, retriever: Retriever | None = None) -
     """Create all experimental setups (each model with and without RAG)."""
     setups: list[ExperimentSetup] = []
     for model_config in config.models:
-        setups.append(ExperimentSetup(
-            model_config=model_config,
-            use_rag=False,
-            temperature=config.temperature,
-            timeout_per_query=config.timeout_per_query,
-            answer_retry_attempts=config.answer_retry_attempts,
-            domain=config.domain,
-        ))
-        setups.append(ExperimentSetup(
-            model_config=model_config,
-            use_rag=True,
-            retriever=retriever,
-            rag_config=config.rag,
-            temperature=config.temperature,
-            timeout_per_query=config.timeout_per_query,
-            answer_retry_attempts=config.answer_retry_attempts,
-            domain=config.domain,
-        ))
+        for temperature in config.temperatures:
+            setups.append(ExperimentSetup(
+                model_config=model_config,
+                use_rag=False,
+                temperature=temperature,
+                timeout_per_query=config.timeout_per_query,
+                answer_retry_attempts=config.answer_retry_attempts,
+                domain=config.domain,
+            ))
+            setups.append(ExperimentSetup(
+                model_config=model_config,
+                use_rag=True,
+                retriever=retriever,
+                rag_config=config.rag,
+                temperature=temperature,
+                timeout_per_query=config.timeout_per_query,
+                answer_retry_attempts=config.answer_retry_attempts,
+                domain=config.domain,
+            ))
     return setups
 
 
@@ -53,16 +54,6 @@ def run_experiment(
 
     experiment_name = config.name
     completed = store.get_completed_keys(experiment_name)
-
-    # Group setups into {model_name: {"base": setup, "rag": setup}} preserving
-    # model order so we can ensure each model once before the question loop.
-    model_pairs: dict[str, dict[str, ExperimentSetup]] = {}
-    for setup in setups:
-        model_name = setup.model_config.name
-        if model_name not in model_pairs:
-            model_pairs[model_name] = {}
-        key = "rag" if setup.use_rag else "base"
-        model_pairs[model_name][key] = setup
 
     # Pull / verify all required models once up front.
     seen_model_ids: set[str] = set()
@@ -86,60 +77,60 @@ def run_experiment(
             if retriever is not None:
                 try:
                     retrieval_calls += 1
-                    chunks = retriever.query(question.question_text)
+                    retrieval_query = retriever.build_query_text(
+                        question_text=question.question_text,
+                        options=question.options,
+                        mode=config.rag.query_mode,
+                    )
+                    chunks = retriever.query(retrieval_query)
                 except Exception as e:
                     retrieval_failures += 1
                     print(f"\nRetrieval failed for {question.id}: {e}. RAG setups will run without context.")
 
-            for pair in model_pairs.values():
-                for variant in ("base", "rag"):
-                    setup = pair.get(variant)
-                    if setup is None:
+            for setup in setups:
+                for rep in range(config.repetitions):
+                    key = (question.id, setup.name, rep)
+                    if key in completed:
                         continue
 
-                    for rep in range(config.repetitions):
-                        key = (question.id, setup.name, rep)
-                        if key in completed:
-                            continue
-
-                        try:
-                            pre_chunks = chunks if variant == "rag" else None
-                            result = setup.answer(question, pre_retrieved_chunks=pre_chunks, repetition=rep)
-                            record = ExperimentResult(
+                    try:
+                        pre_chunks = chunks if setup.use_rag else None
+                        result = setup.answer(question, pre_retrieved_chunks=pre_chunks, repetition=rep)
+                        record = ExperimentResult(
+                            question_id=question.id,
+                            setup_name=setup.name,
+                            model_name=setup.model_config.name,
+                            has_rag=setup.use_rag,
+                            repetition=rep,
+                            model_response=result.response,
+                            extracted_answer=result.extracted_answer,
+                            correct_answer=question.correct_answer,
+                            is_correct=result.is_correct,
+                            latency_seconds=result.latency_seconds,
+                            retrieved_context=result.retrieved_context,
+                        )
+                        store.append(record, experiment_name)
+                        pbar.update(1)
+                    except Exception as e:
+                        print(f"\nError on {question.id} / {setup.name} / rep {rep}: {e}")
+                        if config.record_failures:
+                            failure_record = ExperimentResult(
                                 question_id=question.id,
                                 setup_name=setup.name,
                                 model_name=setup.model_config.name,
                                 has_rag=setup.use_rag,
                                 repetition=rep,
-                                model_response=result.response,
-                                extracted_answer=result.extracted_answer,
+                                model_response="",
+                                extracted_answer=None,
                                 correct_answer=question.correct_answer,
-                                is_correct=result.is_correct,
-                                latency_seconds=result.latency_seconds,
-                                retrieved_context=result.retrieved_context,
+                                is_correct=False,
+                                latency_seconds=0.0,
+                                succeeded=False,
+                                error_message=str(e),
+                                retrieved_context=None,
                             )
-                            store.append(record, experiment_name)
-                            pbar.update(1)
-                        except Exception as e:
-                            print(f"\nError on {question.id} / {setup.name} / rep {rep}: {e}")
-                            if config.record_failures:
-                                failure_record = ExperimentResult(
-                                    question_id=question.id,
-                                    setup_name=setup.name,
-                                    model_name=setup.model_config.name,
-                                    has_rag=setup.use_rag,
-                                    repetition=rep,
-                                    model_response="",
-                                    extracted_answer=None,
-                                    correct_answer=question.correct_answer,
-                                    is_correct=False,
-                                    latency_seconds=0.0,
-                                    succeeded=False,
-                                    error_message=str(e),
-                                    retrieved_context=None,
-                                )
-                                store.append(failure_record, experiment_name)
-                            continue
+                            store.append(failure_record, experiment_name)
+                        continue
     if retriever is not None:
         print(
             "\nRetrieval instrumentation:"

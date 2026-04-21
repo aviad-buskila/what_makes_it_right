@@ -80,12 +80,20 @@ def all_pairwise_tests(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def rag_effect_tests(df: pd.DataFrame) -> pd.DataFrame:
-    """Test the effect of RAG for each model (with vs without)."""
+    """Test the effect of RAG for each comparable setup pair.
+
+    Supports setup names with suffixes like ``@t0.5`` by matching:
+      model@tX <-> model+RAG@tX
+    """
     setups = sorted(df["setup_name"].unique())
     results = []
     for s in setups:
         if "+RAG" not in s:
-            rag_name = s + "+RAG"
+            if "@t" in s:
+                base_name, temp_suffix = s.split("@t", 1)
+                rag_name = f"{base_name}+RAG@t{temp_suffix}"
+            else:
+                rag_name = s + "+RAG"
             if rag_name in setups:
                 results.append(mcnemar_test(df, s, rag_name))
     return pd.DataFrame(results)

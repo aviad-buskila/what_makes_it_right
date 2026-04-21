@@ -104,6 +104,25 @@ class Retriever:
         ranked.sort(key=lambda x: x[0], reverse=True)
         return [doc for _, doc in ranked[:k]]
 
+    def build_query_text(self, question_text: str, options: dict[str, str], mode: str) -> str:
+        """Build retrieval query text from question/options according to mode."""
+        key = (mode or "question_only").strip().lower()
+        if key == "question_only":
+            return question_text
+        if key == "question_plus_options":
+            opts = " ".join(
+                f"{letter}) {text}" for letter, text in sorted(options.items())
+            )
+            return f"{question_text}\nOptions: {opts}"
+        if key == "question_plus_top_terms":
+            terms = []
+            for _, text in sorted(options.items()):
+                terms.extend(_token_set(text))
+            top_terms = [t for t, _ in Counter(terms).most_common(12)]
+            suffix = " ".join(top_terms)
+            return f"{question_text}\nOption key terms: {suffix}" if suffix else question_text
+        return question_text
+
     def _prime_lexical_pool(self) -> None:
         """Cache a subset of documents for lexical candidate generation."""
         try:
