@@ -1,0 +1,33 @@
+experiment:
+  name: "cyber_smoke"
+  repetitions: 1
+  max_questions: 5
+  random_seed: 42
+  temperature: 0.7
+  timeout_per_query: 60
+  record_failures: true
+  domain: "cybersecurity"
+
+dataset:
+  source: "cybermetric"
+  split: "test"
+  variant: 80  # smallest public CyberMetric split for fast sanity checks
+
+models:
+  - name: "llama3.1-8b"
+    ollama_id: "llama3.1:8b"
+    category: "small_general"
+
+rag:
+  top_k: 5
+  chunk_size: 512
+  chunk_overlap: 50
+  embedding_model: "nomic-embed-text"
+  collection_name: "cyber_kb"
+  max_distance: 0.30
+  corpus_source: "cybersecurity"
+  corpus_include: ["owasp"]   # tiny subset so the smoke build finishes fast
+  persist_dir: "data/chroma_cyber_smoke"
+
+storage:
+  results_dir: "results"

@@ -1,0 +1,104 @@
+ISO/IEC 27001 is an information security standard. It specifies the requirements for establishing, implementing, maintaining and continually improving an information security management system (ISMS). Organizations with an ISMS that meet the standard's requirements can choose to have it certified by an accredited certification body following successful completion of an audit. There are also numerous recognized national and sector specific variants of the standard. 
+It was originally published jointly by the International Organization for Standardization (ISO) and the International Electrotechnical Commission (IEC) in 2005, with revisions in 2013 and 2022.
+
+
+Rationale
+Most organisations have a number of information security controls. However, without an information security management system (ISMS), controls tend to be somewhat disorganized and disjointed, having been implemented often as point solutions to specific situations or simply as a matter of convention. Security controls in operation typically address certain aspects of information technology (IT) or data security specifically; leaving non-IT information assets (such as paperwork and proprietary knowledge) less protected on the whole. Moreover, business continuity planning and physical security may be managed quite independently of IT or information security while Human Resources practices may make little reference to the need to define and assign information security roles and responsibilities throughout the organization.
+ISO/IEC 27001 requires that management:
+
+Systematically examine the organization's information security risks, taking account of the threats, vulnerabilities, and impacts;
+Design and implement a coherent and comprehensive suite of information security controls and/or other forms of risk treatment (such as risk avoidance or risk transfer) to address those risks that are deemed unacceptable; and
+Adopt an overarching management process to ensure that the information security controls continue to meet the organization's information security needs on an ongoing basis.
+What controls will be tested as part of certification to ISO/IEC 27001 is dependent on the certification auditor. This can include any controls that the organisation has deemed to be within the scope of the ISMS and this testing can be to any depth or extent as assessed by the auditor as needed to test that the control has been implemented and is operating effectively.
+Management determines the scope of the ISMS for certification purposes and may limit it to, say, a single business unit or location. The ISO/IEC 27001 certificate does not necessarily mean the remainder of the organization, outside the scoped area, has an adequate approach to information security management.
+Other standards in the ISO/IEC 27000 family of standards provide additional guidance on certain aspects of designing, implementing and operating an ISMS, for example on information security risk management (ISO/IEC 27005).
+
+
+Contents
+The standard contains the following chapters. Units 4 through 10 are required to be implemented for an ISMS to be certified:
+
+Scope
+Normative references
+Terms and definitions
+Context of the organization
+Understanding the organization and its context
+Understanding the needs and expectations of interested parties
+Determining the scope of the information security management system
+Information security management system
+Leadership
+Leadership and commitment
+Policy
+Organizational roles, responsibilities and authorities
+Planning
+Actions to address risks and opportunities
+Information security objectives and planning to achieve them
+Support
+Resources
+Competence
+Awareness
+Communication
+Documented information
+Operation
+Operational planning and control
+Information security risk assessment
+Information security risk treatment
+Performance evaluation
+Monitoring, measurement, analysis and evaluation
+Internal audit
+Management review
+Improvement
+Continual improvement
+Nonconformity and corrective action
+
+
+History
+BS 7799 was a standard originally published by BSI Group in 1995. It was written by the UK government's Department of Trade and Industry (DTI) and consisted of several parts.
+The first part, containing the best practices for information security management, was revised in 1998; after a lengthy discussion in the worldwide standards bodies, it was eventually adopted by ISO as ISO/IEC 17799, "Information Technology - Code of practice for information security management." in 2000. ISO/IEC 17799 was then revised in June 2005 and finally incorporated in the ISO 27000 series of standards as ISO/IEC 27002 in July 2007.
+The second part of BS7799 was first published by BSI in 1999, known as BS 7799 Part 2, titled "Information Security Management Systems - Specification with guidance for use." BS 7799-2 focused on how to implement an Information security management system (ISMS), referring to the information security management structure and controls identified in BS 7799-2. This later became ISO/IEC 27001:2005. BS 7799 Part 2 was adopted by ISO as ISO/IEC 27001 in November 2005.
+BS 7799 Part 3 was published in 2005, covering risk analysis and management. It aligns with ISO/IEC 27001:2005.
+Very little reference or use is made to any of the BS standards in connection with ISO/IEC 27001.
+
+
+Principles
+
+The foundation of ISO/IEC 27001 is based on several key principles:
+ISO/IEC 27001 emphasizes the importance of identifying and assessing information security risks. Organizations are required to implement risk management processes to identify potential threats, evaluate their impact, and develop appropriate mitigation strategies.
+The latest revision of the standard ISO/IEC 27001:2022 outlines a comprehensive set of security controls in Annex A, categorized into 4 domains. These controls address various aspects of information security, such as access control, cryptography, physical security, and incident management.
+ISO/IEC 27001 promotes a culture of continual improvement in information security practices. Regular monitoring, performance evaluation, and periodic reviews help organizations adapt to evolving threats and enhance their ISMS effectiveness.
+
+
+Certification
+An ISMS may be certified compliant with the ISO/IEC 27001 standard by a number of Accredited Registrars worldwide. Certification against any of the recognized national variants of ISO/IEC 27001 (e.g. JIS Q 27001, the Japanese version) by an accredited certification body is functionally equivalent to certification against ISO/IEC 27001 itself.
+In some countries, the bodies that verify conformity of management systems to specified standards are called "certification bodies", while in others they are commonly referred to as "registration bodies", "assessment and registration bodies", "certification/ registration bodies", and sometimes "registrars".
+The ISO/IEC 27001 certification, like other ISO management system certifications, usually involves a three-stage external audit process defined by ISO/IEC 17021 and ISO/IEC 27006 standards:
+
+
+Stage 1
+A preliminary review of the ISMS. It includes checks for the existence and completeness of key documentation, such as the organization's information security policy, Statement of Applicability (SoA), and Risk Treatment Plan (RTP). The auditor will have a brief meeting with some employees to review if their knowledge of the standard's requirements is at an acceptable level. They will decide if the organization is ready for the Stage 2 audit. They will also discuss any issues or specific situations prior to the Stage 2 audit and define the auditplan including subjects and who is needed on what day.
+
+
+Stage 2
+A more detailed and formal compliance audit, independently testing the ISMS against the requirements specified in ISO/IEC 27001. The auditors will seek evidence to confirm that the management system has been properly designed and implemented, and is in fact in operation (for example by confirming that a security committee or similar management body meets regularly to oversee the ISMS). Certification audits are usually conducted by ISO/IEC 27001 Lead Auditors. Passing this stage results in the ISMS being certified compliant with ISO/IEC 27001.
+
+
+Ongoing
+Follow-up reviews or audits to confirm that the organization remains in compliance with the standard. Certification maintenance requires periodic re-assessment audits to confirm that the ISMS continues to operate as specified and intended. These should happen at least annually but (by agreement with management) are often conducted more frequently, particularly while the ISMS is still maturing.
+
+
+Related standards
+ISO 9001
+ISO/IEC 27002
+NIST Cybersecurity Framework
+IEC 62443
+
+
+See also
+List of ISO standards
+List of IEC standards
+
+
+References
+
+
+External links
+Official website

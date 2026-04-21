@@ -1,0 +1,128 @@
+Public-key cryptography, or asymmetric cryptography, is the field of cryptographic systems that use pairs of related keys. Each key pair consists of a public key and a corresponding private key. Key pairs are generated with algorithms based on mathematical problems termed one-way functions. Security of public-key cryptography depends on keeping the private key secret; the public key can be openly distributed without compromising security. There are many kinds of public-key cryptosystems, with different security goals, including digital signature, Diffie–Hellman key exchange, public-key key encapsulation, and public-key encryption. 
+Public key algorithms are fundamental security primitives in modern cryptosystems, including applications and protocols that offer assurance of the confidentiality and authenticity of electronic communications and data storage. They underpin numerous Internet standards, such as Transport Layer Security (TLS), SSH, S/MIME, and PGP. Compared to symmetric cryptography, public-key cryptography can be too slow for many purposes, so these protocols often combine symmetric cryptography with public-key cryptography in hybrid cryptosystems.
+
+
+Description
+Before the mid-1970s, all cipher systems used symmetric key algorithms, in which the same cryptographic key is used with the underlying algorithm by both the sender and the recipient, who must both keep the key secret. Of necessity, the key in every such system had to be exchanged between the communicating parties in some secure way prior to any use of the system – for instance, via a secure channel. This requirement is never trivial and very rapidly becomes unmanageable as the number of participants increases, when secure channels are not available, or when (as is sensible cryptographic practice) keys are frequently changed. In particular, if messages are meant to be secure from other users, a separate key is required for each possible pair of users.
+By contrast, in a public-key cryptosystem, the public keys can be disseminated widely and openly, and only the corresponding private keys need be kept secret. The two best-known types of public key cryptography are digital signature and public-key encryption.
+In a digital signature system, a sender can use a private key together with a message to create a signature.  Anyone with the corresponding public key can verify whether the signature matches the message, but a forger who does not know the private key cannot generate any message/signature pair that will pass verification with the public key. For example, a software publisher can create a signature key pair and include the public key in software installed on computers.  Later, the publisher can distribute an update to the software signed using the private key, and any computer receiving an update can confirm it is genuine by verifying the signature using the public key.  As long as the software publisher keeps the private key secret, even if a forger can distribute malicious updates to computers, they cannot convince the computers that any malicious updates are genuine.
+In a public-key encryption system, anyone with a public key can encrypt a message, yielding a ciphertext, but only those who know the corresponding private key can decrypt the ciphertext to obtain the original message. For example, a journalist can publish the public key of an encryption key pair on a website so that sources can send secret messages to the news organization in ciphertext. Only the journalist who knows the corresponding private key can decrypt the ciphertexts to obtain the sources' messages—an eavesdropper reading email on its way to the journalist cannot decrypt the ciphertexts.  Public-key encryption on its own also does not tell the recipient anything about who sent a message—it just conceals the content of the message.
+Applications built on public-key cryptography include authenticating web servers with TLS, digital cash, password-authenticated key agreement, authenticating and concealing email content with OpenPGP or S/MIME, and time-stamping services and non-repudiation protocols.
+One important issue is confidence/proof that a particular public key is authentic, i.e. that it is correct and belongs to the person or entity claimed, and has not been tampered with or replaced by some (perhaps malicious) third party. There are several possible approaches, including:
+A public key infrastructure (PKI), in which one or more third parties – known as certificate authorities – certify ownership of key pairs. TLS relies upon this. This implies that the PKI system (software, hardware, and management) is trust-able by all involved.
+A "web of trust" decentralizes authentication by using individual endorsements of links between a user and the public key belonging to that user. PGP uses this approach, in addition to lookup in the domain name system (DNS). The DKIM system for digitally signing emails also uses this approach.
+
+
+Hybrid cryptosystems
+Because asymmetric key algorithms are nearly always much more computationally intensive than symmetric ones, it is common to use a public/private asymmetric key-exchange algorithm to encrypt and exchange a symmetric key, which is then used by  symmetric-key cryptography to transmit data using the now-shared symmetric key for a symmetric key encryption algorithm. PGP, SSH, and the SSL/TLS family of schemes use this procedure;  they are thus called hybrid cryptosystems. The initial asymmetric cryptography-based key exchange to share a server-generated symmetric key from the server to client has the advantage of not requiring that a symmetric key be pre-shared manually, such as on printed paper or discs transported by a courier, while providing the higher data throughput of symmetric key cryptography over asymmetric key cryptography for the remainder of the shared connection.
+
+
+Weaknesses
+As with all security-related systems, there are various potential weaknesses in public-key cryptography.  Aside from poor choice of an asymmetric key algorithm (there are few that are widely regarded as satisfactory) or too short a key length, the chief security risk is that the private key of a pair becomes known.  All security of messages, authentication, etc., encrypted with this private key will then be lost. This is commonly mitigated (such as in recent TLS schemes) by using Forward secrecy capable schemes that generate an ephemeral set of keys during the communication which must also be known for the communication to be compromised.
+Additionally, with the advent of quantum computing, many asymmetric key algorithms are considered vulnerable to attacks, and new quantum-resistant schemes are being developed to overcome the problem.
+Beyond algorithmic or key-length weaknesses, some studies have noted risks when private key control is delegated to third parties. Research on Uruguay’s implementation of Public Key Infrastructure under Law 18.600 found that centralized key custody by Trust Service Providers (TSPs) may weaken the principle of private-key secrecy, increasing exposure to man-in-the-middle attacks and raising concerns about legal non-repudiation.
+
+
+Algorithms
+All public key schemes are in theory susceptible to a "brute-force key search attack". However, such an attack is impractical if the amount of computation needed to succeed – termed the "work factor" by Claude Shannon – is out of reach of all potential attackers. In many cases, the work factor can be increased by simply choosing a longer key. But other algorithms may inherently have much lower work factors, making resistance to a brute-force attack (e.g., from longer keys) irrelevant. Some special and specific algorithms have been developed to aid in attacking some public key encryption algorithms; both RSA and ElGamal encryption have known attacks that are much faster than the brute-force approach. None of these are sufficiently improved to be actually practical, however.
+Major weaknesses have been found for several formerly promising asymmetric key algorithms. The "knapsack packing" algorithm was found to be insecure after the development of a new attack. As with all cryptographic functions, public-key implementations may be vulnerable to side-channel attacks that exploit information leakage to simplify the search for a secret key. These are often independent of the algorithm being used. Research is underway to both discover, and to protect against, new attacks.
+
+
+Alteration of public keys
+Another potential security vulnerability in using asymmetric keys is the possibility of a "man-in-the-middle" attack, in which the communication of public keys is intercepted by a third party (the "man in the middle") and then modified to provide different public keys instead. Encrypted messages and responses must, in all instances, be intercepted, decrypted, and re-encrypted by the attacker using the correct public keys for the different communication segments so as to avoid suspicion.
+A communication is said to be insecure where data is transmitted in a manner that allows for interception (also called "sniffing"). These terms refer to reading the sender's private data in its entirety. A communication is particularly unsafe when interceptions can not be prevented or monitored by the sender.
+A man-in-the-middle attack can be difficult to implement due to the complexities of modern security protocols. However, the task becomes simpler when a sender is using insecure media such as public networks, the Internet, or wireless communication. In these cases an attacker can compromise the communications infrastructure rather than the data itself. A hypothetical malicious staff member at an Internet service provider (ISP) might find a man-in-the-middle attack relatively straightforward. Capturing the public key would only require searching for the key as it gets sent through the ISP's communications hardware;  in properly implemented asymmetric key schemes, this is not a significant risk.
+In some advanced man-in-the-middle attacks, one side of the communication will see the original data while the other will receive a malicious variant. Asymmetric man-in-the-middle attacks can prevent users from realizing their connection is compromised. This remains so even when one user's data is known to be compromised because the data appears fine to the other user. This can lead to confusing disagreements between users such as "it must be on your end!" when neither user is at fault. Hence, man-in-the-middle attacks are only fully preventable when the communications infrastructure is physically controlled by one or both parties; such as via a wired route inside the sender's own building. In summation, public keys are easier to alter when the communications hardware used by a sender is controlled by an attacker.
+
+
+Public key infrastructure
+One approach to prevent such attacks involves the use of a public key infrastructure (PKI); a set of roles, policies, and procedures needed to create, manage, distribute, use, store and revoke digital certificates and manage public-key encryption. However, this has potential weaknesses.
+For example, the certificate authority issuing the certificate must be trusted by all participating parties to have properly checked the identity of the key-holder, to have ensured the correctness of the public key when it issues a certificate, to be secure from computer piracy, and to have made arrangements with all participants to check all their certificates before protected communications can begin. Web browsers, for instance, are supplied with a long list of "self-signed identity certificates" from PKI providers – these are used to check the bona fides of the certificate authority and then, in a second step, the certificates of potential communicators. An attacker who could subvert one of those certificate authorities into issuing a certificate for a bogus public key could then mount a "man-in-the-middle" attack as easily as if the certificate scheme were not used at all. An attacker who penetrates an authority's servers and obtains its store of certificates and keys (public and private) would be able to spoof, masquerade, decrypt, and forge transactions without limit, assuming that they were able to place themselves in the communication stream.
+Despite its theoretical and potential problems, Public key infrastructure is widely used. Examples include TLS and its predecessor SSL, which are commonly used to provide security for web browser transactions (for example, most websites utilize TLS for HTTPS).
+Aside from the resistance to attack of a particular key pair, the security of the certification hierarchy must be considered when deploying public key systems. Some certificate authority – usually a purpose-built program running on a server computer – vouches for the identities assigned to specific private keys by producing a digital certificate. Public key digital certificates are typically valid for several years at a time, so the associated private keys must be held securely over that time. When a private key used for certificate creation higher in the PKI server hierarchy is compromised, or accidentally disclosed, then a "man-in-the-middle attack" is possible, making any subordinate certificate wholly insecure.
+
+
+Unencrypted metadata
+Most of the available public-key encryption software does not conceal metadata in the message header, which might include the identities of the sender and recipient, the sending date, subject field, and the software they use etc.  Rather, only the body of the message is concealed and can only be decrypted with the private key of the intended recipient.  This means that a third party could construct quite a detailed model of participants in a communication network, along with the subjects being discussed, even if the message body itself is hidden.
+However, there has been a recent demonstration of messaging with encrypted headers, which obscures the identities of the sender and recipient, and significantly reduces the available metadata to a third party.  The concept is based around an open repository containing separately encrypted metadata blocks and encrypted messages. Only the intended recipient is able to decrypt the metadata block, and having done so they can identify and download their messages and decrypt them.  Such a messaging system is at present in an experimental phase and not yet deployed.  Scaling this method would reveal to the third party only the inbox server being used by the recipient and the timestamp of sending and receiving.  The server could be shared by thousands of users, making social network modelling much more challenging.
+
+
+History
+During the early history of cryptography, two parties would rely upon a key that they would exchange by means of a secure, but non-cryptographic, method such as a face-to-face meeting, or a trusted courier. This key, which both parties must then keep absolutely secret, could then be used to exchange encrypted messages. A number of significant practical difficulties arise with this approach to distributing keys.
+
+
+Anticipation
+In his 1874 book The Principles of Science, William Stanley Jevons wrote:
+Can the reader say what two numbers multiplied together will produce the number 8,616,460,799? I think it unlikely that anyone but myself will ever know.
+Here he described the relationship of one-way functions to cryptography, and went on to discuss specifically the factorization problem used to create a trapdoor function. In July 1996, mathematician Solomon W. Golomb said: "Jevons anticipated a key feature of the RSA Algorithm for public key cryptography, although he certainly did not invent the concept of public key cryptography."
+
+
+Classified discovery
+In 1970, James H. Ellis, a British cryptographer at the UK Government Communications Headquarters (GCHQ), conceived of the possibility of "non-secret encryption", (now called public key cryptography), but could see no way to implement it.
+In 1973, his colleague Clifford Cocks implemented what has become known as the RSA encryption algorithm, giving a practical method of "non-secret encryption", and in 1974 another GCHQ mathematician and cryptographer, Malcolm J. Williamson, developed what is now known as Diffie–Hellman key exchange.
+The scheme was also passed to the US's National Security Agency. Both organisations had a military focus and only limited computing power was available in any case;  the potential of public key cryptography remained unrealised by either organization. According to Ralph Benjamin:
+
+I judged it most important for military use ... if you can share your key rapidly and electronically, you have a major advantage over your opponent. Only at the end of the evolution from Berners-Lee designing an open internet architecture for CERN, its adaptation and adoption for the Arpanet ... did public key cryptography realise its full potential.
+These discoveries were not publicly acknowledged until the research was declassified by the British government in 1997.
+
+
+Public discovery
+In 1976, an asymmetric key cryptosystem was published by Whitfield Diffie and Martin Hellman who, influenced by Ralph Merkle's work on public key distribution, disclosed a method of public key agreement. This method of key exchange, which uses exponentiation in a finite field, came to be known as Diffie–Hellman key exchange. This was the first published practical method for establishing a shared secret-key over an authenticated (but not confidential) communications channel without using a prior shared secret. Merkle's "public key-agreement technique" became known as Merkle's Puzzles, and was invented in 1974 and only published in 1978. This makes asymmetric encryption a rather new field in cryptography although cryptography itself dates back more than 2,000 years.
+In 1977, a generalization of Cocks's scheme was independently invented by Ron Rivest, Adi Shamir and Leonard Adleman, all then at MIT. The latter authors published their work in 1978 in Martin Gardner's Scientific American column, and the algorithm came to be known as RSA, from their initials. RSA uses exponentiation modulo a product of two very large primes, to encrypt and decrypt, performing both public key encryption and public key digital signatures. Its security is connected to the extreme difficulty of factoring large integers, a problem for which there is no known efficient general technique. A description of the algorithm was published in the Mathematical Games column in the August 1977 issue of Scientific American.
+Since the 1970s, a large number and variety of encryption, digital signature, key agreement, and other techniques have been developed, including the Rabin signature, ElGamal encryption, DSA and ECC.
+
+
+Examples
+Examples of well-regarded asymmetric key techniques for varied purposes include:
+
+Diffie–Hellman key exchange protocol
+DSS (Digital Signature Standard), which incorporates the Digital Signature Algorithm
+ElGamal
+Elliptic-curve cryptography
+Elliptic Curve Digital Signature Algorithm (ECDSA)
+Elliptic-curve Diffie–Hellman (ECDH)
+Ed25519 and Ed448 (EdDSA)
+X25519 and X448 (ECDH/EdDH)
+Various password-authenticated key agreement techniques
+Paillier cryptosystem
+RSA encryption algorithm (PKCS#1)
+Cramer–Shoup cryptosystem
+YAK authenticated key agreement protocol
+Examples of asymmetric key algorithms not yet widely adopted include:
+
+NTRUEncrypt cryptosystem
+Kyber
+McEliece cryptosystem
+Examples of notable – yet insecure – asymmetric key algorithms include:
+
+Merkle–Hellman knapsack cryptosystem
+Examples of protocols using asymmetric key algorithms include:
+
+S/MIME
+GPG, an implementation of OpenPGP, and an Internet Standard
+EMV, EMV Certificate Authority
+IPsec
+PGP
+ZRTP, a secure VoIP protocol
+Transport Layer Security standardized by IETF and its predecessor Secure Socket Layer
+SILC
+SSH
+Bitcoin
+Off-the-Record Messaging
+
+
+See also
+
+
+Notes
+
+
+References
+
+
+Sources
+
+
+External links
+Oral history interview with Martin Hellman, Charles Babbage Institute, University of Minnesota. Leading cryptography scholar Martin Hellman discusses the circumstances and fundamental insights of his invention of public key cryptography with collaborators Whitfield Diffie and Ralph Merkle at Stanford University in the mid-1970s.
+An account of how GCHQ kept their invention of PKE secret until 1997

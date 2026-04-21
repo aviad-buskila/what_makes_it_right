@@ -1,0 +1,197 @@
+Biometrics are body measurements and calculations related to human characteristics and features. Biometric authentication (or realistic authentication) is used in computer science as a form of identification and access control. It is also used to identify individuals in groups that are under surveillance.
+Biometric identifiers are the distinctive, measurable characteristics used to label and describe individuals. Biometric identifiers are often categorized as physiological characteristics which are related to the shape of the body. Examples include, but are not limited to fingerprint, palm veins, face recognition, DNA, palm print, hand geometry, iris recognition, retina, odor/scent, voice, shape of ears and gait. Behavioral characteristics are related to the pattern of behavior of a person, including but not limited to mouse movement, typing rhythm, gait, signature, voice, and behavioral profiling. Some researchers have coined the term "Behaviometrics" (behavioral biometrics) to describe the latter class of biometrics.
+More traditional means of access control include token-based identification systems, such as a driver's license or passport, and knowledge-based identification systems, such as a password or personal identification number. Since biometric identifiers are unique to individuals, they are more reliable in verifying identity than token and knowledge-based methods; however, the collection of biometric identifiers raises privacy concerns. 
+
+
+Biometric functionality
+Many different aspects of human physiology, chemistry or behavior can be used for biometric authentication. The selection of a particular biometric for use in a specific application involves a weighting of several factors. Jain et al. (1999) identified seven such factors to be used when assessing the suitability of any trait for use in biometric authentication. Biometric authentication is based upon biometric recognition which is an advanced method of recognizing biological and behavioral characteristics of an Individual.  
+
+Universality means that every person using a system should possess the trait.
+Uniqueness means the trait should be sufficiently different for individuals in the relevant population such that they can be distinguished from one another.
+Permanence relates to the manner in which a trait varies over time. More specifically, a trait with good permanence will be reasonably invariant over time with respect to the specific matching algorithm.
+Measurability (collectability) relates to the ease of acquisition or measurement of the trait. In addition, acquired data should be in a form that permits subsequent processing and extraction of the relevant feature sets.
+Performance relates to the accuracy, speed, and robustness of technology used (see performance section for more details).
+Acceptability relates to how well individuals in the relevant population accept the technology such that they are willing to have their biometric trait captured and assessed.
+Circumvention relates to the ease with which a trait might be imitated using an artifact or substitute.
+Proper biometric use is very application dependent. Certain biometrics will be better than others based on the required levels of convenience and security. No single biometric will meet all the requirements of every possible application.
+
+The block diagram illustrates the two basic modes of a biometric system. First, in verification (or authentication) mode the system performs a one-to-one comparison of a captured biometric with a specific template stored in a biometric database in order to verify the individual is the person they claim to be. Three steps are involved in the verification of a person. In the first step, reference models for all the users are generated and stored in the model database . In the second step, some samples are matched with reference models to generate the genuine and impostor scores and calculate the threshold. The third step is the testing step. This process may use a smart card, username, or ID number (e.g. PIN) to indicate which template should be used for comparison. Positive recognition is a common use of the verification mode, "where the aim is to prevent multiple people from using the same identity".
+
+Second, in identification mode the system performs a one-to-many comparison against a biometric database in an attempt to establish the identity of an unknown individual. The system will succeed in identifying the individual if the comparison of the biometric sample to a template in the database falls within a previously set threshold. Identification mode can be used either for positive recognition (so that the user does not have to provide any information about the template to be used) or for negative recognition of the person "where the system establishes whether the person is who she (implicitly or explicitly) denies to be". The latter function can only be achieved through biometrics since other methods of personal recognition, such as passwords, PINs, or keys, are ineffective.
+The first time an individual uses a biometric system is called enrollment. During enrollment, biometric information from an individual is captured and stored. In subsequent uses, biometric information is detected and compared with the information stored at the time of enrollment. Note that it is crucial that storage and retrieval of such systems themselves be secure if the biometric system is to be robust. The first block (sensor) is the interface between the real world and the system; it has to acquire all the necessary data. Most of the time it is an image acquisition system, but it can change according to the characteristics desired. The second block performs all the necessary pre-processing: it has to remove artifacts from the sensor, to enhance the input (e.g. removing background noise), to use some kind of normalization, etc. In the third block, necessary features are extracted. This step is an important step as the correct features need to be extracted in an optimal way. A vector of numbers or an image with particular properties is used to create a template. A template is a synthesis of the relevant characteristics extracted from the source. Elements of the biometric measurement that are not used in the comparison algorithm are discarded in the template to reduce the file size and to protect the identity of the enrollee. However, depending on the scope of the biometric system, original biometric image sources may be retained, such as the PIV-cards used in the Federal Information Processing Standard Personal Identity Verification (PIV) of Federal Employees and Contractors (FIPS 201).
+During the enrollment phase, the template is simply stored somewhere (on a card or within a database or both). During the matching phase, the obtained template is passed to a matcher that compares it with other existing templates, estimating the distance between them using any algorithm (e.g. Hamming distance). The matching program will analyze the template with the input. This will then be output for a specified use or purpose (e.g. entrance in a restricted area), though it is a fear that the use of biometric data may face mission creep.
+Selection of biometrics in any practical application depending upon the characteristic measurements and user requirements. In selecting a particular biometric, factors to consider include, performance, social acceptability, ease of circumvention and/or spoofing, robustness, population coverage, size of equipment needed and identity theft deterrence. The selection of a biometric is based on user requirements and considers sensor and device availability, computational time and reliability, cost, sensor size, and power consumption.
+
+
+Multimodal biometric system
+Multimodal biometric systems use multiple sensors or biometrics to overcome the limitations of unimodal biometric systems. For instance iris recognition systems can be compromised by aging irises and electronic fingerprint recognition can be worsened by worn-out or cut fingerprints. While unimodal biometric systems are limited by the integrity of their identifier, it is unlikely that several unimodal systems will suffer from identical limitations. Multimodal biometric systems can obtain sets of information from the same marker (i.e., multiple images of an iris, or scans of the same finger) or information from different biometrics (requiring fingerprint scans and, using voice recognition, a spoken passcode).
+Multimodal biometric systems can fuse these unimodal systems sequentially, simultaneously, a combination thereof, or in series, which refer to sequential, parallel, hierarchical and serial integration modes, respectively.
+Fusion of the biometrics information can occur at different stages of a recognition system. In case of feature level fusion, the data itself or the features extracted from multiple biometrics are fused. Matching-score level fusion consolidates the scores generated by multiple classifiers pertaining to different modalities. Finally, in case of decision level fusion the final results of multiple classifiers are combined via techniques such as majority voting. Feature level fusion is believed to be more effective than the other levels of fusion because the feature set contains richer information about the input biometric data than the matching score or the output decision of a classifier. Therefore, fusion at the feature level is expected to provide better recognition results.
+Spoof attacks consist in submitting fake biometric traits to biometric systems, and are a major threat that can curtail their security. Multi-modal biometric systems are commonly believed to be intrinsically more robust to spoof attacks, but recent studies have shown that they can be evaded by spoofing even a single biometric trait.
+One such proposed system of Multimodal Biometric Cryptosystem Involving the Face, Fingerprint, and Palm Vein by Prasanalakshmi The Cryptosystem Integration combines biometrics with cryptography, where the palm vein acts as a cryptographic key, offering a high level of security since palm veins are unique and difficult to forge. The Fingerprint Involves minutiae extraction (terminations and bifurcations) and matching techniques. Steps include image enhancement, binarization, ROI extraction, and minutiae thinning. The Face system uses class-based scatter matrices to calculate features for recognition, and the Palm Vein acts as an unbreakable cryptographic key, ensuring only the correct user can access the system. The cancelable Biometrics concept allows biometric traits to be altered slightly to ensure privacy and avoid theft. If compromised, new variations of biometric data can be issued.
+The Encryption fingerprint template is encrypted using the palm vein key via XOR operations. This encrypted Fingerprint is hidden within the face image using steganographic techniques. Enrollment and Verification for the Biometric data (Fingerprint, palm vein, face) are captured, encrypted, and embedded into a face image. The system extracts the biometric data and compares it with stored values for Verification. The system was tested with fingerprint databases, achieving 75% verification accuracy at an equal error rate of 25% and processing time approximately 50 seconds for enrollment and 22 seconds for Verification. High security due to palm vein encryption, effective against biometric spoofing, and the multimodal approach ensures reliability if one biometric fails. Potential for integration with smart cards or on-card systems, enhancing security in personal identification systems.
+
+
+Performance
+The discriminating powers of all biometric technologies depend on the amount of entropy they are able to encode and use in matching. 
+The following are used as performance metrics for biometric systems:
+
+False match rate (FMR, also called FAR = False Accept Rate): the probability that the system incorrectly matches the input pattern to a non-matching template in the database. It measures the percent of invalid inputs that are incorrectly accepted. In case of similarity scale, if the person is an imposter in reality, but the matching score is higher than the threshold, then he is treated as genuine. This increases the FMR, which thus also depends upon the threshold value.
+False non-match rate (FNMR, also called FRR = False Reject Rate): the probability that the system fails to detect a match between the input pattern and a matching template in the database. It measures the percent of valid inputs that are incorrectly rejected.
+Receiver operating characteristic or relative operating characteristic (ROC): The ROC plot is a visual characterization of the trade-off between the FMR and the FNMR. In general, the matching algorithm performs a decision based on a threshold that determines how close to a template the input needs to be for it to be considered a match. If the threshold is reduced, there will be fewer false non-matches but more false accepts. Conversely, a higher threshold will reduce the FMR but increase the FNMR. A common variation is the Detection error trade-off (DET), which is obtained using normal deviation scales on both axes. This more linear graph illuminates the differences for higher performances (rarer errors).
+Equal error rate or crossover error rate (EER or CER): the rate at which both acceptance and rejection errors are equal. The value of the EER can be easily obtained from the ROC curve. The EER is a quick way to compare the accuracy of devices with different ROC curves. In general, the device with the lowest EER is the most accurate.
+Failure to enroll rate (FTE or FER): the rate at which attempts to create a template from an input is unsuccessful. This is most commonly caused by low-quality inputs.
+Failure to capture rate (FTC): Within automatic systems, the probability that the system fails to detect a biometric input when presented correctly.
+Template capacity: the maximum number of sets of data that can be stored in the system.
+
+
+History
+
+An early cataloguing of fingerprints dates back to 1885 when Juan Vucetich started a collection of fingerprints of criminals in Argentina. Josh Ellenbogen and Nitzan Lebovic argued that Biometrics originated in the identification systems of criminal activity developed by Alphonse Bertillon (1853–1914) and by Francis Galton's theory of fingerprints and physiognomy. Historian Keith Breckenridge note that Galton's travels in South Africa reinforced his early racial prejudices and inspired his later commitment to classifying human difference scientifically.  According to Lebovic, Galton's work "led to the application of mathematical models to fingerprints, phrenology, and facial characteristics", as part of "absolute identification" and "a key to both inclusion and exclusion" of populations. Accordingly, "the biometric system is the absolute political weapon of our era" and a form of "soft control". The theoretician David Lyon showed that during the past two decades biometric systems have penetrated the civilian market, and blurred the lines between governmental forms of control and private corporate control. Kelly A. Gates identified 9/11 as the turning point for the cultural language of our present: "in the language of cultural studies, the aftermath of 9/11 was a moment of articulation, where objects or events that have no necessary connection come together and a new discourse formation is established: automated facial recognition as a homeland security technology."
+
+
+Adaptive biometric systems
+Adaptive biometric systems aim to auto-update the templates or model to the intra-class variation of the operational data. The two-fold advantages of these systems are solving the problem of limited training data and tracking the temporal variations of the input data through adaptation. Recently, adaptive biometrics have received a significant attention from the research community. This research direction is expected to gain momentum because of their key promulgated advantages. First, with an adaptive biometric system, one no longer needs to collect a large number of biometric samples during the enrollment process. Second, it is no longer necessary to enroll again or retrain the system from scratch in order to cope with the changing environment. This convenience can significantly reduce the cost of maintaining a biometric system. Despite these advantages, there are several open issues involved with these systems. For mis-classification error (false acceptance) by the biometric system, cause adaptation using impostor sample. However, continuous research efforts are directed to resolve the open issues associated to the field of adaptive biometrics. More information about adaptive biometric systems can be found in the critical review by Rattani et al.
+
+
+Recent advances in emerging biometrics
+In recent times, biometrics based on brain (electroencephalogram) and heart (electrocardiogram) signals have emerged.  An example is finger vein recognition, using pattern-recognition techniques, based on images of human vascular patterns. The advantage of this newer technology is that it is more fraud resistant compared to conventional biometrics like fingerprints. However, such technology is generally more cumbersome and still has issues such as lower accuracy and poor reproducibility over time.
+On the portability side of biometric products, more and more vendors are embracing significantly miniaturized biometric authentication systems (BAS) thereby driving elaborate cost savings, especially for large-scale deployments.
+
+
+Operator signatures
+An operator signature is a biometric mode where the manner in which a person using a device or complex system is recorded as a verification template. One potential use for this type of biometric signature is to distinguish among remote users of telerobotic surgery systems that utilize public networks for communication.
+
+
+Proposed requirement for certain public networks
+John Michael (Mike) McConnell, a former vice admiral in the United States Navy, a former director of U.S. National Intelligence, and senior vice president of Booz Allen Hamilton, promoted the development of a future capability to require biometric authentication to access certain public networks in his keynote speech at the 2009 Biometric Consortium Conference.
+A basic premise in the above proposal is that the person that has uniquely authenticated themselves using biometrics with the computer is in fact also the agent performing potentially malicious actions from that computer. However, if control of the computer has been subverted, for example in which the computer is part of a botnet controlled by a hacker, then knowledge of the identity of the user at the terminal does not materially improve network security or aid law enforcement activities.
+
+
+Animal biometrics
+Rather than tags or tattoos, biometric techniques may be used to identify individual animals: zebra stripes, blood vessel patterns in rodent ears, muzzle prints, bat wing patterns, primate facial recognition and koala spots have all been tried.
+
+
+Issues and concerns
+
+
+Human dignity
+Biometrics have been considered also instrumental to the development of state authority (to put it in Foucauldian terms, of discipline and biopower). By turning the human subject into a collection of biometric parameters, biometrics would dehumanize the person, infringe bodily integrity, and, ultimately, offend human dignity.
+In a well-known case, Italian philosopher Giorgio Agamben refused to enter the United States in protest at the United States Visitor and Immigrant Status Indicator (US-VISIT) program's requirement for visitors to be fingerprinted and photographed. Agamben argued that gathering of biometric data is a form of bio-political tattooing, akin to the tattooing of Jews during the Holocaust. According to Agamben, biometrics turn the human persona into a bare body. Agamben refers to the two words used by Ancient Greeks for indicating "life", zoe, which is the life common to animals and humans, just life; and bios, which is life in the human context, with meanings and purposes. Agamben envisages the reduction to bare bodies for the whole humanity. For him, a new bio-political relationship between citizens and the state is turning citizens into pure biological life (zoe) depriving them from their humanity (bios); and biometrics would herald this new world.
+In Dark Matters: On the Surveillance of Blackness, surveillance scholar Simone Browne formulates a similar critique as Agamben, citing a recent study relating to biometrics R&D that found that the gender classification system being researched "is inclined to classify Africans as males and Mongoloids as females." Consequently, Browne argues that the conception of an objective biometric technology is difficult if such systems are subjectively designed, and are vulnerable to cause errors as described in the study above. The stark expansion of biometric technologies in both the public and private sector magnifies this concern. The increasing commodification of biometrics by the private sector adds to this danger of loss of human value. Indeed, corporations value the biometric characteristics more than the individuals value them. Browne goes on to suggest that modern society should incorporate a "biometric consciousness" that "entails informed public debate around these technologies and their application, and accountability by the state and the private sector, where the ownership of and access to one's own body data and other intellectual property that is generated from one's body data must be understood as a right."
+Other scholars have emphasized, however, that the globalized world is confronted with a huge mass of people with weak or absent civil identities. Most developing countries have weak and unreliable documents and the poorer people in these countries do not have even those unreliable documents. Without certified personal identities, there is no certainty of right, no civil liberty. One can claim his rights, including the right to refuse to be identified, only if he is an identifiable subject, if he has a public identity. In such a sense, biometrics could play a pivotal role in supporting and promoting respect for human dignity and fundamental rights.
+
+
+Privacy and discrimination
+
+It is possible that data obtained during biometric enrollment may be used in ways for which the enrolled individual has not consented. For example, most biometric features could disclose physiological and/or pathological medical conditions (e.g., some fingerprint patterns are related to chromosomal diseases, iris patterns could reveal sex, hand vein patterns could reveal vascular diseases, most behavioral biometrics could reveal neurological diseases, etc.). Moreover, second generation biometrics, notably behavioral and electro-physiologic biometrics (e.g., based on electrocardiography, electroencephalography, electromyography), could be also used for emotion detection.
+There are three categories of privacy concerns:
+
+Unintended functional scope: The authentication goes further than authentication, such as finding a tumor.
+Unintended application scope: The authentication process correctly identifies the subject when the subject did not wish to be identified.
+Covert identification: The subject is identified without seeking identification or authentication, i.e. a subject's face is identified in a crowd.
+In terms of recognition or identification performance for a given trait, a biometric system should not exhibit accuracy differences across demographic groups. Disparities in accuracy can lead to uneven error rates for populations defined by gender, race, age, or other attributes . Therefore, biometric systems should be designed and evaluated to ensure demographic fairness, providing equitable performance for all users.
+
+
+Danger to owners of secured items
+When thieves cannot get access to secure properties, there is a chance that the thieves will stalk and assault the property owner to gain access. If the item is secured with a biometric device, the damage to the owner could be irreversible, and potentially cost more than the secured property. For example, in 2005, Malaysian car thieves cut off a man's finger when attempting to steal his Mercedes-Benz S-Class.
+
+
+Attacks at presentation
+In the context of biometric systems, presentation attacks may also be called "spoofing attacks".
+As per the recent ISO/IEC 30107 standard, presentation attacks are defined as "presentation to the biometric capture subsystem with the goal of interfering with the operation of the biometric system". These attacks can be either impersonation or obfuscation attacks. Impersonation attacks try to gain access by pretending to be someone else. Obfuscation attacks may, for example, try to evade face detection and face recognition systems.
+Several methods have been proposed to counteract presentation attacks.
+
+
+Surveillance humanitarianism in times of crisis
+Biometrics are employed by many aid programs in times of crisis in order to prevent fraud and ensure that resources are properly available to those in need. Humanitarian efforts are motivated by promoting the welfare of individuals in need, however the use of biometrics as a form of surveillance humanitarianism can create conflict due to varying interests of the groups involved in the particular situation. Disputes over the use of biometrics between aid programs and party officials stalls the distribution of resources to people that need help the most. In July 2019, the United Nations World Food Program and Houthi Rebels were involved in a large dispute over the use of biometrics to ensure resources are provided to the hundreds of thousands of civilians in Yemen whose lives are threatened. The refusal to cooperate with the interests of the United Nations World Food Program resulted in the suspension of food aid to the Yemen population. The use of biometrics may provide aid programs with valuable information, however its potential solutions may not be best suited for chaotic times of crisis. Conflicts that are caused by deep-rooted political problems, in which the implementation of biometrics may not provide a long-term solution.
+
+
+Cancelable biometrics
+One advantage of passwords over biometrics is that they can be re-issued. If a token or a password is lost or stolen, it can be cancelled and replaced by a newer version. This is not naturally available in biometrics. If someone's face is compromised from a database, they cannot cancel or reissue it. If the electronic biometric identifier is stolen, it is nearly impossible to change a biometric feature. This renders the person's biometric feature questionable for future use in authentication, such as the case with the hacking of security-clearance-related background information from the Office of Personnel Management (OPM) in the United States.
+Cancelable biometrics is a way in which to incorporate protection and the replacement features into biometrics to create a more secure system. It was first proposed by Ratha et al.
+"Cancelable biometrics refers to the intentional and systematically repeatable distortion of biometric features in order to protect sensitive user-specific data. If a cancelable feature is compromised, the distortion characteristics are changed, and the same biometrics is mapped to a new template, which is used subsequently. Cancelable biometrics is one of the major categories for biometric template protection purpose besides biometric cryptosystem." In biometric cryptosystem, "the error-correcting coding techniques are employed to handle intraclass variations." This ensures a high level of security but has limitations such as specific input format of only small intraclass variations.
+Several methods for generating new exclusive biometrics have been proposed. The first fingerprint-based cancelable biometric system was designed and developed by Tulyakov et al. Essentially, cancelable biometrics perform a distortion of the biometric image or features before matching. The variability in the distortion parameters provides the cancelable nature of the scheme. Some of the proposed techniques operate using their own recognition engines, such as Teoh et al. and Savvides et al., whereas other methods, such as Dabbah et al., take the advantage of the advancement of the well-established biometric research for their recognition front-end to conduct recognition. Although this increases the restrictions on the protection system, it makes the cancellable templates more accessible for available biometric technologies
+
+
+Proposed soft biometrics
+Soft biometrics are understood as not strict biometrical recognition practices that are proposed in favour of identity cheaters and stealers.
+Traits are physical, behavioral or adhered human characteristics that have been derived from the way human beings normally distinguish their peers (e.g. height, gender, hair color). They are used to complement the identity information provided by the primary biometric identifiers. Although soft biometric characteristics lack the distinctiveness and permanence to recognize an individual uniquely and reliably, and can be easily faked, they provide some evidence about the users identity that could be beneficial. In other words, despite the fact they are unable to individualize a subject, they are effective in distinguishing between people. Combinations of personal attributes like gender, race, eye color, height and other visible identification marks can be used to improve the performance of traditional biometric systems. Most soft biometrics can be easily collected and are actually collected during enrollment. Two main ethical issues are raised by soft biometrics. First, some of soft biometric traits are strongly cultural based; e.g., skin colors for determining ethnicity risk to support racist approaches, biometric sex recognition at the best recognizes gender from tertiary sexual characters, being unable to determine genetic and chromosomal sexes; soft biometrics for aging recognition are often deeply influenced by ageist stereotypes, etc. Second, soft biometrics have strong potential for categorizing and profiling people, so risking of supporting processes of stigmatization and exclusion.
+
+
+Data protection of biometric data in international law
+Many countries, including the United States, are planning to share biometric data with other nations.
+In testimony before the US House Appropriations Committee, Subcommittee on Homeland Security on "biometric identification" in 2009, Kathleen Kraninger and Robert A Mocny commented on international cooperation and collaboration with respect to biometric data, as follows:
+
+To ensure we can shut down terrorist networks before they ever get to the United States, we must also take the lead in driving international biometric standards. By developing compatible systems, we will be able to securely share terrorist information internationally to bolster our defenses. Just as we are improving the way we collaborate within the U.S. Government to identify and weed out terrorists and other dangerous people, we have the same obligation to work with our partners abroad to prevent terrorists from making any move undetected. Biometrics provide a new way to bring terrorists' true identities to light, stripping them of their greatest advantage—remaining unknown.
+According to an article written in 2009 by S. Magnuson in the National Defense Magazine entitled "Defense Department Under Pressure to Share Biometric Data" the United States has bilateral agreements with other nations aimed at sharing biometric data. To quote that article:
+
+Miller [a consultant to the Office of Homeland Defense and America's security affairs] said the United States has bilateral agreements to share biometric data with about 25 countries. Every time a foreign leader has visited Washington during the last few years, the State Department has made sure they sign such an agreement.
+
+
+Likelihood of full governmental disclosure
+Certain members of the civilian community are worried about how biometric data is used but full disclosure may not be forthcoming. In particular, the Unclassified Report of the United States' Defense Science Board Task Force on Defense Biometrics states that it is wise to protect, and sometimes even to disguise, the true and total extent of national capabilities in areas related directly to the conduct of security-related activities. This also potentially applies to Biometrics. It goes on to say that this is a classic feature of intelligence and military operations. In short, the goal is to preserve the security of 'sources and methods'.
+
+
+Data security
+The frequent use of biometric authentication for security and the permanence of an individuals biometrics make the security of biometric data crucial. 
+
+
+Events where biometric data was compromised
+Office of Personnel Management data breach in 2015
+Biostar 2 fingerprints leak in 2019
+Taliban seizure of US biometric data in 2021
+Afghan & Iraqi Fingerprints and Iris database
+
+
+Legislation and governmental Action
+Biometrics are considered personal information/data under multiple laws
+
+GDPR in the European Union became law in 2018
+LGPD in Brazil became law in 2020
+Protection of Personal Information Act in South Africa came into force in 2020
+Personal Data Protection Act in Sri Lanka implementation started in 2023
+
+
+United States
+The United States does not have a nationwide data privacy law that includes biometrics. Several states and local governments, led by the Illinois Biometric Information Privacy Act, have legislation regarding biometric data. The FTC has also taken actions to protect biometric data including against Facebook in 2019, charging they misrepresented their uses of facial recognition technology.
+
+
+Countries applying biometrics
+
+Countries using biometrics include Australia, Brazil, Bulgaria, Canada, Cyprus, Greece, China, Gambia, Germany, India, Iraq, Ireland, Israel, Italy, Malaysia, Netherlands, New Zealand, Nigeria, Norway, Pakistan, Poland, South Africa, Saudi Arabia, Tanzania, Turkey, Ukraine, United Arab Emirates, United Kingdom, United States and Venezuela.
+Among low to middle income countries, roughly 1.2 billion people have already received identification through a biometric identification program.
+There are also numerous countries applying biometrics for voter registration and similar electoral purposes. According to the International IDEA's ICTs in Elections Database, some of the countries using (2017) Biometric Voter Registration (BVR) are Armenia, Angola, Bangladesh, Bhutan, Bolivia, Brazil, Burkina Faso, Cambodia, Cameroon, Chad, Colombia, Comoros, Congo (Democratic Republic of), Costa Rica, Ivory Coast, Dominican Republic, Fiji, Gambia, Ghana, Guatemala, India, Iraq, Kenya, Lesotho, Liberia, Malawi, Mali, Mauritania, Mexico, Morocco, Mozambique, Namibia, Nepal, Nicaragua, Nigeria, Panama, Peru, Philippines, Senegal, Sierra Leone, Solomon Islands, Somaliland, Swaziland, Tanzania, Uganda, Uruguay, Venezuela, Yemen, Zambia, and Zimbabwe.
+
+
+India's national ID program
+India's national ID program called Aadhaar is the largest biometric database in the world. It is a biometrics-based digital identity assigned for a person's lifetime, verifiable online instantly in the public domain, at any time, from anywhere, in a paperless way. It is designed to enable government agencies to deliver a retail public service, securely based on biometric data (fingerprint, iris scan and face photo), along with demographic data (name, age, gender, address, parent/spouse name, mobile phone number) of a person. The data is transmitted in encrypted form over the internet for authentication, aiming to free it from the limitations of physical presence of a person at a given place.
+About 550 million residents have been enrolled and assigned 480 million Aadhaar national identification numbers as of 7 November 2013. It aims to cover the entire population of 1.2 billion in a few years. However, it is being challenged by critics over privacy concerns and possible transformation of the state into a surveillance state, or into a Banana republic.§ The project was also met with mistrust regarding the safety of the social protection infrastructures. To tackle the fear amongst the people, India's supreme court put a new ruling into action that stated that privacy from then on was seen as a fundamental right. On 24 August 2017 this new law was established.
+
+
+Malaysia's MyKad national ID program
+The current identity card, known as MyKad, was introduced by the National Registration Department of Malaysia on 5 September 2001 with Malaysia becoming the first country in the world to use an identification card that incorporates both photo identification and fingerprint biometric data on a built-in computer chip embedded in a piece of plastic.
+Besides the main purpose of the card as a validation tool and proof of citizenship other than the birth certificate, MyKad also serves as a valid driver's license, an ATM card, an electronic purse, and a public key, among other applications, as part of the Malaysian Government Multipurpose Card (GMPC) initiative, if the bearer chooses to activate the functions.
+
+
+See also
+
+
+Notes
+
+
+References
+
+
+Further reading
+Biometrics Glossary – Glossary of Biometric Terms based on information derived from the National Science and Technology Council (NSTC) Subcommittee on Biometrics. Published by Fulcrum Biometrics, LLC, July 2013
+Biometrics Institute - Explanatory Dictionary of Biometrics A glossary of biometrics terms, offering detailed definitions to supplement existing resources. Published May 2023.
+Delac, K., Grgic, M. (2004). A Survey of Biometric Recognition Methods.
+"Fingerprints Pay For School Lunch". (2001). Retrieved 2008-03-02. [1]
+"Germany to phase-in biometric passports from November 2005". (2005). E-Government News. Retrieved 2006-06-11. [2]
+Oezcan, V. (2003). "Germany Weighs Biometric Registration Options for Visa Applicants", Humboldt University Berlin. Retrieved 2006-06-11.
+Ulrich Hottelet: Hidden champion – Biometrics between boom and big brother, German Times, January 2007.
+Dunstone, T. and Yager, N., 2008. Biometric system and data analysis. 1st ed. New York: Springer.
+
+
+External links

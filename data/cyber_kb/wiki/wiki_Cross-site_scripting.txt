@@ -1,0 +1,125 @@
+Cross-site scripting (XSS) is a type of security vulnerability that can be found in some web applications. XSS attacks enable attackers to inject client-side scripts into web pages viewed by other users. A cross-site scripting vulnerability may be used by attackers to bypass access controls such as the same-origin policy. XSS effects vary in range from petty nuisance to significant security risk, depending on the sensitivity of the data handled by the vulnerable site and the nature of any security mitigation implemented by the site's owner network.
+OWASP considers the term cross-site scripting to be a misnomer. It initially was an attack that was used for breaching data across sites, but gradually started to include other forms of data injection attacks.
+
+
+Background
+
+Security on the web depends on a variety of mechanisms, including an underlying concept of trust known as the same-origin policy. This states that if content from one site (such as https://mybank.example1.com) is granted permission to access resources (like cookies etc.) on a web browser, then content from any URL with the same (1) URI scheme (e.g. ftp, http, or https), (2) host name, and (3) port number will share these permissions. Content from URLs where any of these three attributes are different will have to be granted permissions separately.
+Cross-site scripting attacks use known vulnerabilities in web-based applications, their servers, or the plug-in systems on which they rely. Exploiting one of these, attackers fold malicious content into the content being delivered from the compromised site. When the resulting combined content arrives at the client-side web browser, it has all been delivered from the trusted source, and thus operates under the permissions granted to that system. By finding ways of injecting malicious scripts into web pages, an attacker can gain elevated access-privileges to sensitive page content, to session cookies, and to a variety of other information maintained by the browser on behalf of the user. Cross-site scripting attacks are a case of code injection.
+Microsoft security-engineers introduced the term "cross-site scripting" in January 2000. The expression "cross-site scripting" originally referred to the act of loading the attacked, third-party web application from an unrelated attack-site, in a manner that executes a fragment of JavaScript prepared by the attacker in the security context of the targeted domain (taking advantage of a reflected or non-persistent XSS vulnerability). The definition gradually expanded to encompass other modes of code injection, including persistent and non-JavaScript vectors (including ActiveX, Java, VBScript, Flash, or even HTML scripts), causing some confusion to newcomers to the field of information security.
+XSS vulnerabilities have been reported and exploited since the 1990s. Prominent sites affected in the past include the social-networking sites Twitter and 
+Facebook. Cross-site scripting flaws have since surpassed buffer overflows to become the most common publicly reported security vulnerability, with some researchers in 2007 estimating as many as 68% of websites are likely open to XSS attacks.
+
+
+Types
+There is no single, standardized classification of cross-site scripting flaws, but most experts distinguish between at least two primary flavors of XSS flaws: non-persistent and persistent. Some sources further divide these two groups into traditional (caused by server-side code flaws) and DOM-based (in client-side code).
+
+
+Non-persistent (reflected)
+The non-persistent (or reflected) cross-site scripting vulnerability is by far the most basic type of web vulnerability. These holes show up when the data provided by a web client, most commonly in HTTP query parameters (e.g. HTML form submission), is used immediately by server-side scripts to parse and display a page of results for and to that user, without properly sanitizing the content.
+Because HTML documents have a flat, serial structure that mixes control statements, formatting, and the actual content, any non-validated user-supplied data included in the resulting page without proper HTML encoding, may lead to markup injection. A classic example of a potential vector is a site search engine: if one searches for a string, the search string will typically be redisplayed verbatim on the result page to indicate what was searched for. If this response does not properly escape or reject HTML control characters, a cross-site scripting flaw will ensue.
+A reflected attack is typically delivered via email or a neutral web site. The bait is an innocent-looking URL, pointing to a trusted site but containing the XSS vector. If the trusted site is vulnerable to the vector, clicking the link can cause the victim's browser to execute the injected script.
+
+
+Persistent (or stored)
+The persistent (or stored) XSS vulnerability is a more devastating variant of a cross-site scripting flaw: it occurs when the data provided by the attacker is saved by the server, and then permanently displayed on "normal" pages returned to other users in the course of regular browsing, without proper HTML escaping. A classic example of this is with online message boards where users are allowed to post HTML formatted messages for other users to read.
+For example, suppose there is a dating website where members scan the profiles of other members to see if they look interesting.  For privacy reasons, this site hides everybody's real name and email.  These are kept secret on the server.  The only time a member's real name and email are in the browser is when the member is signed in, and they can't see anyone else's.
+Suppose that Mallory, an attacker, joins the site and wants to figure out the real names of the people she sees on the site.  To do so, she writes a script designed to run from other users' browsers when they visit her profile.  The script then sends a quick message to her own server, which collects this information.
+To do this, for the question "Describe your Ideal First Date", Mallory gives a short answer (to appear normal), but the text at the end of her answer is her script to steal names and emails.  If the script is enclosed inside a <script> element, it won't be shown on the screen.  Then suppose that Bob, a member of the dating site, reaches Mallory's profile, which has her answer to the First Date question. Her script is run automatically by the browser and steals a copy of Bob's real name and email directly from his own machine.
+Persistent XSS vulnerabilities can be more significant than other types because an attacker's malicious script is rendered automatically, without the need to individually target victims or lure them to a third-party website. Particularly in the case of social networking sites, the code would be further designed to self-propagate across accounts, creating a type of client-side worm.
+The methods of injection can vary a great deal; in some cases, the attacker may not even need to directly interact with the web functionality itself to exploit such a hole. Any data received by the web application (via email, system logs, IM etc.) that can be controlled by an attacker could become an injection vector.
+
+
+Server-side versus DOM-based vulnerabilities
+XSS vulnerabilities were originally found in applications that performed all data processing on the server side. User input (including an XSS vector) would be sent to the server, and then sent back to the user as a web page. The need for an improved user experience resulted in popularity of applications that had a majority of the presentation logic (maybe written in JavaScript) working on the client-side that pulled data, on-demand, from the server using AJAX.
+As the JavaScript code was also processing user input and rendering it in the web page content, a new sub-class of reflected XSS attacks started to appear that was called DOM-based cross-site scripting. In a DOM-based XSS attack, the malicious data does not touch the web server. Rather, it is being reflected by the JavaScript code, fully on the client side.
+An example of a DOM-based XSS vulnerability is the bug found in 2011 in a number of jQuery plugins. Prevention strategies for DOM-based XSS attacks include very similar measures to traditional XSS prevention strategies but implemented in JavaScript code and contained in web pages (i.e. input validation and escaping). Some JavaScript frameworks have built-in countermeasures against this and other types of attack — for example AngularJS.
+
+
+Self-XSS
+
+Self-XSS is a form of XSS vulnerability that relies on social engineering in order to trick the victim into executing malicious JavaScript code in their browser. Although it is technically not a true XSS vulnerability due to the fact it relies on socially engineering a user into executing code rather than a flaw in the affected website allowing an attacker to do so, it still poses the same risks as a regular XSS vulnerability if properly executed.
+
+
+Mutated XSS (mXSS)
+Mutated XSS happens when the attacker injects something that is seemingly safe but is rewritten and modified by the browser while parsing the markup. This makes it extremely hard to detect or sanitize within the website's application logic. An example is rebalancing unclosed quotation marks or even adding quotation marks to unquoted values in CSS font-family properties.
+
+
+Preventive measures
+
+
+Contextual output encoding/escaping of string input
+There are several escaping schemes that can be used depending on where the untrusted string needs to be placed within an HTML document including HTML entity encoding, JavaScript escaping, CSS escaping, and URL (or percent) encoding. Most web applications that do not need to accept rich data can use escaping to largely eliminate the risk of XSS attacks in a fairly straightforward manner.
+Performing HTML entity encoding only on the five XML significant characters is not always sufficient to prevent many forms of XSS attacks, security encoding libraries are usually easier to use.
+Some web template systems understand the structure of the HTML they produce and automatically pick an appropriate encoder.
+
+
+Safely validating untrusted HTML input
+Many operators of particular web applications (e.g. forums and webmail) allow users to utilize HTML markup. When accepting HTML input from users (say, <b>very</b> large), output encoding (such as &lt;b&gt;very&lt;/b&gt; large) will not suffice since the user input needs to be rendered as HTML by the browser (so it shows as very large, instead of <b>very</b> large). Stopping an XSS attack when accepting HTML input from users is much more complex in this situation. Often, untrusted HTML input must be run through an HTML sanitization engine to ensure that it does not contain potentially malicious JavaScript code.
+For example, if a user enters
+
+then the application processing the markup may allow the <span> but escape the script when the input is displayed:
+
+Many validations rely on parsing out (blacklisting) specific "at risk" HTML tags such as the <iframe>, <link>, and <script> tag, or by only allowing certain tags and removing or escaping others.
+There are several issues with this approach, for example sometimes seemingly harmless tags can be left out which when utilized correctly can still result in an XSS
+Another popular method is to strip user input of " and ' however this can also be bypassed as the payload can be concealed with obfuscation.
+
+
+Cookie security
+
+Besides content filtering, other imperfect methods for cross-site scripting mitigation are also commonly used. One example is the use of additional security controls when handling cookie-based user authentication. Many web applications rely on session cookies for authentication between individual HTTP requests, and because client-side scripts generally have access to these cookies, simple XSS exploits can steal these cookies. To mitigate this particular threat (though not the XSS problem in general), many web applications tie session cookies to the IP address of the user who originally logged in, then only permit that IP to use that cookie. This is effective in most situations (if an attacker is only after the cookie), but obviously breaks down in situations where an attacker is behind the same NATed IP address or web proxy as the victim, or the victim is changing his or her mobile IP.
+
+
+Http-only cookie
+
+Another mitigation present in Internet Explorer (since version 6), Firefox (since version 2.0.0.5), Safari (since version 4), Opera (since version 9.5) and Google Chrome, is an HttpOnly flag which allows a web server to set a cookie that is unavailable to client-side scripts. While beneficial, the feature can neither fully prevent cookie theft nor prevent attacks within the browser.
+
+
+Disabling scripts
+While Web 2.0 and Ajax developers require the use of JavaScript, some web applications are written to allow operation without the need for any client-side scripts. This allows users, if they choose, to disable scripting in their browsers before using the application. In this way, even potentially malicious client-side scripts could be inserted unescaped on a page, and users would not be susceptible to XSS attacks.
+Some browsers or browser plugins can be configured to disable client-side scripts on a per-domain basis. This approach is of limited value if scripting is allowed by default, since it blocks bad sites only after the user knows that they are bad, which is too late.  Functionality that blocks all scripting and external inclusions by default and then allows the user to enable it on a per-domain basis is more effective. This has been possible for a long time in Internet Explorer (since version 4) by setting up its so called "Security Zones", and in Opera (since version 9) using its "Site Specific Preferences". A solution for Firefox and other Gecko-based browsers is the open source NoScript add-on which, in addition to the ability to enable scripts on a per-domain basis, provides some XSS protection even when scripts are enabled.
+The most significant problem with blocking all scripts on all websites by default is substantial reduction in functionality and responsiveness (client-side scripting can be much faster than server-side scripting because it does not need to connect to a remote server and the page or frame does not need to be reloaded). Another problem with script blocking is that many users do not understand it, and do not know how to properly secure their browsers. Yet another drawback is that many sites do not work without client-side scripting, forcing users to disable protection for that site and opening their systems to vulnerabilities. The Firefox NoScript extension enables users to allow scripts selectively from a given page while disallowing others on the same page. For example, scripts from example.com could be allowed, while scripts from advertisingagency.com that are attempting to run on the same page could be disallowed.
+
+
+Emerging defensive technologies
+Trusted types changes Web APIs to check that values have been trademarked as trusted.  As long as programs only trademark trustworthy values, an attacker who controls a JavaScript string value cannot cause XSS.  Trusted types are designed to be auditable by blue teams.
+Another defense approach is to use automated tools that will remove XSS malicious code in web pages, these tools use static analysis and/or pattern matching methods to identify malicious codes potentially and secure them using methods like escaping.
+
+
+SameSite cookie parameter
+
+When a cookie is set with the SameSite=Strict parameter, it is stripped from all cross-origin requests. When set with SameSite=Lax, it is stripped from all non-"safe" cross-origin requests (that is, requests other than GET, OPTIONS, and TRACE which have read-only semantics). The feature is implemented in Google Chrome since version 63 and Firefox since version 60.
+
+
+Notable incidents
+British Airways data breach (2018)
+
+
+See also
+Web application security
+Internet security
+XML external entity
+Browser security
+Metasploit Project, an open-source penetration testing tool that includes tests for XSS
+w3af, an open-source web application security scanner
+DOMPurify, a free and open source code library by Cure53 to reduce susceptibility to XSS vulnerabilities in websites.
+Cross-document messaging
+Samy (computer worm)
+Parameter validation
+
+
+Footnotes
+
+
+References
+
+
+Further reading
+MacKenzie, Thomas. "ScriptAlert1.com – Concise Cross-Site Scripting Explanation in Multiple Languages". Retrieved October 24, 2015.
+"Preventing XSS in ASP.NET Made Easy". Lock Me Down | Security for the Everyday Developer. February 6, 2015. Retrieved October 24, 2015.
+"Cross Site Scripting". The Web Application Security Consortium. October 13, 2005. Retrieved October 24, 2015.
+
+
+External links
+OWASP: XSS, Testing for XSS, Reviewing Code for XSS
+XSSed: Database of Websites Vulnerable to Cross-Site Scripting Attacks

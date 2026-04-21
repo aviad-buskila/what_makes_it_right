@@ -4,9 +4,15 @@ import math
 
 import pandas as pd
 
+from src.llm.parser import normalize_answer_letter
+
 
 def accuracy_by_setup(df: pd.DataFrame) -> pd.DataFrame:
     """Compute accuracy per setup using majority vote across repetitions."""
+    df = df.copy()
+    df["extracted_answer"] = df["extracted_answer"].map(normalize_answer_letter)
+    df["correct_answer"] = df["correct_answer"].map(normalize_answer_letter)
+
     # For each (question, setup), take majority vote
     votes = (
         df.groupby(["question_id", "setup_name"])["extracted_answer"]
@@ -51,7 +57,10 @@ def consistency_by_setup(df: pd.DataFrame) -> pd.DataFrame:
     def _consistency(group):
         if len(group) == 0:
             return 0.0
-        most_common_count = group["extracted_answer"].value_counts().iloc[0]
+        counts = group["extracted_answer"].value_counts(dropna=False)
+        if counts.empty:
+            return 0.0
+        most_common_count = counts.iloc[0]
         return most_common_count / len(group)
 
     per_q = (
@@ -81,6 +90,7 @@ def wilson_ci(n_correct: int, n_total: int, z: float = 1.96) -> tuple[float, flo
 def parse_failure_rate(df: pd.DataFrame) -> pd.DataFrame:
     """Compute fraction of responses where answer extraction failed."""
     df_copy = df.copy()
+    df_copy["extracted_answer"] = df_copy["extracted_answer"].map(normalize_answer_letter)
     df_copy["parse_failed"] = df_copy["extracted_answer"].isna()
     return (
         df_copy.groupby("setup_name")["parse_failed"]

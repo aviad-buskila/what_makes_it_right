@@ -1,0 +1,69 @@
+A playback attack (also known as a repeat attack or replay attack) is a form of network attack in which valid data transmission is maliciously or fraudulently repeated or delayed. This is carried out either by the originator or by an adversary who intercepts the data and re-transmits it, possibly as part of a spoofing attack by IP packet substitution. This is one of the lower-tier versions of a man-in-the-middle attack. Replay attacks are usually passive in nature.
+Another way of describing such an attack is:
+"an attack on a security protocol using a replay of messages from a different context into the intended (or original and expected) context, thereby fooling the honest participant(s) into thinking they have successfully completed the protocol run."
+
+
+Example
+
+Suppose Alice wants to prove her identity to Bob. Bob requests her password as proof of identity, which Alice dutifully provides (possibly after some transformation like hashing, or even salting, the password); meanwhile, Eve is eavesdropping on the conversation and keeps the password (or the hash). After the interchange is over, Eve (acting as Alice) connects to Bob; when asked for proof of identity, Eve sends Alice's password (or hash) read from the last session which Bob accepts, thus granting Eve access.
+
+
+Prevention and countermeasures
+Replay attacks can be prevented by tagging each encrypted component with a session ID and a component number. This combination of solutions does not use anything that is interdependent on one another. Due to the fact that there is no interdependency, there are fewer vulnerabilities. This works because a unique, random session ID is created for each run of the program; thus, a previous run becomes more difficult to replicate. In this case, an attacker would be unable to perform the replay because on a new run the session ID would have changed.
+Session IDs, also known as session tokens, are one mechanism that can be used to help avoid replay attacks. The way of generating a session ID works as follows.
+
+Bob sends a one-time token to Alice, which Alice uses to transform the password and send the result to Bob. For example, she would use the token to compute a hash function of the session token and append it to the password to be used.
+On his side Bob performs the same computation with the session token.
+If and only if both Alice’s and Bob’s values match, the login is successful.
+Now suppose an attacker Eve has captured this value and tries to use it on another session. Bob would send a different session token, and when Eve replies with her captured value it will be different from Bob's computation so he will know it is not Alice.
+Session tokens should be chosen by a random process (usually, pseudorandom processes are used). Otherwise, Eve may be able to pose as Bob, presenting some predicted future token, and convince Alice to use that token in her transformation. Eve can then replay her reply at a later time (when the previously predicted token is actually presented by Bob), and Bob will accept the authentication. 
+One-time passwords are similar to session tokens in that the password expires after it has been used or after a very short amount of time. They can be used to authenticate individual transactions in addition to sessions. These can also be used during the authentication process to help establish trust between the two parties that are communicating with each other.
+Bob can also send nonces but should then include a message authentication code (MAC), which Alice should check.
+Timestamping is another way of preventing a replay attack. Synchronization should be achieved using a secure protocol. For example, Bob periodically broadcasts the time on his clock together with a MAC. When Alice wants to send Bob a message, she includes her best estimate of the time on his clock in her message, which is also authenticated. Bob only accepts messages for which the timestamp is within a reasonable tolerance. Timestamps are also implemented during mutual authentication, when both Bob and Alice authenticate each other with unique session IDs, in order to prevent the replay attacks. The advantages of this scheme are that Bob does not need to generate (pseudo-) random numbers and that Alice doesn't need to ask Bob for a random number. In networks that are unidirectional or near unidirectional, it can be an advantage. The trade-off being that replay attacks, if they are performed quickly enough, i.e. within that 'reasonable' limit, could succeed.
+
+
+Kerberos protocol prevention
+The Kerberos authentication protocol includes some countermeasures. In the classic case of a replay attack, a message is captured by an adversary and then replayed at a later date in order to produce an effect. For example, if a banking scheme were to be vulnerable to this attack, a message which results in the transfer of funds could be replayed over and over to transfer more funds than originally intended. However, the Kerberos protocol, as implemented in Microsoft Windows Active Directory, includes the use of a scheme involving time stamps to severely limit the effectiveness of replay attacks. Messages which are past the "time to live (TTL)" are considered old and are discarded.
+There have been improvements proposed, including the use of a triple password scheme. These three passwords are used with the authentication server, ticket-granting server, and TGS. These servers use the passwords to encrypt messages with secret keys between the different servers. The encryption that is provided by these three keys help aid in preventing replay attacks.
+
+
+Secure routing in ad hoc networks
+Wireless ad hoc networks are also susceptible to replay attacks. In this case, the authentication system can be improved and made stronger by extending the AODV protocol. This method of improving the security of Ad Hoc networks increases the security of the network with a small amount of overhead. If there were to be extensive overhead then the network would run the risk of becoming slower and its performance would decrease. By keeping a relatively low overhead, the network can maintain better performance while still improving the security.
+
+
+Challenge-Handshake Authentication Protocol
+Authentication and sign-on by clients using Point-to-Point Protocol (PPP) are susceptible to replay attacks when using Password Authentication Protocol (PAP) to validate their identity, as the authenticating client sends its username and password in "normal text", and the authenticating server then sends its acknowledgment in response to this; an intercepting client is therefore, free to read transmitted data and impersonate each of the client and server to the other, as well as being able to then store client credentials for later impersonation to the server. Challenge-Handshake Authentication Protocol (CHAP) secures against this sort of replay attack during the authentication phase by instead using a "challenge" message from the authenticator that the client responds with a hash-computed value based on a shared secret (e.g. the client's password), which the authenticator compares with its own calculation of the challenge and shared secret to authenticate the client. By relying on a shared secret that has not itself been transmitted, as well as other features such as authenticator-controlled repetition of challenges, and changing identifier and challenge values, CHAP provides limited protection against replay attacks.
+
+
+Real-world examples of replay attack susceptibility
+There are several real-world examples of how replay attacks have been used and how the issues were detected and fixed in order to prevent further attacks.
+
+
+Remote keyless-entry system for vehicles
+Many vehicles on the road use a remote keyless system, or key fob, for the convenience of the user. Modern systems are hardened against simple replay attacks but are vulnerable to buffered replay attacks. This attack is performed by placing a device that can receive and transmit radio waves within range of the target vehicle. The transmitter will attempt to jam any RF vehicle unlock signal while receiving it and placing it in a buffer for later use. Upon further attempts to unlock the vehicle, the transmitter will jam the new signal, buffer it, and playback an old one, creating a rolling buffer that is one step ahead of the vehicle. At a later time, the attacker may use this buffered code to unlock the vehicle.
+
+
+Text-dependent speaker verification
+Various devices use speaker recognition to verify the identity of a speaker. In text-dependent systems, an attacker can record the target individual’s speech that was correctly verified by the system, then play the recording again to be verified by the system. A counter-measure was devised using spectral bitmaps from the stored speech of verified users. Replayed speech has a different pattern in this scenario and will then be rejected by the system.
+
+
+Replay attacks on IoT devices
+In the realm of smart home environments, Internet of things (IoT) devices are increasingly vulnerable to replay attacks, where an adversary intercepts and replays legitimate communication signals between an IoT device and its companion app. These attacks can compromise a wide array of devices, including smart plugs, security cameras, and even household appliances.
+A recent study demonstrated that a substantial portion of consumer IoT devices are prone to replay attacks. Researchers found that 75% of tested devices supporting local connectivity were vulnerable to such attacks. These vulnerabilities allow attackers to mimic legitimate commands, potentially enabling unauthorized actions such as turning on a smart kettle, unlocking doors, or manipulating security systems. Such breaches pose significant safety, security, and privacy risks, as malicious actors can gain control over critical home systems.
+
+
+In popular culture
+In the folk tale Ali Baba and the Forty Thieves, the thieves' captain used the passphrase "Open, Sesame" to open the door to their loot depot. This was overheard by Ali Baba, who later reused the passphrase to get access and collect as much of the loot as he could carry.
+
+
+See also
+Denial-of-service attack
+Digest access authentication
+Man-in-the-middle attack
+Pre-play attack
+Relay attack
+Session replay
+Telephone tapping
+
+
+References

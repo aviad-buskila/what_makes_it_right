@@ -45,19 +45,35 @@ class ResultsStore:
         path = self.get_results_path(experiment_name)
         if not path.exists():
             return pd.DataFrame()
-        return pd.read_json(path, lines=True)
+        df = pd.read_json(path, lines=True)
+        if df.empty:
+            return df
+        # When a failed record is retried, the new result is appended after the
+        # old one. Keep the last record per key so analysis sees the freshest result.
+        return df.drop_duplicates(
+            subset=["question_id", "setup_name", "repetition"], keep="last"
+        )
 
     def get_completed_keys(self, experiment_name: str) -> set[tuple[str, str, int]]:
-        """Return set of (question_id, setup_name, repetition) already completed.
+        """Return (question_id, setup_name, repetition) keys that produced a valid answer.
 
-        Used for resuming experiments.
+        Records with succeeded=False or extracted_answer=None are excluded so
+        the runner retries them. When a retry succeeds, the new record is appended
+        and load() deduplicates by keeping the last entry per key.
         """
         path = self.get_results_path(experiment_name)
         if not path.exists():
             return set()
-        completed = set()
+        completed: set[tuple[str, str, int]] = set()
+        failed: set[tuple[str, str, int]] = set()
         with open(path) as f:
             for line in f:
                 r = json.loads(line)
-                completed.add((r["question_id"], r["setup_name"], r["repetition"]))
+                key = (r["question_id"], r["setup_name"], r["repetition"])
+                if r.get("succeeded", True) and r.get("extracted_answer") is not None:
+                    completed.add(key)
+                    failed.discard(key)
+                else:
+                    failed.add(key)
+                    completed.discard(key)
         return completed

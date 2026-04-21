@@ -19,6 +19,8 @@ def build_setups(config: ExperimentConfig, retriever: Retriever | None = None) -
             use_rag=False,
             temperature=config.temperature,
             timeout_per_query=config.timeout_per_query,
+            answer_retry_attempts=config.answer_retry_attempts,
+            domain=config.domain,
         ))
         setups.append(ExperimentSetup(
             model_config=model_config,
@@ -27,6 +29,8 @@ def build_setups(config: ExperimentConfig, retriever: Retriever | None = None) -
             rag_config=config.rag,
             temperature=config.temperature,
             timeout_per_query=config.timeout_per_query,
+            answer_retry_attempts=config.answer_retry_attempts,
+            domain=config.domain,
         ))
     return setups
 
@@ -74,13 +78,17 @@ def run_experiment(
         print(f"Resuming experiment: {skipped}/{total} already completed.")
 
     with tqdm(total=total - skipped, desc="experiment") as pbar:
+        retrieval_calls = 0
+        retrieval_failures = 0
         for question in questions:
             # Retrieve chunks once for this question and reuse across all RAG setups.
             chunks: list[str] | None = None
             if retriever is not None:
                 try:
+                    retrieval_calls += 1
                     chunks = retriever.query(question.question_text)
                 except Exception as e:
+                    retrieval_failures += 1
                     print(f"\nRetrieval failed for {question.id}: {e}. RAG setups will run without context.")
 
             for pair in model_pairs.values():
@@ -96,7 +104,7 @@ def run_experiment(
 
                         try:
                             pre_chunks = chunks if variant == "rag" else None
-                            result = setup.answer(question, pre_retrieved_chunks=pre_chunks)
+                            result = setup.answer(question, pre_retrieved_chunks=pre_chunks, repetition=rep)
                             record = ExperimentResult(
                                 question_id=question.id,
                                 setup_name=setup.name,
@@ -132,3 +140,8 @@ def run_experiment(
                                 )
                                 store.append(failure_record, experiment_name)
                             continue
+    if retriever is not None:
+        print(
+            "\nRetrieval instrumentation:"
+            f" calls={retrieval_calls}, questions={len(questions)}, failures={retrieval_failures}"
+        )

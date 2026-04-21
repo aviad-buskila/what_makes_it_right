@@ -2,44 +2,85 @@ from __future__ import annotations
 
 from src.dataset.loader import Question
 
+_DOMAIN_PERSONA = {
+    "medical": "medical expert",
+    "cybersecurity": (
+        "cybersecurity professional with broad expertise in information security "
+        "principles, network security, cryptography, and security standards "
+        "(CISSP/Security+ level)"
+    ),
+}
+
+_DOMAIN_REFERENCE_LABEL = {
+    "medical": "medical reference passages",
+    "cybersecurity": (
+        "cybersecurity reference passages "
+        "(MITRE ATT&CK, CWE, NIST SP 800-53, NIST SP 800-63B, OWASP, Wikipedia)"
+    ),
+}
+
 BASE_PROMPT = """\
-You are a medical expert. Answer the following multiple-choice question.
-Respond with ONLY the letter of the correct answer (A, B, C, or D) on the first line, followed by a brief explanation.
+You are a {persona}. Answer the following multiple-choice question.
 
 Question: {question}
 {options}
 
-Answer:"""
+Output format: return ONLY valid JSON with exactly this schema:
+{{"answer":"A"}}
+Where "answer" must be one of: "A", "B", "C", "D".
+Do not output markdown fences, additional keys, or any explanatory text.
+
+Answer JSON:"""
 
 RAG_PROMPT = """\
-The following medical reference passages may or may not be relevant to the question below.
+You are a {persona}.
+The following {reference_label} may or may not be relevant to the question below.
 Use them only if they directly support your reasoning. If they are not relevant, ignore them and rely on your own knowledge.
 
 {context}
 
-Answer the following multiple-choice question.
-Respond with ONLY the letter of the correct answer (A, B, C, or D) on the first line, followed by a brief explanation.
-
 Question: {question}
 {options}
 
-Answer:"""
+Output format: return ONLY valid JSON with exactly this schema:
+{{"answer":"A"}}
+Where "answer" must be one of: "A", "B", "C", "D".
+Do not output markdown fences, additional keys, or extra text.
+If the context is not relevant, ignore it and still return the same JSON schema.
+Do not output any explanation.
+
+Answer JSON:"""
 
 
 def _format_options(question: Question) -> str:
     return "\n".join(f"{key}) {val}" for key, val in sorted(question.options.items()))
 
 
-def build_base_prompt(question: Question) -> str:
+def _persona(domain: str) -> str:
+    return _DOMAIN_PERSONA.get(domain, _DOMAIN_PERSONA["medical"])
+
+
+def _reference_label(domain: str) -> str:
+    return _DOMAIN_REFERENCE_LABEL.get(domain, _DOMAIN_REFERENCE_LABEL["medical"])
+
+
+def build_base_prompt(question: Question, domain: str = "medical") -> str:
     return BASE_PROMPT.format(
+        persona=_persona(domain),
         question=question.question_text,
         options=_format_options(question),
     )
 
 
-def build_rag_prompt(question: Question, context_chunks: list[str]) -> str:
+def build_rag_prompt(
+    question: Question,
+    context_chunks: list[str],
+    domain: str = "medical",
+) -> str:
     context = "\n\n---\n\n".join(context_chunks)
     return RAG_PROMPT.format(
+        persona=_persona(domain),
+        reference_label=_reference_label(domain),
         context=context,
         question=question.question_text,
         options=_format_options(question),

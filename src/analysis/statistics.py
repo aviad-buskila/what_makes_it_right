@@ -5,12 +5,18 @@ import itertools
 import pandas as pd
 from scipy.stats import chi2
 
+from src.llm.parser import normalize_answer_letter
+
 
 def mcnemar_test(df: pd.DataFrame, setup_a: str, setup_b: str) -> dict:
     """Perform McNemar's test comparing two setups on the same questions.
 
     Uses majority-vote correctness per question.
     """
+    df = df.copy()
+    df["extracted_answer"] = df["extracted_answer"].map(normalize_answer_letter)
+    df["correct_answer"] = df["correct_answer"].map(normalize_answer_letter)
+
     # Get majority vote correctness per question for each setup
     def _majority_correct(group):
         majority = group["extracted_answer"].mode()

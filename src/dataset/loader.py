@@ -105,3 +105,53 @@ def load_questions(path: Path) -> list[Question]:
             _validate_correct_answer(q.id, q.correct_answer)
             questions.append(q)
     return questions
+
+
+def load_dataset_by_source(
+    source: str,
+    max_questions: int | None = None,
+    random_seed: int = 42,
+    cache_dir: str | None = None,
+    split: str = "test",
+    variant: str | int | None = None,
+) -> list[Question]:
+    """Dispatch to a dataset loader by name.
+
+    Supported sources:
+      - ``medqa``       → MedQA-USMLE-4-options (default medical benchmark)
+      - ``cybermetric`` → CyberMetric (``variant`` ∈ {80, 500, 2000, 10000})
+      - ``secqa``       → SecQA (``variant`` ∈ {"v1", "v2"})
+    """
+    key = source.strip().lower()
+    if key == "medqa":
+        return load_medqa(
+            split=split,
+            max_questions=max_questions,
+            random_seed=random_seed,
+            cache_dir=cache_dir,
+        )
+    if key == "cybermetric":
+        from src.dataset.cybersecurity import load_cybermetric
+
+        chosen_variant = int(variant) if variant is not None else 2000
+        return load_cybermetric(
+            variant=chosen_variant,
+            max_questions=max_questions,
+            random_seed=random_seed,
+            cache_dir=cache_dir or "data/cybermetric",
+        )
+    if key == "secqa":
+        from src.dataset.cybersecurity import load_secqa
+
+        chosen_version = str(variant) if variant is not None else "v2"
+        return load_secqa(
+            version=chosen_version,
+            split=split,
+            max_questions=max_questions,
+            random_seed=random_seed,
+            cache_dir=cache_dir,
+        )
+    raise ValueError(
+        f"Unknown dataset source {source!r}. "
+        "Use one of: medqa, cybermetric, secqa."
+    )

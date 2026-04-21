@@ -1,0 +1,114 @@
+In computer terminology, a honeypot is a computer security mechanism set to detect, deflect, or, in some manner, counteract attempts at unauthorized use of information systems. Generally, a honeypot consists of data (for example, in a network site) that appears to be a legitimate part of the site which contains information or resources of value to attackers. It is actually isolated, monitored, and capable of blocking or analyzing the attackers. This is similar to police sting operations, colloquially known as "baiting" a suspect.
+The main use for this network decoy is to distract potential attackers from more important information and machines on the real network, learn about the forms of attacks they can suffer, and examine such attacks during and after the exploitation of a honeypot.
+It provides a way to prevent and see vulnerabilities in a specific network system. A honeypot is a decoy used to protect a network from present or future attacks. Honeypots derive their value from the use by attackers. If not interacted with, the honeypot has little to no value. Honeypots can be used for everything from slowing down or stopping automated attacks, capturing new exploits, to gathering intelligence on emerging threats or early warning and prediction.
+
+
+Types
+Honeypots can be differentiated based on whether they are physical or virtual:
+
+Physical honeypot: a real machine with its own IP address, this machine simulates behaviors modeled by the system. Many times this modality is not used as much as the high price of acquiring new machines, their maintenance, and the complication affected by configuring specialized hardware.
+Virtual honeypot: the use of this type of honeypot allows one to install and simulate hosts on the network from different operating systems, but in order to do so, it is necessary to simulate the TCP/IP of the target operating system. This modality is more frequent.
+Honeypots can be classified based on their deployment (use/action) and based on their level of involvement. Based on deployment, honeypots may be classified as:
+
+production honeypots
+research honeypots
+Production honeypots are easy to use, capture only limited information, and are used primarily by corporations. Production honeypots are placed inside the production network with other production servers by an organization to improve their overall state of security. Normally, production honeypots are low-interaction honeypots, which are easier to deploy. They give less information about the attacks or attackers than research honeypots.
+Research honeypots are run to gather information about the motives and tactics of the black hat community targeting different networks. These honeypots do not add direct value to a specific organization; instead, they are used to research the threats that organizations face and to learn how to better protect against those threats. Research honeypots are complex to deploy and maintain, capture extensive information, and are used primarily by research, military, or government organizations.
+Based on design criteria, honeypots can be classified as:
+
+pure honeypots
+high-interaction honeypots
+low-interaction honeypots
+Pure honeypots are full-fledged production systems. The activities of the attacker are monitored by using a bug tap that has been installed on the honeypot's link to the network. No other software needs to be installed. Even though a pure honeypot is useful, the stealthiness of the defense mechanisms can be ensured by a more controlled mechanism.
+High-interaction honeypots imitate the activities of the production systems that host a variety of services and, therefore, an attacker may be allowed a lot of services to waste their time. By employing virtual machines, multiple honeypots can be hosted on a single physical machine. Therefore, even if the honeypot is compromised, it can be restored more quickly. In general, high-interaction honeypots provide more security by being difficult to detect, but they are expensive to maintain. If virtual machines are not available, one physical computer must be maintained for each honeypot, which can be exorbitantly expensive. Example: Honeynet.
+Low-interaction honeypots simulate only the services frequently requested by attackers. Since they consume relatively few resources, multiple virtual machines can easily be hosted on one physical system, the virtual systems have a short response time, and less code is required, reducing the complexity of the virtual system's security. Example: Honeyd. This type of honeypot was one of the first types being created in the late nineties and was mainly used for detecting attacks, not studying them.
+Sugarcane is a type of honeypot that masquerades as an open proxy. It can often take form as a server designed to look like a misconfigured HTTP proxy. Probably the most famous open proxy was the default configuration of sendmail (before version 8.9.0 in 1998) which would forward email to and from any destination.
+
+
+Deception technology
+Recently, a new market segment called deception technology has emerged using basic honeypot technology with the addition of advanced automation for scale.  Deception technology addresses the automated deployment of honeypot resources over a large commercial enterprise or government institution.
+
+
+Malware honeypots
+A malware honeypot is a decoy designed to intentionally attract malicious software. It does this by imitating a vulnerable system or network, such as a web server. The honeypot is intentionally set up with security flaws that look to invite these malware attacks. Once attacked IT teams can then analyze the malware to better understand where it comes from and how it acts.
+
+
+Spam versions
+Spammers abuse vulnerable resources such as open mail relays and open proxies. These are servers that accept e-mail from anyone on the Internet—including spammers—and send it to its destination. Some system administrators have created honeypot programs that masquerade as these abusable resources to discover spammer activity.
+There are several capabilities such honeypots provide to these administrators, and the existence of such fake abusable systems makes abuse more difficult or risky.  Honeypots can be a powerful countermeasure to abuse from those who rely on very high-volume abuse (e.g., spammers).
+These honeypots can reveal the abuser's IP address and provide bulk spam capture (which enables operators to determine spammers' URLs and response mechanisms). As described by M. Edwards at ITPRo Today:
+
+Typically, spammers test a mail server for open relaying by simply sending themselves an email message. If the spammer receives the email message, the mail server obviously allows open relaying. Honeypot operators, however, can use the relay test to thwart spammers. The honeypot catches the relay test email message, returns the test email message, and subsequently blocks all other email messages from that spammer. Spammers continue to use the antispam honeypot for spamming, but the spam is never delivered. Meanwhile, the honeypot operator can notify spammers' ISPs and have their Internet accounts canceled. If honeypot operators detect spammers who use open-proxy servers, they can also notify the proxy server operator to lock down the server to prevent further misuse.
+The apparent source may be another abused system. Spammers and other abusers may use a chain of such abused systems to make detection of the original starting point of the abuse traffic difficult.
+This in itself is indicative of the power of honeypots as anti-spam tools. In the early days of anti-spam honeypots, spammers, with little concern for hiding their location, felt safe testing for vulnerabilities and sending spam directly from their own systems. Honeypots made the abuse riskier and more difficult.
+Spam still flows through open relays, but the volume is much smaller than in 2001-02. While most spam originates in the U.S., spammers hop through open relays across political boundaries to mask their origin. Honeypot operators may use intercepted relay tests to recognize and thwart attempts to relay spam through their honeypots. "Thwart" may mean "accept the relay spam but decline to deliver it." Honeypot operators may discover other details concerning the spam and the spammer by examining the captured spam messages.
+Open-relay honeypots include Jackpot, written in Java by Jack Cleaver; smtpot.py, written in Python by Karl A. Krueger; and spamhole, written in C. The Bubblegum Proxypot is an open-source honeypot (or "proxypot").
+
+
+Email trap
+
+An email address that is not used for any other purpose than to receive spam can also be considered a spam honeypot. Compared with the term "spamtrap", the term "honeypot" might be more suitable for systems and techniques that are used to detect or counterattack probes. With a spamtrap, spam arrives at its destination "legitimately"—exactly as non-spam email would arrive.
+An amalgam of these techniques is Project Honey Pot, a distributed, open-source project that uses honeypot pages installed on websites around the world. These honeypot pages disseminate uniquely tagged spamtrap email addresses and spammers can then be tracked—the corresponding spam mail is subsequently sent to these spamtrap e-mail addresses.
+
+
+Database honeypot
+Databases often get attacked by intruders using SQL injection. As such activities are not recognized by basic firewalls, companies often use database firewalls for protection. Some of the available SQL database firewalls provide/support honeypot architectures so that the intruder runs against a trap database while the web application remains functional.
+
+
+Industrial Control Systems honeypot
+Industrial Control Systems (ICS) are often the target of cyberattacks. One of the main targets within ICS are Programmable Logic Controllers. In order to understand intruders' techniques in this context, several honeypots have been proposed. Conpot is a low interaction honeypot capable of simulation Siemens PLCs. HoneyPLC is a medium interaction honeypot that can simulate Siemens, Rockwell and other PLC brands.
+
+
+Honeypot detection
+Just as honeypots are weapons against spammers, honeypot detection systems are spammer-employed counter-weapons. As detection systems would likely use unique characteristics of specific honeypots to identify them, such as the property-value pairs of default honeypot configuration, many honeypots in use utilise a set of unique characteristics larger and more daunting to those seeking to detect and thereby identify them. This is an unusual circumstance in software; a situation in which "versionitis" (a large number of versions of the same software, all differing slightly from each other) can be beneficial. There's also an advantage in having some easy-to-detect honeypots deployed. Fred Cohen, the inventor of the Deception Toolkit, argues that every system running his honeypot should have a deception port which adversaries can use to detect the honeypot. Cohen believes that this might deter adversaries.
+
+
+Risks
+The goal of honeypots is to attract and engage attackers for a sufficiently long period to obtain high-level Indicators of Compromise (IoC) such as attack tools and Tactics, Techniques, and Procedures (TTPs). Thus, a honeypot needs to emulate essential services in the production network and grant the attacker the freedom to perform adversarial activities to increase its attractiveness to the attacker. Although the honeypot is a controlled environment and can be monitored by using tools such as honeywall, attackers may still be able to use some honeypots as pivot nodes to penetrate production systems.
+The second risk of honeypots is that they may attract legitimate users due to a lack of communication in large-scale enterprise networks. For example, the security team who applies and monitors the honeypot may not disclose the honeypot location to all users in time due to the lack of communication or the prevention of insider threats.
+
+
+Honey nets
+
+Two or more honeypots on a network form a honey net. Typically, a honey net is used for monitoring a larger and/or more diverse network in which one honeypot may not be sufficient. Honey nets and honeypots are usually implemented as parts of larger network intrusion detection systems. A honey farm is a centralized collection of honeypots and analysis tools.
+The concept of the honey net first began in 1999 when Lance Spitzner, founder of the Honeynet Project, published the paper "To Build a Honeypot".
+
+
+History
+An early formulation of the concept, called "entrapment", is defined in FIPS 39 (1976) as "the deliberate planting of apparent flaws in a system for the purpose of detecting attempted penetrations or confusing an intruder about which flaws to exploit".
+The earliest honeypot techniques are described in Clifford Stoll's 1989 book The Cuckoo's Egg.
+One of the earliest documented cases of the cybersecurity use of a honeypot began in January 1991. On January 7, 1991, while he worked at AT&T Bell Laboratories Bill Cheswick observed a criminal hacker, known as a cracker, attempting to obtain a copy of a password file. Cheswick wrote that he and colleagues constructed a "chroot 'Jail' (or 'roach motel')" which allowed them to observe their attacker over a period of several months.
+In 1997, Fred Cohen released the Deception Toolkit (DTK), one of the first freely available honeypot tools, which allowed administrators to create simulated vulnerabilities to deceive attackers.
+In 1998, Niels Provos and Thorsten Holz began development of Honeyd, an open-source low-interaction honeypot daemon that simulates multiple virtual hosts at once. Honeyd became a widely used reference tool for honeypot research and was later documented in a paper presented at the USENIX Security Symposium.
+In 1999, Lance Spitzner founded the Honeynet Project, a non-profit security research organization dedicated to studying attacker tools, tactics, and motives using honeynets. Spitzner published the landmark paper "To Build a Honeypot", which popularized the use of honeynets for threat intelligence gathering.
+In 2017, Dutch police used honeypot techniques to track down users of the darknet market Hansa.
+The metaphor of a bear being attracted to and stealing honey is common in many traditions, including Germanic, Celtic, and Slavic. A common Slavic word for the bear is medved "honey eater". The tradition of bears stealing honey has been passed down through stories and folklore, especially the well known Winnie the Pooh.
+
+
+See also
+Canary trap
+Client honeypot
+Cowrie
+Defense strategy (computing)
+HoneyMonkey
+Honeytoken
+Network telescope
+Operation Trust
+Tarpit
+
+
+References and notes
+
+
+Further reading
+Lance Spitzner (2002). Honeypots tracking hackers. Addison-Wesley. ISBN 0-321-10895-7.
+Sean Bodmer; Max Kilger; Gregory Carpenter; Jade Jones (2012). Reverse Deception: Organized Cyber Threat Counter-Exploitation. McGraw-Hill Education. ISBN 978-0-07-177249-5.
+
+
+External links
+The Ultimate Fake Access Point Archived 2021-02-25 at the Wayback Machine - AP less clear-text WPA2 passphrase hacking
+Distributed Open Proxy Honeypots Project: WASC
+SANS Institute: What is a Honey Pot?
+SANS Institute: Fundamental Honeypotting
+Project Honeypot
+A curated list of honeypots, tools and components focused on open source projects

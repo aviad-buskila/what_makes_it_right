@@ -5,7 +5,7 @@ from dataclasses import dataclass
 from src.dataset.loader import Question
 from src.experiment.config import ModelConfig, RagConfig
 from src.llm.client import generate
-from src.llm.parser import extract_answer
+from src.llm.parser import extract_answer, normalize_answer_letter
 from src.llm.prompts import build_base_prompt, build_rag_prompt
 from src.rag.retriever import Retriever
 
@@ -30,6 +30,8 @@ class ExperimentSetup:
         rag_config: RagConfig | None = None,
         temperature: float = 0.7,
         timeout_per_query: int = 60,
+        answer_retry_attempts: int = 2,
+        domain: str = "medical",
     ):
         self.model_config = model_config
         self.use_rag = use_rag
@@ -37,11 +39,13 @@ class ExperimentSetup:
         self.rag_config = rag_config
         self.temperature = temperature
         self.timeout_per_query = timeout_per_query
+        self.answer_retry_attempts = max(1, answer_retry_attempts)
+        self.domain = domain
 
         rag_suffix = "+RAG" if use_rag else ""
         self.name = f"{model_config.name}{rag_suffix}"
 
-    def answer(self, question: Question, pre_retrieved_chunks: list[str] | None = None) -> SetupResult:
+    def answer(self, question: Question, pre_retrieved_chunks: list[str] | None = None, repetition: int = 0) -> SetupResult:
         """Send a question to this setup and return the result.
 
         If ``pre_retrieved_chunks`` is provided it is used directly (no retrieval
@@ -59,21 +63,37 @@ class ExperimentSetup:
             # Fall back to base prompt when retrieval finds nothing above the
             # distance threshold — injecting empty / irrelevant context hurts.
             if context_chunks:
-                prompt = build_rag_prompt(question, context_chunks)
+                prompt = build_rag_prompt(question, context_chunks, domain=self.domain)
             else:
-                prompt = build_base_prompt(question)
+                prompt = build_base_prompt(question, domain=self.domain)
         else:
-            prompt = build_base_prompt(question)
+            prompt = build_base_prompt(question, domain=self.domain)
 
-        response_text, latency = generate(
-            model_id=self.model_config.ollama_id,
-            prompt=prompt,
-            temperature=self.temperature,
-            timeout=self.timeout_per_query,
-        )
+        seed = hash((question.id, self.name, repetition)) & 0x7FFFFFFF
+        response_text = ""
+        latency = 0.0
+        answer = None
+        current_prompt = prompt
+        for attempt in range(1, self.answer_retry_attempts + 1):
+            current_seed = seed ^ (attempt * 0x9E37)
+            response_text, latency = generate(
+                model_id=self.model_config.ollama_id,
+                prompt=current_prompt,
+                temperature=self.temperature,
+                timeout=self.timeout_per_query,
+                seed=current_seed,
+            )
+            answer = extract_answer(response_text)
+            if answer is not None:
+                break
+            if attempt < self.answer_retry_attempts:
+                current_prompt = (
+                    f"{prompt}\n\nIMPORTANT: Invalid output detected. "
+                    "Return only JSON exactly like {\"answer\":\"A\"}."
+                )
 
-        answer = extract_answer(response_text)
-        is_correct = answer is not None and answer == question.correct_answer
+        gold_answer = normalize_answer_letter(question.correct_answer)
+        is_correct = answer is not None and gold_answer is not None and answer == gold_answer
 
         return SetupResult(
             response=response_text,

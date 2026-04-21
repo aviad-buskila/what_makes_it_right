@@ -1,0 +1,151 @@
+An intrusion detection system (IDS) is a device or software application that monitors a network or systems for malicious activity or policy violations. Any intrusion activity or violation is typically either reported to an administrator or collected centrally using a security information and event management (SIEM) system. A SIEM system combines outputs from multiple sources and uses alarm filtering techniques to distinguish malicious activity from false alarms.
+IDS types range in scope from single computers to large networks. The most common classifications are network intrusion detection systems (NIDS) and host-based intrusion detection systems (HIDS). A system that monitors important operating system files is an example of an HIDS, while a system that analyzes incoming network traffic is an example of an NIDS. It is also possible to classify IDS by detection approach. The most well-known variants are signature-based detection (recognizing bad patterns, such as exploitation attempts) and anomaly-based detection (detecting deviations from a model of "good" traffic, which often relies on machine learning). Another common variant is reputation-based detection (recognizing the potential threat according to the reputation scores). Some IDS products have the ability to respond to detected intrusions. Systems with response capabilities are typically referred to as an intrusion prevention system (IPS). Intrusion detection systems can also serve specific purposes by augmenting them with custom tools, such as using a honeypot to attract and characterize malicious traffic.
+
+
+Comparison with firewalls
+Although they both relate to network security, an IDS differs from a firewall in that a conventional network firewall (distinct from a next-generation firewall) uses a static set of rules to permit or deny network connections. It implicitly prevents intrusions, assuming an appropriate set of rules have been defined. Essentially, firewalls limit access between networks to prevent intrusion and do not signal an attack from inside the network. An IDS describes a suspected intrusion once it has taken place and signals an alarm. An IDS also watches for attacks that originate from within a system. This is traditionally achieved by examining network communications, identifying heuristics and patterns (often known as signatures) of common computer attacks, and taking action to alert operators.  A system that terminates connections is called an intrusion prevention system, and performs access control like an application layer firewall.
+
+
+Intrusion detection category
+IDS can be classified by where detection takes place (network or host) or the detection method that is employed (signature or anomaly-based).
+
+
+Analyzed activity
+
+
+Network intrusion detection systems
+Network intrusion detection systems (NIDS) are placed at a strategic point or points within the network to monitor traffic to and from all devices on the network. It performs an analysis of passing traffic on the entire subnet, and matches the traffic that is passed on the subnets to the library of known attacks. Once an attack is identified, or abnormal behavior is sensed, the alert can be sent to the administrator. NIDS function to safeguard every device and the entire network from unauthorized access.
+An example of an NIDS would be installing it on the subnet where firewalls are located in order to see if someone is trying to break into the firewall. Ideally one would scan all inbound and outbound traffic, however doing so might create a bottleneck that would impair the overall speed of the network. OPNET and NetSim are commonly used tools for simulating network intrusion detection systems. NID Systems are also capable of comparing signatures for similar packets to link and drop harmful detected packets which have a signature matching the records in the NIDS. When we classify the design of the NIDS according to the system interactivity property, there are two types: on-line and off-line NIDS, often referred to as inline and tap mode, respectively. On-line NIDS deals with the network in real time. It analyses the Ethernet packets and applies some rules, to decide if it is an attack or not. Off-line NIDS deals with stored data and passes it through some processes to decide if it is an attack or not.
+NIDS can be also combined with other technologies to increase detection and prediction rates. Artificial Neural Network (ANN) based IDS are capable of analyzing huge volumes of data due to the hidden layers and non-linear modeling, however this process requires time due its complex structure. This allows IDS to more efficiently recognize intrusion patterns. Neural networks assist IDS in predicting attacks by learning from mistakes; ANN based IDS help develop an early warning system, based on two layers. The first layer accepts single values, while the second layer takes the first's layers output as input; the cycle repeats and allows the system to automatically recognize new unforeseen patterns in the network. This system can average 99.9% detection and classification rate, based on research results of 24 network attacks, divided in four categories: DOS, Probe, Remote-to-Local, and user-to-root.
+
+
+Host intrusion detection systems
+
+Host intrusion detection systems (HIDS) run on individual hosts or devices on the network. A HIDS monitors the inbound and outbound packets from the device only and will alert the user or administrator if suspicious activity is detected. It takes a snapshot of existing system files and matches it to the previous snapshot. If the critical system files were modified or deleted, an alert is sent to the administrator to investigate. An example of HIDS usage can be seen on mission critical machines, which are not expected to change their configurations.
+
+
+Detection method
+
+
+Signature-based
+Signature-based IDS is the detection of attacks by looking for specific patterns, such as byte sequences in network traffic, or known malicious instruction sequences used by malware. This terminology originates from anti-virus software, which refers to these detected patterns as signatures. Although signature-based IDS can easily detect known attacks, it is difficult to detect new attacks, for which no pattern is available.
+In signature-based IDS, the signatures are released by a vendor for all its products. On-time updating of the IDS with the signature is a key aspect.
+
+
+Anomaly-based
+Anomaly-based intrusion detection systems were primarily introduced to detect unknown attacks, in part due to the rapid development of malware. The basic approach is to use machine learning to create a model of trustworthy activity, and then compare new behavior against this model. Since these models can be trained according to the applications and hardware configurations, machine learning based method has a better generalized property in comparison to traditional signature-based IDS. Although this approach enables the detection of previously unknown attacks, it may suffer from false positives: previously unknown legitimate activity may also be classified as malicious. Most of the existing IDSs suffer from the time-consuming during detection process that degrades the performance of IDSs. Efficient feature selection algorithm makes the classification process used in detection more reliable.
+Anomaly-based intrusion detection systems were primarily introduced to detect unknown attacks, in part due to the rapid development of malware. The basic approach is to use machine learning to create a model of trustworthy activity, and then compare new behavior against this model. Since these models can be trained according to the applications and hardware configurations, machine learning based method has a better generalized property in comparison to traditional signature-based IDS. Although this approach enables the detection of previously unknown attacks, it may suffer from false positives: previously unknown legitimate activity may also be classified as malicious. Most of the existing IDSs suffer from the time-consuming during detection process that degrades the performance of IDSs. Efficient feature selection algorithm makes the classification process used in detection more reliable.[19] Recent research has also explored deep learning approaches for anomaly-based intrusion detection, as these methods can learn complex traffic patterns and help identify previously unseen attacks more effectively.
+New types of what could be called anomaly-based intrusion detection systems are being viewed by Gartner as User and Entity Behavior Analytics (UEBA) (an evolution of the user behavior analytics category) and network traffic analysis (NTA). In particular, NTA deals with malicious insiders as well as targeted external attacks that have compromised a user machine or account. Gartner has noted that some organizations have opted for NTA over more traditional IDS.
+
+
+Intrusion prevention
+Some systems may attempt to stop an intrusion attempt but this is neither required nor expected of a monitoring system. Intrusion detection and prevention systems (IDPS) are primarily focused on identifying possible incidents, logging information about them, and reporting attempts.  In addition, organizations use IDPS for other purposes, such as identifying problems with security policies, documenting existing threats and deterring individuals from violating security policies. IDPS have become a necessary addition to the security infrastructure of nearly every organization.
+IDPS typically record information related to observed events, notify security administrators of important observed events and produce reports. Many IDPS can also respond to a detected threat by attempting to prevent it from succeeding. They use several response techniques, which involve the IDPS stopping the attack itself, changing the security environment (e.g. reconfiguring a firewall) or changing the attack's content.
+Intrusion prevention systems (IPS), also known as intrusion detection and prevention systems (IDPS), are network security appliances that monitor network or system activities for malicious activity. The main functions of intrusion prevention systems are to identify malicious activity, log information about this activity, report it and attempt to block or stop it..
+Intrusion prevention systems are considered extensions of intrusion detection systems because they both monitor network traffic and/or system activities for malicious activity. The main differences are, unlike intrusion detection systems, intrusion prevention systems are placed in-line and are able to actively prevent or block intrusions that are detected. IPS can take such actions as sending an alarm, dropping detected malicious packets, resetting a connection or blocking traffic from the offending IP address. An IPS also can correct cyclic redundancy check (CRC) errors, defragment packet streams, mitigate TCP sequencing issues, and clean up unwanted transport and network layer options.
+
+
+Classification
+Intrusion prevention systems can be classified into four different types:
+
+Network-based intrusion prevention system (NIPS):  monitors the entire network for suspicious traffic by analyzing protocol activity.
+Wireless intrusion prevention system (WIPS): monitor a wireless network for suspicious traffic by analyzing wireless networking protocols.
+Network behavior analysis (NBA): examines network traffic to identify threats that generate unusual traffic flows, such as distributed denial of service (DDoS) attacks, certain forms of malware and policy violations.
+Host-based intrusion prevention system (HIPS): an installed software package which monitors a single host for suspicious activity by analyzing events occurring within that host.
+
+
+Detection methods
+The majority of intrusion prevention systems utilize one of three detection methods: signature-based, statistical anomaly-based, and stateful protocol analysis.
+
+Signature-based detection: Signature-based IDS monitors packets in the Network and compares with pre-configured and pre-determined attack patterns known as signatures. While it is the simplest and most effective method, it fails to detect unknown attacks and variants of known attacks.
+Statistical anomaly-based detection: An IDS which is anomaly-based will monitor network traffic and compare it against an established baseline. The baseline will identify what is "normal" for that network – what sort of bandwidth is generally used and what protocols are used. It may however, raise a False Positive alarm for legitimate use of bandwidth if the baselines are not intelligently configured. Ensemble models that use Matthews correlation co-efficient to identify unauthorized network traffic have obtained 99.73% accuracy.
+Stateful protocol analysis detection: This method identifies deviations of protocol states by comparing observed events with "pre-determined profiles of generally accepted definitions of benign activity". While it is capable of knowing and tracing the protocol states, it requires significant resources.
+
+
+Placement
+The correct placement of intrusion detection systems is critical and varies depending on the network. The most common placement is behind the firewall, on the edge of a network. This practice provides the IDS with high visibility of traffic entering your network and will not receive any traffic between users on the network. The edge of the network is the point in which a network connects to the extranet. Another practice that can be accomplished if more resources are available is a strategy where a technician will place their first IDS at the point of highest visibility and depending on resource availability will place another at the next highest point, continuing that process until all points of the network are covered.
+If an IDS is placed beyond a network's firewall, its main purpose would be to defend against noise from the internet but, more importantly, defend against common attacks, such as port scans and network mapper. An IDS in this position would monitor layers 4 through 7 of the OSI model and would be signature-based. This is a very useful practice, because rather than showing actual breaches into the network that made it through the firewall, attempted breaches will be shown which reduces the amount of false positives. The IDS in this position also assists in decreasing the amount of time it takes to discover successful attacks against a network.
+Sometimes an IDS with more advanced features will be integrated with a firewall in order to be able to intercept sophisticated attacks entering the network. Examples of advanced features would include multiple security contexts in the routing level and bridging mode. All of this in turn potentially reduces cost and operational complexity.
+Another option for IDS placement is within the actual network. These will reveal attacks or suspicious activity within the network. Ignoring the security within a network can cause many problems, it will either allow users to bring about security risks or allow an attacker who has already broken into the network to roam around freely. Intense intranet security makes it difficult for even those hackers within the network to maneuver around and escalate their privileges.
+
+
+Limitations
+Noise can severely limit an intrusion detection system's effectiveness. Bad packets generated from software bugs, corrupt DNS data, and local packets that escaped can create a significantly high false-alarm rate.
+It is not uncommon for the number of real attacks to be far below the number of false-alarms. Number of real attacks is often so far below the number of false-alarms that the real attacks are often missed and ignored.
+Many attacks are geared for specific versions of software that are usually outdated. A constantly changing library of signatures is needed to mitigate threats. Outdated signature databases can leave the IDS vulnerable to newer strategies.
+For signature-based IDS, there will be lag between a new threat discovery and its signature being applied to the IDS. During this lag time, the IDS will be unable to identify the threat.
+It cannot compensate for weak identification and authentication mechanisms or for weaknesses in network protocols. When an attacker gains access due to weak authentication mechanisms then IDS cannot prevent the adversary from any malpractice.
+Encrypted packets are not processed by most intrusion detection devices. Therefore, the encrypted packet can allow an intrusion to the network that is undiscovered until more significant network intrusions have occurred.
+Intrusion detection software provides information based on the network address that is associated with the IP packet that is sent into the network. This is beneficial if the network address contained in the IP packet is accurate. However, the address that is contained in the IP packet could be faked or scrambled.
+Due to the nature of NIDS systems, and the need for them to analyse protocols as they are captured, NIDS systems can be susceptible to the same protocol-based attacks to which network hosts may be vulnerable. Invalid data and TCP/IP stack attacks may cause a NIDS to crash.
+The security measures on cloud computing do not consider the variation of user's privacy needs. They provide the same security mechanism for all users no matter if users are companies or an individual person.
+
+
+Evasion techniques
+
+There are a number of techniques which attackers are using, the following are considered 'simple' measures which can be taken to evade IDS:
+
+Fragmentation: by sending fragmented packets, the attacker will be under the radar and can easily bypass the detection system's ability to detect the attack signature.
+Avoiding defaults: The TCP port utilised by a protocol does not always provide an indication to the protocol which is being transported. For example, an IDS may expect to detect a trojan on port 12345. If an attacker had reconfigured it to use a different port, the IDS may not be able to detect the presence of the trojan.
+Coordinated, low-bandwidth attacks: coordinating a scan among numerous attackers (or agents) and allocating different ports or hosts to different attackers makes it difficult for the IDS to correlate the captured packets and deduce that a network scan is in progress.
+Address spoofing/proxying: attackers can increase the difficulty of the Security Administrators ability to determine the source of the attack by using poorly secured or incorrectly configured proxy servers to bounce an attack. If the source is spoofed and bounced by a server, it makes it very difficult for IDS to detect the origin of the attack.
+Pattern change evasion: IDS generally rely on 'pattern matching' to detect an attack. By changing the data used in the attack slightly, it may be possible to evade detection. For example, an Internet Message Access Protocol (IMAP) server may be vulnerable to a buffer overflow, and an IDS is able to detect the attack signature of 10 common attack tools. By modifying the payload sent by the tool, so that it does not resemble the data that the IDS expects, it may be possible to evade detection.
+
+
+Development
+The earliest preliminary IDS concept was delineated in 1980 by James Anderson at the National Security Agency and consisted of a set of tools intended to help administrators review audit trails. User access logs, file access logs, and system event logs are examples of audit trails.
+Fred Cohen noted in 1987 that it is impossible to detect an intrusion in every case, and that the resources needed to detect intrusions grow with the amount of usage.
+Dorothy E. Denning, assisted by Peter G. Neumann, published a model of an IDS in 1986 that formed the basis for many systems today.  Her model used statistics for anomaly detection, and resulted in an early IDS at SRI International named the Intrusion Detection Expert System (IDES), which ran on Sun workstations and could consider both user and network level data.  IDES had a dual approach with a rule-based Expert System to detect known types of intrusions plus a statistical anomaly detection component based on profiles of users, host systems, and target systems. The author of "IDES: An Intelligent System for Detecting Intruders", Teresa F. Lunt, proposed adding an artificial neural network as a third component.  She said all three components could then report to a resolver.  SRI followed IDES in 1993 with the Next-generation Intrusion Detection Expert System (NIDES).
+The Multics intrusion detection and alerting system (MIDAS), an expert system using P-BEST and Lisp, was developed in 1988 based on the work of Denning and Neumann.  Haystack was also developed in that year using statistics to reduce audit trails.
+In 1986 the National Security Agency started an IDS research transfer program under Rebecca Bace. Bace later published the seminal text on the subject, Intrusion Detection, in 2000.
+Wisdom & Sense (W&S) was a statistics-based anomaly detector developed in 1989 at the Los Alamos National Laboratory.  W&S created rules based on statistical analysis, and then used those rules for anomaly detection.
+In 1990, the Time-based Inductive Machine (TIM) did anomaly detection using inductive learning of sequential user patterns in Common Lisp on a VAX 3500 computer.  The Network Security Monitor (NSM) performed masking on access matrices for anomaly detection on a Sun-3/50 workstation.  The Information Security Officer's Assistant (ISOA) was a 1990 prototype that considered a variety of strategies including statistics, a profile checker, and an expert system.  ComputerWatch at AT&T Bell Labs used statistics and rules for audit data reduction and intrusion detection.
+Then, in 1991, researchers at the University of California, Davis created a prototype Distributed Intrusion Detection System (DIDS), which was also an expert system.  The Network Anomaly Detection and Intrusion Reporter (NADIR), also in 1991, was a prototype IDS developed at the Los Alamos National Laboratory's Integrated Computing Network (ICN), and was heavily influenced by the work of Denning and Lunt.  NADIR used a statistics-based anomaly detector and an expert system.
+The Lawrence Berkeley National Laboratory announced Bro in 1998, which used its own rule language for packet analysis from libpcap data.  Network Flight Recorder (NFR) in 1999 also used libpcap.
+APE was developed as a packet sniffer, also using libpcap, in November, 1998, and was renamed Snort one month later. Snort has since become the world's largest used IDS/IPS system with over 300,000 active users. It can monitor both local systems, and remote capture points using the TZSP protocol.
+The Audit Data Analysis and Mining (ADAM) IDS in 2001 used tcpdump to build profiles of rules for classifications. In 2003, Yongguang Zhang and Wenke Lee argue for the importance of IDS in networks with mobile nodes.
+In 2015, Viegas and his colleagues  proposed an anomaly-based intrusion detection engine, aiming System-on-Chip (SoC) for applications in Internet of Things (IoT), for instance. The proposal applies machine learning for anomaly detection, providing energy-efficiency to a Decision Tree, Naive-Bayes, and k-Nearest Neighbors classifiers implementation in an Atom CPU and its hardware-friendly implementation in a FPGA. In the literature, this was the first work that implement each classifier equivalently in software and hardware and measures its energy consumption on both. Additionally, it was the first time that was measured the energy consumption for extracting each features used to make the network packet classification, implemented in software and hardware.
+
+
+Regulatory requirements
+Several regulatory frameworks require or recommend intrusion detection capabilities as part of information security compliance.
+In the United States, the Health Insurance Portability and Accountability Act (HIPAA) Security Rule requires covered entities to implement procedures for monitoring log-in attempts and reporting discrepancies as part of their information system activity review. The December 2024 Notice of proposed rulemaking (NPRM) to overhaul the HIPAA Security Rule would explicitly mandate deployment of intrusion detection and intrusion prevention systems, along with continuous monitoring of all information systems containing electronic protected health information.
+The Payment Card Industry Data Security Standard (PCI DSS) requires the use of intrusion detection or intrusion prevention techniques to detect or prevent intrusions into networks handling cardholder data (Requirement 11.5). The National Institute of Standards and Technology (NIST) SP 800-53 includes the SI-4 (Information System Monitoring) control family, which specifies intrusion detection as a core capability for federal information systems.
+
+
+See also
+Application protocol-based intrusion detection system (APIDS)
+Artificial immune system
+Bypass switch
+Denial-of-service attack
+DNS analytics
+Extrusion detection
+Intrusion Detection Message Exchange Format
+Protocol-based intrusion detection system (PIDS)
+Real-time adaptive security
+Security management
+ShieldsUp
+Software-defined protection
+
+
+References
+
+ This article incorporates public domain material from Karen Scarfone, Peter Mell. Guide to Intrusion Detection and Prevention Systems, SP800-94 (PDF). National Institute of Standards and Technology. Retrieved 9 July 2025.
+
+
+Further reading
+Bace, Rebecca Gurley (2000). Intrusion Detection. Indianapolis, IN: Macmillan Technical. ISBN 978-1578701858.
+Bezroukov, Nikolai (11 December 2008). "Architectural Issues of Intrusion Detection Infrastructure in Large Enterprises (Revision 0.82)". Softpanorama. Retrieved 30 July 2010.
+P.M. Mafra and J.S. Fraga and A.O. Santin (2014). "Algorithms for a distributed IDS in MANETs". Journal of Computer and System Sciences. 80 (3): 554–570. doi:10.1016/j.jcss.2013.06.011.
+Hansen, James V.; Benjamin Lowry, Paul; Meservy, Rayman; McDonald, Dan (2007). "Genetic programming for prevention of cyberterrorism through dynamic and evolving intrusion detection". Decision Support Systems. 43 (4): 1362–1374. doi:10.1016/j.dss.2006.04.004. SSRN 877981.
+Scarfone, Karen; Mell, Peter (February 2007). "NIST – Guide to Intrusion Detection and Prevention Systems (IDPS)" (PDF). Computer Security Resource Center (800–94). doi:10.6028/NIST.SP.800-94. Retrieved 27 December 2023.
+Singh, Abhishek. "Evasions In Intrusion Prevention Detection Systems". Virus Bulletin. Retrieved 1 April 2010.
+Dubey, Abhinav. "Implementation of Network Intrusion Detection System using Deep Learning". Medium. Retrieved 17 April 2021.
+Al_Ibaisi, T., Abu-Dalhoum, A. E.-L., Al-Rawi, M., Alfonseca, M., & Ortega, A. (n.d.). Network Intrusion Detection Using Genetic Algorithm to find Best DNA Signature. http://www.wseas.us/e-library/transactions/systems/2008/27-535.pdf
+Ibaisi, T. A., Kuhn, S., Kaiiali, M., & Kazim, M. (2023). Network Intrusion Detection Based on Amino Acid Sequence Structure Using Machine Learning. Electronics, 12(20), 4294. https://doi.org/10.3390/electronics12204294
+
+
+External links
+Common vulnerabilities and exposures (CVE) by product
+NIST SP 800-83, Guide to Malware Incident Prevention and Handling
+NIST SP 800-94, Guide to Intrusion Detection and Prevention Systems (IDPS)

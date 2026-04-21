@@ -1,0 +1,246 @@
+In physical security and information security, access control (AC) is the action of deciding whether a subject should be granted or denied access to an object (for example, a place or a resource). The act of accessing may mean consuming, entering, or using. It is often used interchangeably with authorization, although the authorization may be granted well in advance of the access control decision.
+Access control on digital platforms is also termed admission control. The protection of external databases is essential to preserve digital security.
+Access control is considered to be a significant aspect of privacy that should be further studied. Access control policy (also access policy) is part of an organization’s security policy. In order to verify the access control policy, organizations use an access control model. General security policies require designing or selecting appropriate security controls to satisfy an organization's risk appetite - access policies similarly require the organization to design or select access controls.
+Broken access control is often listed as the number one risk in web applications. On the basis of the "principle of least privilege", consumers should only be authorized to access whatever they need to do their jobs, and nothing more.
+
+
+Physical security
+
+Geographical access control may be enforced by personnel (e.g. border guard, bouncer, ticket checker), or with a device such as a turnstile. There may be fences to avoid circumventing this access control. An alternative of access control in the strict sense (physically controlling access itself) is a system of checking authorized presence, see e.g. Ticket controller (transportation). A variant is exit control, e.g. of a shop (checkout) or a country.
+The term access control refers to the practice of restricting entrance to a property, a building, or a room to authorized persons. Physical access control can be achieved by a human (a guard, bouncer, or receptionist), through mechanical means such as locks and keys, or through technological means such as access control systems like the mantrap. Within these environments, physical key management may also be employed as a means of further managing and monitoring access to mechanically keyed areas or access to certain small assets.
+Physical access control is a matter of who, where, and when. An access control system determines who is allowed to enter or exit, where they are allowed to exit or enter, and when they are allowed to enter or exit. Historically, this was partially accomplished through keys and locks. When a door is locked, only someone with a key can enter through the door, depending on how the lock is configured. Mechanical locks and keys do not allow restriction of the key holder to specific times or dates. Mechanical locks and keys do not provide records of the key used on any specific door, and the keys can be easily copied or transferred to an unauthorized person. When a mechanical key is lost or the key holder is no longer authorized to use the protected area, the locks must be re-keyed.
+
+
+Electronic access control
+
+Electronic access control (EAC) uses computers to solve the limitations of mechanical locks and keys. It is particularly difficult to guarantee identification (a critical component of authentication) with mechanical locks and keys. A wide range of credentials can be used to replace mechanical keys, allowing for complete authentication, authorization, and accounting. The electronic access control system grants access based on the credential presented. When access is granted, the resource is unlocked for a predetermined time and the transaction is recorded. When access is refused, the resource remains locked and the attempted access is recorded. The system will also monitor the resource and alarm if the resource is forcefully unlocked or held open too long after being unlocked.
+When a credential is presented to a reader, the reader sends the credential's information, usually a number, to a control panel, a highly reliable processor. The control panel compares the credential's number to an access control list, grants or denies the presented request, and sends a transaction log to a database. When access is denied based on the access control list, the door remains locked. If there is a match between the credential and the access control list, the control panel operates a relay that in turn unlocks the resource. The control panel also ignores an opening signal to prevent an alarm. Often the reader provides feedback, such as a flashing red LED for an access denied and a flashing green LED for an access granted.
+The above description illustrates a single factor transaction. Credentials can be passed around, thus subverting the access control list. For example, Alice has access rights to the server room, but Bob does not. Alice either gives Bob her credential, or Bob takes it; he now has access to the server room. To prevent this, two-factor authentication can be used. In a two factor transaction, the presented credential and a second factor are needed for access to be granted; another factor can be a PIN code, a second credential, operator intervention, or a biometric input.
+There are three types (factors) of authenticating information:
+
+something the user knows, e.g. a password, pass-phrase or PIN
+something the user has, such as smart card or a key fob
+something the user is, such as the users fingerprint, verified by biometric measurement
+Passwords are a common means of verifying a user's identity before access is given to information systems. In addition, a fourth factor of authentication is now recognized: someone you know, whereby another person who knows you can provide a human element of authentication in situations where systems have been set up to allow for such scenarios. For example, a user may have their password, but have forgotten their smart card. In such a scenario, if the user is known to designated cohorts, the cohorts may provide their smart card and password, in combination with the extant factor of the user in question, and thus provide two factors for the user with the missing credential, giving three factors overall to allow access.
+
+
+Credential
+A credential is a physical/tangible object, a piece of knowledge, or a facet of a person's physical being that enables an individual access to a given physical facility or computer-based information system. Typically, credentials can be something a person knows (such as a number or PIN code), something they have (such as an access badge), something they are (such as a biometric feature), something they do (measurable behavioural patterns), or some combination of these items. This is known as multi-factor authentication. The typical credential is an access card or key-fob, and newer software can also turn users' smartphones into access devices.
+There are many card technologies including magnetic stripe, bar code, Wiegand, 125 kHz proximity, 26-bit card-swipe, contact smart cards, and contactless smart cards. Also available are key-fobs, which are more compact than ID cards, and attach to a key ring. Biometric technologies include fingerprint, facial recognition, iris recognition, retinal scan, voice, and hand geometry. The built-in biometric technologies found on newer smartphones can also be used as credentials in conjunction with access software running on mobile devices. In addition to older more traditional card access technologies, newer technologies such as near-field communication (NFC), Bluetooth low energy or Ultra-wideband (UWB) can also communicate user credentials to readers for system or building access.
+
+
+Access control system components
+
+Components of an access control system include:
+
+An access control panel (also known as a controller)
+An access-controlled entry, such as a door, turnstile, parking gate, elevator, or other physical barrier
+A reader installed near the entry. (In cases where the exit is also controlled, a second reader is used on the opposite side of the entry.)
+Locking hardware, such as electric door strikes and electromagnetic locks
+A magnetic door switch for monitoring door position
+Request-to-exit (RTE) devices for allowing egress. When a RTE button is pushed, or the motion detector detects motion at the door, the door alarm is temporarily ignored while the door is opened. Exiting a door without having to electrically unlock the door is called "mechanical free egress". This is an important safety feature to allow evacuation in the event of a fire or other sudden emergency. In cases where the lock must be electrically unlocked upon exit, the RTE device also unlocks the door.
+
+
+Access control topology
+
+Access control decisions are made by comparing the credentials to an access control list. This look-up can be done by a host or server, by an access control panel, or by a reader. The development of access control systems has observed a steady push of the look-up out from a central host to the edge of the system, or the reader. The predominant topology circa 2009 is hub and spoke with a control panel as the hub, and the readers as the spokes. The look-up and control functions are by the control panel. The spokes communicate through a serial connection; usually RS-485. Some manufactures are pushing the decision making to the edge by placing a controller at the door. The controllers are IP enabled, and connect to a host and database using standard networks
+
+
+Types of readers
+Access control readers may be classified by the functions they are able to perform:
+
+Basic (non-intelligent) readers: simply read card number or PIN, and forward it to a control panel. In case of biometric identification, such readers output the ID number of a user. Typically, Wiegand protocol is used for transmitting data to the control panel, but other options such as RS-232, RS-485 and Clock/Data are not uncommon. This is the most popular type of access control readers. Examples of such readers are RF Tiny by RFLOGICS, ProxPoint by HID, and P300 by Farpointe Data.
+Semi-intelligent readers: have all inputs and outputs necessary to control door hardware (lock, door contact, exit button), but do not make any access decisions. When a user presents a card or enters a PIN, the reader sends information to the main controller, and waits for its response. If the connection to the main controller is interrupted, such readers stop working, or function in a degraded mode. Usually semi-intelligent readers are connected to a control panel via an RS-485 bus. Examples of such readers are InfoProx Lite IPL200 by CEM Systems, and AP-510 by Apollo.
+Intelligent readers: have all inputs and outputs necessary to control door hardware; they also have memory and processing power necessary to make access decisions independently. Like semi-intelligent readers, they are connected to a control panel via an RS-485 bus. The control panel sends configuration updates, and retrieves events from the readers. Examples of such readers could be InfoProx IPO200 by CEM Systems, and AP-500 by Apollo. There is also a new generation of intelligent readers referred to as "IP readers". Systems with IP readers usually do not have traditional control panels, and readers communicate directly to a PC that acts as a host.
+Some readers may have additional features such as a display and function buttons for data collection purposes (i.e. clock-in/clock-out events for attendance reports), camera/speaker/microphone for intercom, or smart card read/write support.
+
+
+Access control system topologies
+
+1. Serial controllers. Controllers are connected to a host PC via a serial RS-485 communication line (or via 20mA current loop in some older systems). External RS-232/485 converters or internal RS-485 cards have to be installed, as standard PCs do not have RS-485 communication ports.
+Advantages:
+
+RS-485 standard allows long cable runs, up to 4000 feet (1200 m)
+Relatively short response time. The maximum number of devices on an RS-485 line is limited to 32, which means that the host can frequently request status updates from each device, and display events almost in real time.
+High reliability and security as the communication line is not shared with any other systems.
+Disadvantages: 
+
+RS-485 does not allow star connected wiring unless splitters are used
+RS-485 is not well suited for transferring large amounts of data (i.e. configuration and users). The highest possible throughput is 115.2 kbit/sec, but in most system it is downgraded to 56.2 kbit/sec, or less, to increase reliability.
+RS-485 does not allow the host PC to communicate with several controllers connected to the same port simultaneously. Therefore, in large systems, transfers of configuration, and users to controllers may take a very long time, interfering with normal operations.
+Controllers cannot initiate communication in case of an alarm. The host PC acts as a master on the RS-485 communication line, and controllers have to wait until they are polled.
+Special serial switches are required, in order to build a redundant host PC setup.
+Separate RS-485 lines have to be installed, instead of using an already existing network infrastructure.
+Cable that meets RS-485 standards is significantly more expensive than regular Category 5 UTP network cable.
+Operation of the system is highly dependent on the host PC. In the case that the host PC fails, events from controllers are not retrieved, and functions that require interaction between controllers (i.e. anti-passback) stop working.
+
+2. Serial main and sub-controllers. All door hardware is connected to sub-controllers (a.k.a. door controllers or door interfaces). Sub-controllers usually do not make access decisions, and instead forward all requests to the main controllers. Main controllers usually support from 16 to 32 sub-controllers.
+Advantages:
+
+Work load on the host PC is significantly reduced, because it only needs to communicate with a few main controllers.
+The overall cost of the system is lower, as sub-controllers are usually simple and inexpensive devices.
+All other advantages listed in the first paragraph apply.
+Disadvantages: 
+
+Operation of the system is highly dependent on main controllers. In case one of the main controllers fails, events from its sub-controllers are not retrieved, and functions that require interaction between sub-controllers (i.e. anti-passback) stop working.
+Some models of sub-controllers (usually lower cost) do not have the memory or processing power to make access decisions independently. If the main controller fails, sub-controllers change to degraded mode in which doors are either completely locked or unlocked, and no events are recorded. Such sub-controllers should be avoided, or used only in areas that do not require high security.
+Main controllers tend to be expensive, therefore such a topology is not very well suited for systems with multiple remote locations that have only a few doors.
+All other RS-485-related disadvantages listed in the first paragraph apply.
+
+3. Serial main controllers & intelligent readers. All door hardware is connected directly to intelligent or semi-intelligent readers. Readers usually do not make access decisions, and forward all requests to the main controller. Only if the connection to the main controller is unavailable, will the readers use their internal database to make access decisions and record events. Semi-intelligent reader that have no database and cannot function without the main controller should be used only in areas that do not require high security. Main controllers usually support from 16 to 64 readers. All advantages and disadvantages are the same as the ones listed in the second paragraph. 
+
+4. Serial controllers with terminal servers. In spite of the rapid development and increasing use of computer networks, access control manufacturers remained conservative, and did not rush to introduce network-enabled products. When pressed for solutions with network connectivity, many chose the option requiring less efforts: addition of a terminal server, a device that converts serial data for transmission via LAN or WAN.
+Advantages:
+
+Allows utilizing the existing network infrastructure for connecting separate segments of the system.
+Provides a convenient solution in cases when the installation of an RS-485 line would be difficult or impossible.
+Disadvantages:
+
+Increases complexity of the system.
+Creates additional work for installers: usually terminal servers have to be configured independently, and not through the interface of the access control software.
+Serial communication link between the controller and the terminal server acts as a bottleneck: even though the data between the host PC and the terminal server travels at the 10/100/1000 Mbit/sec network speed, it must slow down to the serial speed of 112.5 kbit/sec or less. There are also additional delays introduced in the process of conversion between serial and network data.
+All the RS-485-related advantages and disadvantages also apply.
+
+5. Network-enabled main controllers. The topology is nearly the same as described in the second and third paragraphs. The same advantages and disadvantages apply, but the on-board network interface offers a couple of valuable improvements. Transmission of configuration and user data to the main controllers is faster, and may be done in parallel. This makes the system more responsive, and does not interrupt normal operations. No special hardware is required in order to achieve redundant host PC setup: in the case that the primary host PC fails, the secondary host PC may start polling network controllers. The disadvantages introduced by terminal servers (listed in the fourth paragraph) are also eliminated. 
+
+6. IP controllers. Controllers are connected to a host PC via Ethernet LAN or WAN.
+Advantages:
+
+An existing network infrastructure is fully utilized, and there is no need to install new communication lines.
+There are no limitations regarding the number of controllers (as the 32 per line in cases of RS-485).
+Special RS-485 installation, termination, grounding and troubleshooting knowledge is not required.
+Communication with the controllers may be done at the full network speed, which is important if transferring a lot of data (databases with thousands of users, possibly including biometric records).
+In case of an alarm, controllers may initiate connection to the host PC. This ability is important in large systems, because it serves to reduce network traffic caused by unnecessary polling.
+Simplifies installation of systems consisting of multiple sites that are separated by large distances. A basic Internet link is sufficient to establish connections to the remote locations.
+Wide selection of standard network equipment is available to provide connectivity in various situations (fiber, wireless, VPN, dual path, PoE)
+Disadvantages: 
+
+The system becomes susceptible to network related problems, such as delays in case of heavy traffic and network equipment failures.
+Access controllers and workstations may become accessible to hackers if the network of the organization is not well protected. This threat may be eliminated by physically separating the access control network from the network of the organization. Most IP controllers utilize either Linux platform or proprietary operating systems, which makes them more difficult to hack. Industry standard data encryption is also used.
+Maximum distance from a hub or a switch to the controller (if using a copper cable) is 100 meters (330 ft).
+Operation of the system is dependent on the host PC. In case the host PC fails, events from controllers are not retrieved and functions that require interaction between controllers (i.e. anti-passback) stop working. Some controllers, however, have a peer-to-peer communication option in order to reduce dependency on the host PC.
+
+7. IP readers. Readers are connected to a host PC via Ethernet LAN or WAN.
+Advantages:
+
+Most IP readers are PoE capable. This feature makes it very easy to provide battery backed power to the entire system, including the locks and various types of detectors (if used).
+IP readers eliminate the need for controller enclosures.
+There is no wasted capacity when using IP readers (e.g. a 4-door controller would have 25% of unused capacity if it was controlling only 3 doors).
+IP reader systems scale easily: there is no need to install new main or sub-controllers.
+Failure of one IP reader does not affect any other readers in the system.
+Disadvantages:
+
+In order to be used in high-security areas, IP readers require special input/output modules to eliminate the possibility of intrusion by accessing lock and/or exit button wiring. Not all IP reader manufacturers have such modules available.
+Being more sophisticated than basic readers, IP readers are also more expensive and sensitive, therefore they should not be installed outdoors in areas with harsh weather conditions, or high probability of vandalism, unless specifically designed for exterior installation. A few manufacturers make such models.
+The advantages and disadvantages of IP controllers apply to the IP readers as well.
+
+
+Security risks
+
+The most common security risk of intrusion through an access control system is by simply following a legitimate user through a door, referred to as "tailgating". Often, a legitimate user may hold the door for the intruder as an act of common courtesy. This risk can be minimized through security awareness training of the user population, or more active means such as turnstiles which admit only one person at a time. In very high-security applications, this risk is minimized by using a sally port (sometimes called a "security vestibule" or "mantrap"), where operator intervention is required, presumably after confirming valid identification.
+The second most common risk is from levering a door open by sheer brute force. This is relatively difficult on properly-secured doors with ruggedized strikes or high holding force magnetic locks. Fully-implemented access control systems include forced-door monitoring alarms. These vary in effectiveness, often failing from high false-positive alarms, poor database configuration, or lack of active intrusion monitoring. Most newer access control systems incorporate some type of "door prop" alarm to inform system administrators of a door left open longer than a specified length of time.
+The third most common security risk arises from natural disasters. In order to mitigate this risk, the structure of the building, down to the quality of the network and computer equipment is crucial. From an organizational perspective, the leadership will need to adopt and implement an All Hazards Plan, or Incident Response Plan. The highlights of any incident plan recommended by the National Incident Management System usually include pre-incident planning, during-incident actions, disaster recovery, and after-action review.
+An attack similar to levering is breaking through cheap partition walls, typically made of wallboard or cinder blocks. In shared tenant spaces, the divisional wall is a vulnerability. A vulnerability along the same lines is the breaking of sidelight windows located next to doors.
+Spoofing of locking hardware is fairly simple and more elegant than levering. A strong magnet can operate the solenoid controlling bolts in electric locking hardware. Motorized locks, more prevalent in Europe than in the US, are also susceptible to this attack using a doughnut-shaped magnet. It is also possible to manipulate the power to the lock either by removing or adding current, although most Access Control systems incorporate battery back-up systems, and the locks are almost always located on the secure side of the door. 
+Access cards themselves have proven vulnerable to sophisticated attacks. Enterprising hackers have built portable readers that capture the card number from a user's proximity card. The hacker simply walks by the user, reads the card, and later presents the number to a reader securing the door. This is possible when card numbers are sent in the clear, no encryption being used. To counter this, dual authentication methods, such as a card plus a PIN should always be used.
+Many access control credentials use unique serial numbers which are programmed in sequential order during manufacturing. In a method known as a "sequential attack", if an intruder has a credential once used in the system, they can simply increment or decrement the serial number until they find a credential that is currently authorized in the system. Specifying credentials with random unique serial numbers is recommended to counter this threat. In addition, increasingly long lockout timeout intervals after a credential failure will make automated repeated attacks infeasible.
+Finally, most electric locking hardware still uses mechanical keys as a fail-over. Most conventional mechanical key locks are vulnerable to bumping.
+
+
+Computer security
+
+In computer security, general access control includes authentication, authorization, and audit. A more narrow definition of access control would cover only access approval, whereby the system makes a decision to grant or reject an access request from an already authenticated subject, based on what the subject is authorized to access. Authentication and access control are often combined into a single operation, so that access is approved based on successful authentication, or based on an anonymous access token. Authentication methods and tokens include passwords, biometric analysis, physical keys, electronic keys and devices, hidden paths, social barriers, and monitoring by humans and automated systems.
+In any access-control model, the entities that can perform actions on the system are called subjects, and the entities representing resources to which access may need to be controlled are called objects (see also Access Control Matrix). Subjects and objects should both be considered as software entities, rather than as human users: any human users can only have an effect on the system via the software entities that they control.
+Although some systems equate subjects with user IDs, so that all processes started by a user by default have the same authority, this level of control is not fine-grained enough to satisfy the principle of least privilege, and arguably is responsible for the prevalence of malware in such systems (see computer insecurity).
+In some models, for example the object-capability model, any software entity can potentially act as both subject and object.
+As of 2014, access-control models tend to fall into one of two classes: those based on capabilities and those based on access control lists (ACLs).
+
+In a capability-based model, holding an unforgeable reference or capability to an object provides access to the object (roughly analogous to how possession of one's house key grants one access to one's house); access is conveyed to another party by transmitting such a capability over a secure channel
+In an ACL-based model, a subject's access to an object depends on whether its identity appears on a list associated with the object (roughly analogous to how a bouncer at a private party would check an ID to see if a name appears on the guest list); access is conveyed by editing the list. (Different ACL systems have a variety of different conventions regarding who or what is responsible for editing the list and how it is edited.)
+Both capability-based and ACL-based models have mechanisms to allow access rights to be granted to all members of a group of subjects (often the group is itself modeled as a subject).
+Access control systems provide the essential services of authorization, identification and authentication (I&A), access approval, and accountability where:
+
+authorization specifies what a subject can do
+identification and authentication ensure that only legitimate subjects can log on to a system
+access approval grants access during operations, by association of users with the resources that they are allowed to access, based on the authorization policy
+accountability identifies what a subject (or all subjects associated with a user) did
+
+
+Access control models
+Access to accounts can be enforced through many types of controls.
+
+Attribute-based Access Control (ABAC) An access control paradigm whereby access rights are granted to users through the use of policies which evaluate attributes (user attributes, resource attributes and environment conditions).
+Discretionary Access Control (DAC)In DAC, the data owner determines who can access specific resources. For example, a system administrator may create a hierarchy of files to be accessed based on certain permissions.
+Graph-based Access Control (GBAC)Compared to other approaches like RBAC or ABAC, the main difference is that in GBAC access rights are defined using an organizational query language instead of total enumeration.
+History-Based Access Control (HBAC)Access is granted or declined based on the real-time evaluation of a history of activities of the inquiring party, e.g. behavior, time between requests, content of requests. For example, the access to a certain service or data source can be granted or declined on the personal behavior, e.g. the request interval exceeds one query per second.
+History-of-Presence Based Access Control (HPBAC)Access control to resources is defined in terms of presence policies that need to be satisfied by presence records stored by the requestor. Policies are usually written in terms of frequency, spread and regularity. An example policy would be "The requestor has made k separate visitations, all within last week, and no two consecutive visitations are apart by more than T hours."
+Identity-Based Access Control (IBAC)Using this network administrators can more effectively manage activity and access based on individual needs.
+Lattice-Based Access Control (LBAC)A lattice is used to define the levels of security that an object may have and that a subject may have access to. The subject is only allowed to access an object if the security level of the subject is greater than or equal to that of the object.
+Mandatory Access Control (MAC)In MAC, users do not have much freedom to determine who has access to their files. For example, security clearance of users and classification of data (as confidential, secret or top secret) are used as security labels to define the level of trust.
+Organization-Based Access Control (OrBAC)  OrBAC model allows the policy designer to define a security policy independently of the implementation.
+Relationship-Based Access Control (ReBAC)A subject's permission to access a resource is defined by the presence of relationships between those subjects and resources.
+Role-Based Access Control (RBAC)RBAC allows access based on the job title. RBAC largely eliminates discretion when providing access to objects. For example, a human resources specialist should not have permissions to create network accounts; this should be a role reserved for network administrators.
+Rule-Based Access Control (RAC)RAC method, also referred to as Rule-Based Role-Based Access Control (RB-RBAC), is largely context based. Example of this would be allowing students to use labs only during a certain time of day; it is the combination of students' RBAC-based information system access control with the time-based lab access rules.
+Responsibility Based Access Control  Information is accessed based on the responsibilities assigned to an actor or a business role.
+Subscription-Based Access Control (SBAC)SBAC assigns permissions based on a user's subscription status, automating the process of granting, modifying, or revoking access as users subscribe, upgrade, downgrade, or cancel. SBAC is particularly relevant for SaaS business, where access to features, data, or services is tied to a user's active plan. Unlike RBAC or ABAC, which define permissions based on roles or attributes, SBAC dynamically distributes roles and policies based on billing status, ensuring real-time access alignment.
+
+
+Regulatory requirements
+Several regulatory frameworks impose specific access control requirements on organizations handling sensitive data. The HIPAA Security Rule requires covered entities and business associates to implement technical access controls for electronic protected health information (ePHI), including unique user identification, emergency access procedures, automatic logoff, and encryption and decryption mechanisms. The proposed HIPAA Security Rule update (NPRM, December 2024) would strengthen these requirements by mandating multi-factor authentication for all access to ePHI.
+The Payment Card Industry Data Security Standard (PCI DSS) Requirement 7 mandates that access to cardholder data be restricted on a need-to-know basis, while Requirement 8 requires unique identification for each person with computer access. The National Institute of Standards and Technology (NIST) addresses access control extensively in Special Publication 800-53 through the AC (Access Control) control family, which includes policies for account management, separation of duties, least privilege, and session controls.
+
+
+Telecommunications
+In telecommunications, the term access control is defined in US Federal Standard 1037C with the following meanings: 
+
+A service feature or technique used to permit or deny use of the components of a communication system.
+A technique used to define or restrict the rights of individuals or application programs to obtain data from, or place data onto, a storage device.
+The definition or restriction of the rights of individuals or application programs to obtain data from, or place data into, a storage device.
+The process of limiting access to the resources of an AIS (Automated Information System) to authorized users, programs, processes, or other systems.
+That function performed by the resource controller that allocates system resources to satisfy user requests.
+This definition depends on several other technical terms from Federal Standard 1037C.
+
+
+Attribute accessors
+Special public member methods – accessors (aka getters) and mutator methods (often called setters) are used to control changes to class variables in order to prevent unauthorized access and data corruption.
+
+
+Public policy
+In public policy, access control to restrict access to systems ("authorization") or to track or monitor behavior within systems ("accountability") is an implementation feature of using trusted systems for security or social control.
+
+
+See also
+Alarm device, Alarm management, Security alarm
+Border barrier, Border control, Border checkpoint, Border outpost
+Card reader, Common Access Card, Magnetic stripe card, Proximity card, Smart card, Optical turnstile, Access badge
+Castle, Fortification
+Computer security, Logical security, .htaccess, Wiegand effect, XACML, Credential
+Door security, Lock picking, Lock (security device), Electronic lock, Safe, Safe-cracking, Bank vault
+Fingerprint scanner, Photo identification, Biometrics
+Key management, Key cards
+Lock screen
+Permissive action link, Multi-factor authentication, Gold Codes
+Physical security information management
+Physical Security Professional
+Prison, Barbed tape, Mantrap
+Security, Security engineering, Security lighting, Security management, Security policy
+Security by design
+Vehicle access control: barricades, bollards, gates
+
+
+References
+
+US Federal 1037C
+US MIL-188
+US National Information Systems Security Glossary
+Harris, Shon, All-in-one CISSP Exam Guide, 6th Edition, McGraw Hill Osborne, Emeryville, California, 2012.
+"Integrated Security Systems Design" – Butterworth/Heinenmann – 2007 – Thomas L. Norman, CPP/PSP/CSC Author
+NIST.gov – Computer Security Division – Computer Security Resource Center – ATTRIBUTE BASED ACCESS CONTROL (ABAC) – OVERVIEW
+
+
+Further reading
+Ouaddah, Aafaf; Mousannif, Hajar; Elkalam, Anas; Ouahman, Abdellah (15 January 2017). "Access control in the Internet of Things: Big challenges and new opportunities". Computer Networks. 112: 237–262. doi:10.1016/j.comnet.2016.11.007.
+
+
+External links
+eXtensible Access Control Markup Language. An OASIS standard language/model for access control.

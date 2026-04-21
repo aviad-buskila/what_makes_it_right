@@ -14,6 +14,14 @@ class ModelConfig:
 
 
 @dataclass
+class DatasetConfig:
+    source: str = "medqa"  # "medqa", "cybermetric", "secqa"
+    split: str = "test"
+    variant: str | int | None = None  # e.g. 2000 for cybermetric, "v2" for secqa
+    cache_dir: str | None = None
+
+
+@dataclass
 class RagConfig:
     top_k: int = 5
     chunk_size: int = 512
@@ -21,6 +29,15 @@ class RagConfig:
     embedding_model: str = "nomic-embed-text"
     collection_name: str = "medqa_textbooks"
     max_distance: float = 0.27  # cosine distance cutoff; chunks above this are discarded
+    corpus_source: str = "medqa"  # "medqa" or "cybersecurity"
+    corpus_include: list[str] | None = None  # ablation knob for cyber sources
+    persist_dir: str = "data/chroma_db"
+    max_corpus_size: int | None = None
+    retrieval_mode: str = "balanced"  # "fast", "balanced", "best"
+    dense_multiplier: int = 4  # candidates = top_k * dense_multiplier
+    lexical_multiplier: int = 4  # lexical candidates = top_k * lexical_multiplier
+    rerank_alpha: float = 0.6  # dense weight in fusion score
+    min_lexical_overlap: float = 0.01  # minimum lexical overlap to keep candidate
 
 
 @dataclass
@@ -31,8 +48,11 @@ class ExperimentConfig:
     random_seed: int = 42
     temperature: float = 0.7
     timeout_per_query: int = 60
+    answer_retry_attempts: int = 2
     record_failures: bool = True
+    domain: str = "medical"  # "medical" or "cybersecurity" — drives prompts
     models: list[ModelConfig] = field(default_factory=list)
+    dataset: DatasetConfig = field(default_factory=DatasetConfig)
     rag: RagConfig = field(default_factory=RagConfig)
     results_dir: str = "results"
 
@@ -45,6 +65,7 @@ def load_config(path: str | Path = "config.yaml") -> ExperimentConfig:
     exp = raw.get("experiment", {})
     models = [ModelConfig(**m) for m in raw.get("models", [])]
     rag_raw = raw.get("rag", {})
+    dataset_raw = raw.get("dataset", {})
     storage = raw.get("storage", {})
 
     return ExperimentConfig(
@@ -54,8 +75,11 @@ def load_config(path: str | Path = "config.yaml") -> ExperimentConfig:
         random_seed=exp.get("random_seed", 42),
         temperature=exp.get("temperature", 0.7),
         timeout_per_query=exp.get("timeout_per_query", 60),
+        answer_retry_attempts=exp.get("answer_retry_attempts", 2),
         record_failures=exp.get("record_failures", True),
+        domain=exp.get("domain", "medical"),
         models=models,
+        dataset=DatasetConfig(**dataset_raw) if dataset_raw else DatasetConfig(),
         rag=RagConfig(**rag_raw) if rag_raw else RagConfig(),
         results_dir=storage.get("results_dir", "results"),
     )

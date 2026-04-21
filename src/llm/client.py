@@ -70,18 +70,24 @@ def generate(
     prompt: str,
     temperature: float = 0.7,
     timeout: int = 60,
+    seed: int | None = None,
 ) -> tuple[str, float]:
     """Generate a response from an Ollama model.
 
     Returns (response_text, latency_seconds).
+    ``seed`` is forwarded to Ollama so that repeated calls with different seeds
+    produce independent samples rather than hitting the KV cache.
     """
     start = time.perf_counter()
     client = ollama.Client(timeout=timeout)
+    options: dict = {"temperature": temperature, "num_ctx": 4096}
+    if seed is not None:
+        options["seed"] = seed
     response = _with_retry_backoff(
         lambda: client.generate(
             model=model_id,
             prompt=prompt,
-            options={"temperature": temperature, "num_ctx": 4096},
+            options=options,
         ),
         operation_name=f"generate({model_id})",
     )

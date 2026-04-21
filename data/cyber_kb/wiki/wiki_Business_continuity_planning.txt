@@ -1,0 +1,314 @@
+Business continuity may be defined as "the capability of an organization to continue the delivery of products or services at pre-defined acceptable levels following a disruptive incident", and business continuity planning (or business continuity and resiliency planning) is the process of creating systems of prevention and recovery to deal with potential threats to a company. In addition to prevention, the goal is to enable ongoing operations before and during execution of disaster recovery. Business continuity is the intended outcome of proper execution of both business continuity planning and disaster recovery.
+Several business continuity standards have been published by various standards bodies to assist in checklisting ongoing planning tasks.
+Business continuity requires a top-down approach to identify an organisation's minimum requirements to ensure its viability as an entity. An organization's resistance to failure is "the ability ... to withstand changes in its environment and still function". Often called resilience, resistance to failure is a capability that enables organizations to either endure environmental changes without having to permanently adapt, or the organization is forced to adapt a new way of working that better suits the new environmental conditions.
+
+
+Overview
+Any event that could negatively impact operations should be included in the plan, such as supply chain interruption, loss of or damage to critical infrastructure (major machinery or computing/network resource). As such, BCP is a subset of risk management. In the U.S., government entities refer to the process as continuity of operations planning (COOP). A business continuity plan outlines a range of disaster scenarios and the steps the business will take in any particular scenario to return to regular trade. BCP's are written ahead of time and can also include precautions to be put in place. Usually created with the input of key staff as well as stakeholders, a BCP is a set of contingencies to minimize potential harm to businesses during adverse scenarios.
+
+
+Resilience
+A 2005 analysis of how disruptions can adversely affect the operations of corporations and how investments in resilience can give a competitive advantage over entities not prepared for various contingencies extended then-common business continuity planning practices. Business organizations such as the Council on Competitiveness embraced this resilience goal.
+Adapting to change in an apparently slower, more evolutionary manner - sometimes over many years or decades - has been described as being more resilient, and the term "strategic resilience" is now used to go beyond resisting a one-time crisis, but rather continuously anticipating and adjusting, "before the case for change becomes desperately obvious".
+This approach is sometimes summarized as: preparedness, protection, response and recovery.
+Resilience Theory can be related to the field of Public Relations. Resilience is a communicative process that is constructed by citizens, families, media system, organizations and governments through everyday talk and mediated conversation.
+The theory is based on the work of Patrice M. Buzzanell, a professor at the Brian Lamb School of Communication at Purdue University. In her 2010 article, "Resilience: Talking, Resisting, and Imagining New Normalcies Into Being" Buzzanell discussed the ability for organizations to thrive after having a crisis through building resistance. Buzzanell notes that there are five different processes that individuals use when trying to maintain resilience- crafting normalcy, affirming identity anchors, maintaining and using communication networks, putting alternative logics to work and downplaying negative feelings while foregrounding positive emotions.
+While resilience theory and crisis communication theory share similarities, they are not the same. The crisis communication theory is based on the reputation of the company, but the resilience theory is based on the process of recovery of the company. There are five main components of resilience: crafting normalcy, affirming identity anchors, maintaining and using communication networks, putting alternative logics to work, and downplaying negative feelings while foregrounding negative emotions. Each of these processes can be applicable to businesses in crisis times, making resilience an important factor for companies to focus on while training.
+There are three main groups that are affected by a crisis. They are micro (individual), meso (group or organization) and macro (national or interorganizational). There are also two main types of resilience, which are proactive and post resilience. Proactive resilience is preparing for a crisis and creating a solid foundation for the company. Post resilience includes continuing to maintain communication and check in with employees. Proactive resilience is dealing with issues at hand before they cause a possible shift in the work environment and post resilience maintaining communication and accepting changes after an incident has happened. Resilience can be applied to any organization.
+In New Zealand, the Canterbury University Resilient Organisations programme developed an assessment tool for benchmarking the Resilience of Organisations. It covers 11 categories, each having 5 to 7 questions. A Resilience Ratio summarizes this evaluation.
+
+
+Continuity
+Plans and procedures are used in business continuity planning to ensure that the critical organizational operations required to keep an organization running continue to operate during events when key dependencies of operations are disrupted. Continuity does not need to apply to every activity which the organization undertakes. For example, under ISO 22301:2019, organizations are required to define their business continuity objectives, the minimum levels of product and service operations which will be considered acceptable and the maximum tolerable period of disruption (MTPD) which can be allowed.
+A major cost in planning for this is the preparation of audit compliance management documents; automation tools are available to reduce the time and cost associated with manually producing this information.
+
+
+Inventory
+Planners must have information about:
+
+Equipment
+People (roles and responsibilities)
+Suppliers and Partners
+Technology (IT Systems, Communication) 
+Locations, including other offices and backup/work area recovery (WAR) sites
+Documents and documentation, including which have off-site backup copies:
+Business documents
+Procedure documentation
+
+
+Analysis
+The analysis phase consists of:
+
+Impact analysis
+Threat and risks analysis
+Impact scenarios
+Quantifying of loss ratios must also include "dollars to defend a lawsuit." It has been estimated that a dollar spent in loss prevention can prevent "seven dollars of disaster-related economic loss."
+
+
+Business impact analysis (BIA)
+A Business Impact Analysis (BIA) is a process used to identify and evaluate the effects of disruptions on an organization's operations, and to determine recovery priorities and strategies appropriate to the organizational needs.
+The main objectives of a BIA are to:
+1. Identify critical activities and dependencies (people, processes, vendors, technology & facilities).
+2. Assess the impact of disruptions on these activities (financial, operational, reputational, legal).
+3. Determine recovery time objectives (RTO) and recovery point objectives (RPO).
+4. Support the development of business continuity strategies and plans.
+5. Inform risk assessment and mitigation efforts within the BCMS framework.
+For each function, two values are assigned:
+
+Recovery point objective (RPO) – the acceptable latency of data that will not be recovered. For example, is it acceptable for the company to lose 2 days of data? The recovery point objective must ensure that the maximum tolerable data loss for each activity is not exceeded.
+Recovery time objective (RTO)  – the acceptable amount of time to restore the function
+
+
+Maximum RTO
+Maximum time constraints for how long an enterprise's key products or services can be unavailable or undeliverable before stakeholders perceive unacceptable consequences have been named as:
+
+Maximum tolerable period of disruption (MTPoD)
+Maximum tolerable downtime (MTD)
+Maximum tolerable outage (MTO)
+Maximum acceptable outage (MAO)
+According to ISO 22301 the terms maximum acceptable outage and maximum tolerable period of disruption mean the same thing and are defined using exactly the same words. Some standards use the term maximum downtime limit.
+
+
+Consistency
+When more than one system crashes, recovery plans must balance the need for data consistency with other objectives, such as RTO and RPO.
+ Recovery Consistency Objective (RCO) is the name of this goal. It applies data consistency objectives, to define a measurement for the consistency of distributed business data within interlinked systems after a disaster incident. Similar terms used in this context are "Recovery Consistency Characteristics" (RCC) and "Recovery Object Granularity" (ROG).
+While RTO and RPO are absolute per-system values, RCO is expressed as a percentage that measures the deviation between actual and targeted state of business data across systems for process groups or individual business processes.
+The following formula calculates RCO with "n" representing the number of business processes and "entities" representing an abstract value for business data:
+
+  
+    
+      
+        
+          RCO
+        
+        =
+        1
+        −
+        
+          
+            
+              (
+              
+                number of inconsistent entities
+              
+              
+                )
+                
+                  n
+                
+              
+            
+            
+              (
+              
+                number of entities
+              
+              
+                )
+                
+                  n
+                
+              
+            
+          
+        
+      
+    
+    {\displaystyle {\text{RCO}}=1-{\frac {({\text{number of inconsistent entities}})_{n}}{({\text{number of entities}})_{n}}}}
+  
+
+100% RCO means that post recovery, no business data deviation occurs.
+
+
+Risk Assessment(RA)
+The purpose of the Risk Assessment phase is to identify risks that could lead to disruptions and to assess their likelihood and potential impact. 
+The main action of the Risk Assessment include:
+1. Identify internal and external threats (see Common Threats section).
+2. Analyze vulnerabilities and potential consequences (e.g., not having a generator during a power outage).
+3. Assessing each risk by determining the likelihood of occurrence and the severity of its impact. 
+4. Prioritizing risks for treatment and mitigation.
+Common threats include:
+
+The above areas can cascade: Responders can stumble. Supplies may become depleted. During the 2002–2003 SARS outbreak, some organizations compartmentalized and rotated teams to match the incubation period of the disease. They also banned in-person contact during both business and non-business hours. This increased resiliency against the threat.
+
+
+Impact scenarios
+Impact scenarios are identified and documented:
+
+need for medical supplies
+need for transportation options
+civilian impact of nuclear disasters
+need for business and data processing supplies
+These should reflect the widest possible damage.
+
+
+Tiers of preparedness
+SHARE's seven tiers of disaster recovery released in 1992, were updated in 2012 by IBM as an eight tier model:
+
+Tier 0 – No off-site data • Businesses with a Tier 0 Disaster Recovery solution have no Disaster Recovery Plan. There is no saved information, no documentation, no backup hardware, and no contingency plan. Typical recovery time: The length of recovery time in this instance is unpredictable. In fact, it may not be possible to recover at all.
+Tier 1 – Data backup with no Hot Site • Businesses that use Tier 1 Disaster Recovery solutions back up their data at an off-site facility. Depending on how often backups are made, they are prepared to accept several days to weeks of data loss, but their backups are secure off-site. However, this Tier lacks the systems on which to restore data. Pickup Truck Access Method (PTAM).
+Tier 2 – Data backup with Hot Site • Tier 2 Disaster Recovery solutions make regular backups on tape. This is combined with an off-site facility and infrastructure (known as a hot site) in which to restore systems from those tapes in the event of a disaster. This tier solution will still result in the need to recreate several hours to days worth of data, but it is less unpredictable in recovery time. Examples include: PTAM with Hot Site available, IBM Tivoli Storage Manager.
+Tier 3 – Electronic vaulting • Tier 3 solutions utilize components of Tier 2. Additionally, some mission-critical data is electronically vaulted. This electronically vaulted data is typically more current than that which is shipped via PTAM. As a result, there is less data recreation or loss after a disaster occurs.
+Tier 4 – Point-in-time copies • Tier 4 solutions are used by businesses that require both greater data currency and faster recovery than users of lower tiers. Rather than relying largely on shipping tape, as is common in the lower tiers, Tier 4 solutions begin to incorporate more disk-based solutions. Several hours of data loss is still possible, but it is easier to make such point-in-time (PIT) copies with greater frequency than data that can be replicated through tape-based solutions.
+Tier 5 – Transaction integrity • Tier 5 solutions are used by businesses with a requirement for consistency of data between production and recovery data centers. There is little to no data loss in such solutions; however, the presence of this functionality is entirely dependent on the application in use.
+Tier 6 – Zero or little data loss • Tier 6 Disaster Recovery solutions maintain the highest levels of data currency. They are used by businesses with little or no tolerance for data loss and who need to restore data to applications rapidly. These solutions have no dependence on the applications to provide data consistency.
+Tier 7 – Highly automated, business-integrated solution • Tier 7 solutions include all the major components being used for a Tier 6 solution with the additional integration of automation. This allows a Tier 7 solution to ensure consistency of data above that of which is granted by Tier 6 solutions. Additionally, recovery of the applications is automated, allowing for restoration of systems and applications much faster and more reliably than would be possible through manual Disaster Recovery procedures.
+
+
+Solution design
+Two main requirements from the impact analysis stage are:
+
+For IT: the minimum application and data requirements and the time in which they must be available.
+Outside IT: preservation of hard copy (such as contracts). A process plan must consider skilled staff and embedded technology.
+This phase overlaps with disaster recovery planning.
+The solution phase determines:
+
+Crisis management command structure
+Telecommunication architecture between primary and secondary work sites
+Data replication methodology between primary and secondary work sites
+Backup site with applications, data and work space
+
+
+Standards
+
+
+ISO Standards
+There are many standards that are available to support business continuity planning and management. 
+The International Organization for Standardization (ISO) has for example developed a whole series of standards on Business continuity management systems  under responsibility of technical committee ISO/TC 292:
+
+ISO 22300:2021 Security and resilience – Vocabulary  (Replaces ISO 22300:2018 Security and resilience - Vocabulary and  ISO 22300:2012 Security and resilience - Vocabulary.)
+ISO 22301:2019 Security and resilience – Business continuity management systems – Requirements  (Replaces ISO 22301:2012.)
+ISO 22313:2020 Security and resilience – Business continuity management systems – Guidance on the use of ISO 22301 (Replaces  ISO 22313:2012 Security and resilience - Business continuity management systems - Guidance on the use of ISO 22301.)
+ISO/TS 22317:2021 Security and resilience – Business continuity management systems – Guidelines for business impact analysis - (Replaces ISO/TS 22315:2015 Societal security – Business continuity management systems – Guidelines for business impact analysis.)
+ISO/TS 22318:2021 Security and resilience – Business continuity management systems – Guidelines for supply chain continuity (Replaces ISO/TS 22318:2015 Societal security — Business continuity management systems — Guidelines for supply chain continuity.)
+ISO/TS 22330:2018 Security and resilience – Business continuity management systems – Guidelines for people aspects on business continuity (Current as of 2022.)
+ISO/TS 22331:2018 Security and resilience – Business continuity management systems – Guidelines for business continuity strategy - (Current as of 2022.)
+ISO/TS 22332:2021 Security and resilience – Business continuity management systems – Guidelines for developing business continuity plans and procedures (Current as of 2022.)
+ISO/IEC/TS 17021-6:2014 Conformity assessment – Requirements for bodies providing audit and certification of management systems – Part 6: Competence requirements for auditing and certification of business continuity management systems.
+ISO/IEC 24762:2008 Information technology — Security techniques — Guidelines for information and communications technology disaster recovery services (withdrawn)
+ISO/IEC 27001:2022 Information security, cybersecurity and privacy protection — Information security management systems — Requirements. (Replaces ISO/IEC 27001:2013 Information technology — Security techniques — Information security management systems — Requirements.)
+ISO/IEC 27002:2022 Information security, cybersecurity and privacy protection — Information security controls. (Replaces ISO/IEC 27002:2013 Information technology — Security techniques — Code of practice for information security controls.)
+ISO/IEC 27031:2011 Information technology – Security techniques – Guidelines for information and communication technology readiness for business continuity.
+ISO/PAS 22399:2007 Societal security - Guideline for incident preparedness and operational continuity management (withdrawn)
+IWA 5:2006 Emergency Preparedness (withdrawn)
+
+
+British standards
+The British Standards Institution (BSI Group) released a series of standards which have since been withdrawn and replaced by the ISO standards above. 
+
+BS 7799-1:1995 -  peripherally addressed information security procedures. (withdrawn)
+BS 25999-1:2006 - Business continuity management Part 1: Code of practice (superseded, withdrawn)
+BS 25999-2:2007 Business Continuity Management Part 2: Specification (superseded, withdrawn)
+2008: BS 25777, Information and communications technology continuity management. Code of practice. (withdrawn)
+Within the UK, BS 25999-2:2007 and BS 25999-1:2006 were being used for business continuity management across all organizations, industries and sectors. These documents give a practical plan to deal with most eventualities—from extreme weather conditions to terrorism, IT system failure, and staff sickness.
+In 2004, following crises in the preceding years, the UK government passed the Civil Contingencies Act of 2004: Businesses must have continuity planning measures to survive and continue to thrive whilst working towards keeping the incident as minimal as possible.
+The Act was separated into two parts: 
+Part 1: civil protection, covering roles & responsibilities for local responders
+Part 2: emergency powers.
+In the United Kingdom, resilience is implemented locally by the Local Resilience Forum.
+
+
+Australian standards
+HB 292–2006, "A practitioners guide to business continuity management"
+HB 293–2006, "Executive guide to business continuity management"
+
+
+United States
+NFPA 1600 Standard on Disaster/Emergency Management and Business Continuity Programs (2010). National Fire Protection Association. (superseded).
+NFPA 1600, Standard on Continuity, Emergency, and Crisis Management (2019, current standard), National Fire Protection Association.
+Continuity of Operations (COOP) and National Continuity Policy Implementation Plan (NCPIP), United States Federal Government
+Business Continuity Planning Suite, DHS National Protection and Programs Directorate and FEMA.
+ASIS SPC.1-2009, Organizational Resilience: Security, Preparedness, and Continuity Management Systems - Requirements with Guidance for Use, American National Standards Institute
+
+
+Sector-specific requirements
+
+
+Healthcare
+The HIPAA Security Rule requires covered entities and business associates to establish contingency plans for protecting electronic protected health information (ePHI) during emergencies or system failures. The administrative safeguards at 45 CFR 164.308(a)(7) mandate a data backup plan, disaster recovery plan, and emergency mode operation plan, with testing and revision procedures and applications and data criticality analysis as addressable specifications. A proposed update to the HIPAA Security Rule (NPRM, December 2024) would significantly strengthen these requirements by mandating that covered entities restore critical information systems within 72 hours of a disruption, a provision directly influenced by the February 2024 Change Healthcare cyberattack that disrupted healthcare payment processing nationwide for weeks.
+
+
+Financial services
+In the United States, the Federal Financial Institutions Examination Council (FFIEC) requires financial institutions to maintain comprehensive business continuity plans that address technology resilience, recovery capabilities, and third-party dependencies. The Office of the Comptroller of the Currency (OCC) further mandates that national banks conduct annual testing of their recovery plans.
+
+
+Implementation and testing
+The implementation phase involves policy changes, material acquisitions, staffing and testing.
+
+
+Testing and organizational acceptance
+The 2008 book Exercising for Excellence, published by The British Standards Institution identified three types of exercises that can be employed when testing business continuity plans.
+
+Tabletop exercises - a small number of people concentrate on a specific aspect of a BCP. Another form involves a single representative from each of several teams.
+Medium exercises - Several departments, teams or disciplines concentrate on multiple BCP aspects; the scope can range from a few teams from one building to multiple teams operating across dispersed locations. Pre-scripted "surprises" are added.
+Complex exercises - All aspects of a medium exercise remain, but for maximum realism no-notice activation, actual evacuation and actual invocation of a disaster recovery site is added.
+While start and stop times are pre-agreed, the actual duration might be unknown if events are allowed to run their course.
+
+
+Maintenance
+Biannual or annual maintenance cycle maintenance of a BCP manual is broken down into three periodic activities.
+
+Confirmation of information in the manual, roll out to staff for awareness and specific training for critical individuals.
+Testing and verification of technical solutions established for recovery operations.
+Testing and verification of organization recovery procedures.
+Issues found during the testing phase often must be reintroduced to the analysis phase.
+
+
+Information and targets
+The BCP manual must evolve with the organization, and maintain information about who has to know what:
+
+A series of checklists
+Job descriptions, skillsets needed, training requirements
+Documentation and document management
+Definitions of terminology to facilitate timely communication during disaster recovery,
+Distribution lists (staff, important clients, vendors/suppliers)
+Information about communication and transportation infrastructure (roads, bridges)
+
+
+Technical
+Specialized technical resources must be maintained. Checks include:
+
+Virus definition distribution
+Application security and service patch distribution
+Hardware operability
+Application operability
+Data verification
+Data application
+
+
+Testing and verification of recovery procedures
+Software and work process changes must be documented and validated, including verification that documented work process recovery tasks and supporting disaster recovery infrastructure allow staff to recover within the predetermined recovery time objective.
+
+
+See also
+
+
+References
+
+
+Further reading
+James C. Barnes (2001-06-08). A Guide to Business Continuity Planning. Wiley. ISBN 978-0471530152.
+Kenneth L Fulmer (2004-10-04). Business Continuity Planning, A Step-by-Step Guide. Rothstein. ISBN 978-1931332217.
+Richard Kepenach. Business Continuity Plan Design, 8 Steps for Getting Started Designing a Plan.
+Judy Bell (October 1991). Disaster Survival Planning: A Practical Guide for Businesses. Disaster Survival Planning, Incorporated. ISBN 978-0963058003.
+Dimattia, S. (November 15, 2001). "Planning for Continuity". Library Journal. 126 (19): 32–34.
+Andrew Zolli; Ann Marie Healy (2013). Resilience: Why Things Bounce Back. Simon & Schuster. ISBN 978-1451683813.
+Devin DeCiantis; Ivan Lansberg (2024). The Enduring Enterprise: How Family Businesses Thrive in Turbulent Conditions. PublicAffairs. ISBN  9781541703650
+International Glossary for Resilience, DRI International.
+
+
+External links
+The tiers of Disaster Recovery and TSM. Charlotte Brooks, Matthew Bedernjak, Igor Juran, and John Merryman. In, Disaster Recovery Strategies with Tivoli Storage Management. Chapter 2. Pages 21–36. Red Books Series. IBM. Tivoli Software. 2002.
+SteelStore Cloud Storage Gateway: Disaster Recovery Best Practices Guide. Riverbed Technology, Inc. October 2011.
+Disaster Recovery Levels. Robert Kern and Victor Peltz. IBM Systems Magazine. November 2003.
+Business Continuity: The 5-tiers of Disaster Recovery. Archived 2018-09-26 at the Wayback Machine Recovery Specialties. 2007.
+Continuous Operations: The Seven Tiers of Disaster Recovery. Mary Hall. The Storage Community (IBM). 18 July 2011. Retrieved 26 March 2013.
+Maximum Tolerable Period of Disruption (MTPOD)
+Maximum Tolerable Period of Disruption (MTPOD): BSI committee response
+Wayback Machine
+Janco Associates
+Business Continuity Plan
+
+Department of Homeland Security Emergency Plan Guidelines
+CIDRAP/SHRM Pandemic HR Guide Toolkit Archived 2013-05-18 at the Wayback Machine
+Adapt and respond to risks with a business continuity plan (BCP)

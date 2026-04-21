@@ -1,0 +1,150 @@
+A penetration test, colloquially known as a pentest, is an authorized simulated cyberattack on a computer system, performed live to evaluate the security of the system. The test is performed to identify weaknesses (or vulnerabilities), including the potential for unauthorized parties to gain access to the system's features and data, as well as strengths, enabling a full risk assessment to be completed.
+The process typically identifies the target systems and a particular goal, then reviews available information and undertakes various means to attain that goal. A penetration test target may be a white box (about which background and system information are provided in advance to the tester) or a black box (about which only basic information other than the company name is provided). A gray box penetration test is a combination of the two (where limited knowledge of the target is shared with the auditor). There are different types of penetration testing, depending on the goal of the organization which include: Network (external and internal), Wireless, Web Application, Social Engineering, and Remediation Verification. A penetration test can help identify a system's vulnerabilities to attack and estimate how vulnerable it is.
+The UK National Cyber Security Center describes penetration testing as: "A method for gaining assurance in the security of an IT system by attempting to breach some or all of that system's security, using the same tools and techniques as an adversary might." Penetration tests are a component of a full security audit. For example, the Payment Card Industry Data Security Standard requires penetration testing on a regular schedule, and after system changes. Penetration testing also can support risk assessments as outlined in the NIST Risk Management Framework SP 800-53.
+Several standard frameworks and methodologies exist for conducting penetration tests. These include the Open Source Security Testing Methodology Manual (OSSTMM), the Penetration Testing Execution Standard (PTES), the NIST Special Publication 800-115, the Information System Security Assessment Framework (ISSAF) and the OWASP Testing Guide. CREST, a not for profit professional body for the technical cyber security industry, provides its CREST Defensible Penetration Test standard that provides the industry with guidance for commercially reasonable assurance activity when carrying out penetration tests.
+Since 2017 the terms Penetration Testing as a Service (PTaaS)  has become popular. This involves using a platform to invoke a test as an alternative to using consultants.
+Even more recently a common pen testing tool called a flipper was used to hack the MGM casinos in 2023 by a group called Scattered Spiders showing the versatility and power of some of the tools of the trade.
+
+
+Purpose
+The goals of a penetration test vary depending on the type of approved activity for any given engagement, with the primary goal focused on finding vulnerabilities that could be exploited by a nefarious actor, and informing the client of those vulnerabilities along with recommended mitigation strategies. Penetration test reports may also assess potential impacts to the organization and suggest countermeasures to reduce the risk.
+
+
+History
+By the mid 1960s, growing popularity of time-sharing computer systems that made resources accessible over communication lines created new security concerns. As the scholars Deborah Russell and G. T. Gangemi Sr. explain, "The 1960s marked the true beginning of the age of computer security."
+In June 1965, for example, several of the U.S.'s leading computer security experts held one of the first major conferences on system security—hosted by the government contractor, the System Development Corporation (SDC). During the conference, someone noted that one SDC employee had been able to easily undermine various system safeguards added to SDC's AN/FSQ-32 time-sharing computer system. In hopes that further system security study would be useful, attendees requested "...studies to be conducted in such areas as breaking security protection in the time-shared system." In other words, the conference participants initiated one of the first formal requests to use computer penetration as a tool for studying system security.
+At the Spring 1968 Joint Computer Conference, many leading computer specialists again met to discuss system security concerns. During this conference, the computer security experts Willis Ware, Harold Petersen, and Rein Turn, all of the RAND Corporation, and Bernard Peters of the National Security Agency (NSA), all used the phrase "penetration" to describe an attack against a computer system. In a paper, Ware referred to the military's remotely accessible time-sharing systems, warning that "Deliberate attempts to penetrate such computer systems must be anticipated." His colleagues Petersen and Turn shared the same concerns, observing that online communication systems "...are vulnerable to threats to privacy," including "deliberate penetration." Bernard Peters of the NSA made the same point, insisting that computer input and output "...could provide large amounts of information to a penetrating program." During the conference, computer penetration would become formally identified as a major threat to online computer systems.
+The threat that computer penetration posed was next outlined in a major report organized by the United States Department of Defense (DoD) in late 1967. Essentially, DoD officials turned to Willis Ware to lead a task force of experts from NSA, CIA, DoD, academia, and industry to formally assess the security of time-sharing computer systems. By relying on many papers presented during the Spring 1967 Joint Computer Conference, the task force largely confirmed the threat to system security that computer penetration posed. Ware's report was initially classified, but many of the country's leading computer experts quickly identified the study as the definitive document on computer security. Jeffrey R. Yost of the Charles Babbage Institute has more recently described the Ware report as "...by far the most important and thorough study on technical and operational issues regarding secure computing systems of its time period." In effect, the Ware report reaffirmed the major threat posed by computer penetration to the new online time-sharing computer systems.
+To better understand system weaknesses, the federal government and its contractors soon began organizing teams of penetrators, known as tiger teams, to use computer penetration to test system security. Deborah Russell and G. T. Gangemi Sr. stated that during the 1970s "...'tiger teams' first emerged on the computer scene. Tiger teams were government and industry-sponsored teams of crackers who attempted to break down the defenses of computer systems in an effort to uncover, and eventually patch, security holes."
+A leading scholar on the history of computer security, Donald MacKenzie, similarly points out that, "RAND had done some penetration studies (experiments in circumventing computer security controls) of early time-sharing systems on behalf of the government." Jeffrey R. Yost of the Charles Babbage Institute, in his own work on the history of computer security, also acknowledges that both the RAND Corporation and the SDC had "engaged in some of the first so-called 'penetration studies' to try to infiltrate time-sharing systems in order to test their vulnerability." In virtually all these early studies, tiger teams successfully broke into all targeted computer systems, as the country's time-sharing systems had poor defenses.
+Of early tiger team actions, efforts at the RAND Corporation demonstrated the usefulness of penetration as a tool for assessing system security. At the time, one RAND analyst noted that the tests had "...demonstrated the practicality of system-penetration as a tool for evaluating the effectiveness and adequacy of implemented data security safeguards." In addition, a number of the RAND analysts insisted that the penetration test exercises all offered several benefits that justified its continued use. As they noted in one paper, "A penetrator seems to develop a diabolical frame of mind in his search for operating system weaknesses and incompleteness, which is difficult to emulate." For these reasons and others, many analysts at RAND recommended the continued study of penetration techniques for their usefulness in assessing system security.
+Presumably the leading computer penetration expert during these formative years was James P. Anderson, who had worked with the NSA, RAND, and other government agencies to study system security. In the early 1971, the U.S. Air Force contracted Anderson's private company to study the security of its time-sharing system at the Pentagon. In his study, Anderson outlined a number of major factors involved in computer penetration. Anderson described a general attack sequence in steps:
+
+Find an exploitable vulnerability.
+Design an attack around it.
+Test the attack.
+Seize a line in use.
+Enter the attack.
+Exploit the entry for information recovery.
+Over time, Anderson's description of general computer penetration steps helped guide many other security experts, who relied on this technique to assess time-sharing computer system security.
+In the following years, computer penetration as a tool for security assessment became more refined and sophisticated. In the early 1980s, the journalist William Broad briefly summarized the ongoing efforts of tiger teams to assess system security. As Broad reported, the DoD-sponsored report by Willis Ware "...showed how spies could actively penetrate computers, steal or copy electronic files and subvert the devices that normally guard top-secret information. The study touched off more than a decade of quiet activity by elite groups of computer scientists working for the Government who tried to break into sensitive computers. They succeeded in every attempt."
+While these various studies may have suggested that computer security in the U.S. remained a major problem, the scholar Edward Hunt has more recently made a broader point about the extensive study of computer penetration as a security tool. Hunt suggests in a recent paper on the history of penetration testing that the defense establishment ultimately "...created many of the tools used in modern day cyberwarfare," as it carefully defined and researched the many ways that computer penetrators could hack into targeted systems.
+
+
+Tools
+A wide variety of security assessment tools are available to assist with penetration testing, including free-of-charge, free software, and commercial software. 
+
+
+Flaw hypothesis methodology
+Flaw hypothesis methodology is a systems analysis and penetration prediction technique where a list of hypothesized flaws in a software system are compiled through analysis of the specifications and the documentation of the system. The list of hypothesized flaws is then prioritized on the basis of the estimated probability that a flaw actually exists, and on the ease of exploiting it to the extent of control or compromise. The prioritized list is used to direct the actual testing of the system.
+
+
+Specialized OS distributions
+Several operating system distributions are geared towards penetration testing. Such distributions typically contain a pre-packaged and pre-configured set of tools. The penetration tester does not have to hunt down each individual tool, which might increase the risk of complications—such as compile errors, dependency issues, and configuration errors. Also, acquiring additional tools may not be practical in the tester's context.
+Notable penetration testing OS examples include:
+
+BlackArch based on Arch Linux
+BackBox based on Ubuntu
+Kali Linux (replaced BackTrack December 2012) based on Debian
+Parrot Security OS based on Debian
+Pentoo based on Gentoo
+WHAX based on Slackware
+Many other specialized operating systems facilitate penetration testing—each more or less dedicated to a specific field of penetration testing. A number of Linux distributions include known OS and application vulnerabilities, and can be deployed as targets to practice against. Such systems help new security professionals try the latest security tools in a lab environment. Examples include Damn Vulnerable Linux (DVL), the OWASP Web Testing Environment (WTW), and Metasploitable.
+
+
+Software frameworks
+BackBox
+Hping
+Metasploit Project
+Nessus
+Nmap
+OWASP ZAP
+SAINT
+w3af
+Burp Suite
+Wireshark
+John the Ripper
+Hashcat
+
+
+Hardware tools
+There are hardware tools specifically designed for penetration testing. However, not all hardware tools used in penetration testing are purpose-built for this task. Some devices, such as measuring and debugging equipment, are repurposed for penetration testing due to their advanced functionality and versatile capabilities.
+
+Proxmark3 — multi-purpose hardware tool for radio-frequency identification (RFID) security analysis.
+BadUSB — toolset for exploiting vulnerabilities in USB devices to inject malicious keystrokes or payloads.
+Flipper Zero —  portable, open-source multi-functional device pentesting wireless protocols such as Sub-GHz, RFID, NFC, Infrared and Bluetooth.
+Raspberry Pi — a compact, versatile single-board computer commonly used in penetration testing for tasks like network reconnaissance and exploitation.
+SDR (Software-defined Radio)— versatile tool for analyzing and attacking radio communications and protocols, including intercepting, emulating, decoding, and transmitting signals.
+ChipWhisperer — specialized hardware tool for side-channel attacks, allowing analysis of cryptographic implementations and vulnerabilities through power consumption or electromagnetic emissions.
+
+
+Penetration testing phases
+The process of penetration testing may be simplified into the following seven phases:
+
+Reconnaissance: The act of gathering important information on a target system. This information can be used to better attack the target. For example, open source search engines can be used to find data that can be used in a social engineering attack.
+Scanning: Uses technical tools to further the attacker's knowledge of the system. For example, Nmap can be used to scan for open ports.
+Gaining access: Using the data gathered in the reconnaissance and scanning phases, the attacker can use a payload to exploit the targeted system. For example, Metasploit can be used to automate attacks on known vulnerabilities. Once an attacker has exploited one vulnerability they may gain access to other machines so the process repeats i.e. they look for new vulnerabilities and attempt to exploit them. This process is referred to as pivoting.
+Maintaining access: Maintaining access requires taking the steps involved in being able to be persistently within the target environment in order to gather as much data as possible.
+Covering tracks: The attacker must clear any trace of compromising the victim system, any type of data gathered, log events, in order to remain anonymous.
+Reporting: Vulnerabilities are classified via risk matrix and documented in a report which contains executive summary, vulnerability description, and recommendations for remediation.
+Remediation & Re-testing: Once the target organization assesses the penetration test report and remediates items based on their internal risk appetite, a re-test of those vulnerabilities is performed in order to confirm remediation was successful, and a cut down re-test report is provided showing the results.
+
+
+Continuous DDoS testing
+The increasing frequency and scale of distributed denial-of-service (DDoS) attacks, which more than doubled in 2025 to over 47 million, with hyper-volumetric attacks growing by 700% year-over-year, has driven interest in continuous approaches to DDoS security validation. 
+Unlike conventional penetration tests, which are typically conducted during scheduled maintenance windows, continuous DDoS testing is a methodology that performs ongoing, low-impact simulations of DDoS traffic against production or production-equivalent environments to validate defenses across the network (L3), transport (L4), and application (L7) layers. Cloud platform providers such as Microsoft Azure have incorporated continuous DDoS testing into their security ecosystems, listing approved simulation partners including MazeBolt, Red Button, and RedWolf for use against protected environments.
+The approach aligns with the broader shift toward continuous threat exposure management (CTEM), a framework introduced by Gartner in 2022 that advocates for ongoing identification, prioritization, and validation of security exposures rather than periodic assessments. Gartner has estimated that organizations adopting continuous exposure management programs will be three times less likely to suffer a breach by 2026. Proponents of continuous DDoS testing argue that it addresses limitations of point-in-time assessments, including the detection of configuration drift in mitigation infrastructure and the generation of auditable evidence for governance and regulatory compliance.
+
+
+Vulnerabilities
+Legal operations that let the tester execute an illegal operation include unescaped SQL commands, unchanged hashed passwords in source-visible projects, human relationships, and old hashing or cryptographic functions. A single flaw may not be enough to enable a critical exploit. Leveraging multiple known flaws and shaping the payload in a way that appears as a valid operation is almost always required. Metasploit provides a ruby library for common tasks, and maintains a database of known exploits.
+When working under budget and time constraints, fuzzing is a common technique that discovers vulnerabilities. It aims to get an unhandled error through random input. The tester uses random input to access the less often used code paths. Well-trodden code paths are usually free of errors. Errors are useful because they either expose more information, such as HTTP server crashes with full info trace-backs—or are directly usable, such as buffer overflows.
+Imagine a website has 100 text input boxes. A few are vulnerable to SQL injections on certain strings. Submitting random strings to those boxes for a while will hopefully hit the bugged code path. The error shows itself as a broken HTML page half rendered because of an SQL error. In this case, only text boxes are treated as input streams. However, software systems have many possible input streams, such as cookie and session data, the uploaded file stream, RPC channels, or memory. Errors can happen in any of these input streams. The test goal is to first get an unhandled error and then understand the flaw based on the failed test case. Testers write an automated tool to test their understanding of the flaw until it is correct. After that, it may become obvious how to package the payload so that the target system triggers its execution. If this is not viable, one can hope that another error produced by the fuzzer yields more fruit. The use of a fuzzer saves time by not checking adequate code paths where exploits are unlikely.
+
+
+Payload
+The illegal operation, or payload in Metasploit terminology, can include functions for logging keystrokes, taking screenshots, installing adware, stealing credentials, creating backdoors using shellcode, or altering data. Some companies maintain large databases of known exploits and provide products that automatically test target systems for vulnerabilities:
+
+Metasploit
+Nessus
+Nmap
+OpenVAS
+W3af
+
+
+Standardized government penetration test services
+The General Services Administration (GSA) has standardized the "penetration test" service as a pre-vetted support service, to rapidly address potential vulnerabilities, and stop adversaries before they impact US federal, state and local governments. These services are commonly referred to as Highly Adaptive Cybersecurity Services (HACS) and are listed at the US GSA Advantage website.
+This effort has identified key service providers which have been technically reviewed and vetted to provide these advanced penetration services.  This GSA service is intended to improve the rapid ordering and deployment of these services, reduce US government contract duplication, and to protect and support the US infrastructure in a more timely and efficient manner.
+132-45A Penetration Testing is security testing in which service assessors mimic real-world attacks to identify methods for circumventing the security features of an application, system, or network. HACS Penetration Testing Services typically strategically test the effectiveness of the organization's preventive and detective security measures employed to protect assets and data. As part of this service, certified ethical hackers typically conduct a simulated attack on a system, systems, applications or another target in the environment, searching for security weaknesses. After testing, they will typically document the vulnerabilities and outline which defenses are effective and which can be defeated or exploited.
+In the UK penetration testing services are standardized via professional bodies working in collaboration with National Cyber Security Centre.
+The outcomes of penetration tests vary depending on the standards and methodologies used. There are five penetration testing standards: Open Source Security Testing Methodology Manual (OSSTMM), Open Web Application Security Project (OWASP), National Institute of Standards and Technology (NIST00), Information System Security Assessment Framework (ISSAF), and Penetration Testing Methodologies and Standards (PTES).
+In the healthcare sector in the United States, penetration testing has increasingly been recognized as a component of regulatory compliance. While the original Health Insurance Portability and Accountability Act (HIPAA) Security Rule of 2003 required covered entities to conduct risk analyses but did not explicitly mandate penetration testing, the December 2024 Notice of Proposed Rulemaking to update the Security Rule proposed making annual penetration testing a mandatory requirement for all regulated entities, alongside vulnerability scanning at least every six months. The National Institute of Standards and Technology (NIST) Special Publication 800-115, Technical Guide to Information Security Testing and Assessment, provides a framework commonly referenced by healthcare organizations conducting penetration tests to meet federal security requirements.
+
+
+Penetration testing and artificial intelligence
+With the advent of Large language models in late 2022, researchers have explored how Artificial Intelligence methods could be used for penetration testing. Since real world penetration testing in major organizations already consists of using semi-automated software such as Nmap, Wireshark and Metasploit, the hypothesis was to test whether LLMs perform pentests automatically when given access to the tools and the same environment. Some key challenges involve the process being fully automated, the LLM understanding context and learning from past experiences, and ensuring the accuracy of performed commands.
+
+
+Regulatory requirements
+Several industry regulations and proposed rules mandate or recommend periodic penetration testing as part of an organization's security program. The Payment Card Industry Data Security Standard (PCI DSS) Requirement 11.4 requires organizations that process payment card data to conduct external and internal penetration tests at least annually and after any significant infrastructure changes.
+In healthcare, the U.S. Department of Health and Human Services proposed a Notice of Proposed Rulemaking (NPRM) in December 2024 to update the HIPAA Security Rule, which would require covered entities and business associates to conduct penetration testing at least once every twelve months. This represents a shift from the current HIPAA Security Rule framework, which requires risk analysis but does not explicitly mandate penetration testing.
+The National Institute of Standards and Technology (NIST) Special Publication 800-53 includes the CA-8 control family for penetration testing, recommending organizations conduct such tests to identify vulnerabilities that could be exploited by adversaries.
+
+
+See also
+IT risk
+ITHC
+Tiger team
+White hat (computer security)
+Breach attack simulation
+Damn Vulnerable Web Application
+Metasploit
+Debian
+List of security assessment tools
+
+
+General references
+The Definitive Guide to Penetration Testing
+
+
+References
