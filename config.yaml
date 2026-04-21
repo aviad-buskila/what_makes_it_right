@@ -1,10 +1,10 @@
 experiment:
-  name: "medical_mcq_comparison_100q_3r_new"
-  repetitions: 3
-  max_questions: 100  # null = full test set, integer for subset (e.g. 200 for pilot)
+  name: "medical_mcq_comparison_300q_1r_2llmst0"
+  repetitions: 1
+  max_questions: 300  # null = full test set, integer for subset (e.g. 200 for pilot)
   random_seed: 42
-  temperature: 0.2
-  timeout_per_query: 30
+  temperature: 0.0
+  timeout_per_query: 10
   answer_retry_attempts: 2
   record_failures: true
   domain: "medical"
@@ -14,9 +14,9 @@ dataset:
   split: "test"
 
 models:
-  - name: "gpt-oss-20b"
-    ollama_id: "gpt-oss:20b"
-    category: "large_general"
+  # - name: "gpt-oss-20b"
+  #   ollama_id: "gpt-oss:20b"
+  #   category: "large_general"
   - name: "gemma3-4b"
     ollama_id: "gemma3:4b"
     category: "small_general"
