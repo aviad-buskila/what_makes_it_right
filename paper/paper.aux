@@ -1,0 +1,87 @@
+\relax 
+\providecommand\hyper@newdestlabel[2]{}
+\providecommand\HyField@AuxAddToFields[1]{}
+\providecommand\HyField@AuxAddToCoFields[2]{}
+\citation{singhal2023medpalm}
+\citation{nori2023gpt4medical}
+\citation{sellergren2025medgemma}
+\citation{team2024gemma}
+\citation{lewis2020rag}
+\citation{xiong2024benchmarkingrag}
+\citation{wang2024augmentingblackbox}
+\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}{section.1}\protected@file@percent }
+\citation{nomic2024embed}
+\citation{chromadb}
+\citation{ollama2024}
+\citation{singhal2023medpalm}
+\citation{nori2023gpt4medical}
+\citation{sellergren2025medgemma}
+\citation{xiong2024benchmarkingrag}
+\citation{wang2024augmentingblackbox}
+\citation{ollama2024}
+\citation{team2024gemma}
+\citation{sellergren2025medgemma}
+\@writefile{toc}{\contentsline {paragraph}{Contributions.}{2}{section*.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {2}Related Work}{2}{section.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Medical LLMs.}{2}{section*.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Retrieval-augmented generation for medicine.}{2}{section*.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Direct comparison.}{2}{section*.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {3}Method}{2}{section.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Design}{2}{subsection.3.1}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces The four experimental setups. Both backbones are served as 4-bit-quantized GGUF builds via Ollama at temperature 0.1.}}{2}{table.caption.5}\protected@file@percent }
+\providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
+\newlabel{tab:setups}{{1}{2}{The four experimental setups. Both backbones are served as 4-bit-quantized GGUF builds via Ollama at temperature 0.1}{table.caption.5}{}}
+\citation{jin2021medqa}
+\citation{pal2022medmcqa}
+\citation{nomic2024embed}
+\citation{chromadb}
+\citation{dietterich1998mcnemar}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Models}{3}{subsection.3.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Evaluation set}{3}{subsection.3.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4}Retrieval pipeline}{3}{subsection.3.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.5}Prompting}{3}{subsection.3.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.6}Repetitions and aggregation}{3}{subsection.3.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.7}Statistical testing}{3}{subsection.3.7}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {4}Results}{3}{section.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Headline accuracy}{3}{subsection.4.1}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Majority-vote accuracy on the MedQA-USMLE 4-option test split.}}{4}{table.caption.6}\protected@file@percent }
+\newlabel{tab:accuracy}{{2}{4}{Majority-vote accuracy on the MedQA-USMLE 4-option test split}{table.caption.6}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Majority-vote accuracy with 95\% confidence intervals. The $+6.8$\,pp gap from domain fine-tuning is significant; the RAG gap is not.}}{4}{figure.caption.7}\protected@file@percent }
+\newlabel{fig:accuracy}{{1}{4}{Majority-vote accuracy with 95\% confidence intervals. The $+6.8$\,pp gap from domain fine-tuning is significant; the RAG gap is not}{figure.caption.7}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Pairwise significance}{4}{subsection.4.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Consistency}{4}{subsection.4.3}\protected@file@percent }
+\citation{xiong2024benchmarkingrag}
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces McNemar's test on paired majority-vote correctness. $a$-only / $b$-only are the discordant cells. Comparisons that cross the general/domain backbone boundary are significant; comparisons that toggle RAG within a backbone are not.}}{5}{table.caption.8}\protected@file@percent }
+\newlabel{tab:mcnemar}{{3}{5}{McNemar's test on paired majority-vote correctness. $a$-only / $b$-only are the discordant cells. Comparisons that cross the general/domain backbone boundary are significant; comparisons that toggle RAG within a backbone are not}{table.caption.8}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces Within-setup agreement across the three repetitions, and fraction of model outputs that did not match the answer schema after two retries.}}{5}{table.caption.10}\protected@file@percent }
+\newlabel{tab:consistency}{{4}{5}{Within-setup agreement across the three repetitions, and fraction of model outputs that did not match the answer schema after two retries}{table.caption.10}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5}Discussion}{5}{section.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Why might RAG fail to help here?}{5}{section*.12}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Practical implication.}{5}{section*.13}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {6}Threats to Validity}{5}{section.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Single benchmark.}{5}{section*.14}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Pairwise McNemar $p$-values across the four setups. The two non-significant cells are precisely the two RAG-toggle comparisons.}}{6}{figure.caption.9}\protected@file@percent }
+\newlabel{fig:significance}{{2}{6}{Pairwise McNemar $p$-values across the four setups. The two non-significant cells are precisely the two RAG-toggle comparisons}{figure.caption.9}{}}
+\@writefile{toc}{\contentsline {paragraph}{Single corpus and embedding.}{6}{section*.15}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{4-bit quantization.}{6}{section*.16}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Single scale.}{6}{section*.17}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Possible pretraining contamination.}{6}{section*.18}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {7}Conclusion}{6}{section.7}\protected@file@percent }
+\bibstyle{plain}
+\bibdata{references}
+\bibcite{chromadb}{1}
+\bibcite{dietterich1998mcnemar}{2}
+\bibcite{team2024gemma}{3}
+\bibcite{jin2021medqa}{4}
+\bibcite{lewis2020rag}{5}
+\bibcite{nori2023gpt4medical}{6}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Within-setup consistency across repetitions.}}{7}{figure.caption.11}\protected@file@percent }
+\newlabel{fig:consistency}{{3}{7}{Within-setup consistency across repetitions}{figure.caption.11}{}}
+\bibcite{nomic2024embed}{7}
+\bibcite{ollama2024}{8}
+\bibcite{pal2022medmcqa}{9}
+\bibcite{sellergren2025medgemma}{10}
+\bibcite{singhal2023medpalm}{11}
+\bibcite{wang2024augmentingblackbox}{12}
+\bibcite{xiong2024benchmarkingrag}{13}
+\gdef \@abspage@last{8}
