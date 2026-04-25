@@ -32,8 +32,9 @@ rag:
   chunk_overlap: 50
   embedding_model: "nomic-embed-text"
   collection_name: "cyber_kb"
-  max_distance: 0.25
+  max_distance: 0.3
   retrieval_mode: "best"  # fast | balanced | best
+  query_mode: "question_plus_options"  # question_only | question_plus_options | question_plus_top_terms
   dense_multiplier: 5
   lexical_multiplier: 6
   rerank_alpha: 0.55

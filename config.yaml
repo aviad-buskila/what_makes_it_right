@@ -1,10 +1,10 @@
 experiment:
-  name: "medical_mcq_comparison_100q_3r_new"
+  name: "medical_mcq_comparison_full_0.1_3r"
   repetitions: 3
-  max_questions: 100  # null = full test set, integer for subset (e.g. 200 for pilot)
+  max_questions: null  # null = full test set, integer for subset (e.g. 200 for pilot)
   random_seed: 42
-  temperature: 0.2
-  timeout_per_query: 30
+  temperature: [0.1]
+  timeout_per_query: 10
   answer_retry_attempts: 2
   record_failures: true
   domain: "medical"
@@ -14,9 +14,9 @@ dataset:
   split: "test"
 
 models:
-  - name: "gpt-oss-20b"
-    ollama_id: "gpt-oss:20b"
-    category: "large_general"
+  # - name: "gpt-oss-20b"
+  #   ollama_id: "gpt-oss:20b"
+  #   category: "large_general"
   - name: "gemma3-4b"
     ollama_id: "gemma3:4b"
     category: "small_general"
@@ -25,13 +25,14 @@ models:
     category: "small_domain"
 
 rag:
-  top_k: 5
+  top_k: 3
   chunk_size: 512
   chunk_overlap: 50
   embedding_model: "nomic-embed-text"
   collection_name: "medqa_textbooks"
-  max_distance: 0.25  # cosine distance cutoff — chunks above this are discarded
+  max_distance: 0.3  # cosine distance cutoff — chunks above this are discarded
   retrieval_mode: "balanced"  # fast | balanced | best
+  query_mode: "question_plus_options"  # question_only | question_plus_options | question_plus_top_terms
   dense_multiplier: 4
   lexical_multiplier: 4
   rerank_alpha: 0.6
