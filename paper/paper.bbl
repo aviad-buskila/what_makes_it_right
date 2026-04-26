@@ -1,0 +1,78 @@
+\begin{thebibliography}{10}
+
+\bibitem{chromadb}
+{Chroma}.
+\newblock Chroma: the ai-native open-source embedding database.
+\newblock \url{https://www.trychroma.com/}, 2024.
+
+\bibitem{dietterich1998mcnemar}
+Thomas~G. Dietterich.
+\newblock Approximate statistical tests for comparing supervised classification
+  learning algorithms, 1998.
+
+\bibitem{team2024gemma}
+{Gemma Team} and Google DeepMind.
+\newblock Gemma: Open models based on gemini research and technology.
+\newblock {\em arXiv preprint arXiv:2403.08295}, 2024.
+
+\bibitem{jin2021medqa}
+Di~Jin, Eileen Pan, Nassim Oufattole, Wei-Hung Weng, Hanyi Fang, and Peter
+  Szolovits.
+\newblock What disease does this patient have? a large-scale open domain
+  question answering dataset from medical exams.
+\newblock {\em Applied Sciences}, 11(14):6421, 2021.
+
+\bibitem{lewis2020rag}
+Patrick Lewis, Ethan Perez, Aleksandra Piktus, Fabio Petroni, Vladimir
+  Karpukhin, Naman Goyal, Heinrich K{\"u}ttler, Mike Lewis, Wen-tau Yih, Tim
+  Rockt{\"a}schel, Sebastian Riedel, and Douwe Kiela.
+\newblock Retrieval-augmented generation for knowledge-intensive {NLP} tasks.
+\newblock {\em Advances in Neural Information Processing Systems},
+  33:9459--9474, 2020.
+
+\bibitem{nori2023gpt4medical}
+Harsha Nori, Nicholas King, Scott~Mayer McKinney, Dean Carignan, and Eric
+  Horvitz.
+\newblock Capabilities of {GPT-4} on medical challenge problems.
+\newblock {\em arXiv preprint arXiv:2303.13375}, 2023.
+
+\bibitem{nomic2024embed}
+Zach Nussbaum, John~X. Morris, Brandon Duderstadt, and Andriy Mulyar.
+\newblock Nomic embed: Training a reproducible long context text embedder,
+  2024.
+
+\bibitem{ollama2024}
+{Ollama Contributors}.
+\newblock Ollama: Get up and running with large language models locally.
+\newblock \url{https://ollama.com}, 2024.
+
+\bibitem{pal2022medmcqa}
+Ankit Pal, Logesh~Kumar Umapathi, and Malaikannan Sankarasubbu.
+\newblock {MedMCQA}: A large-scale multi-subject multi-choice dataset for
+  medical domain question answering.
+\newblock In {\em Proceedings of the Conference on Health, Inference, and
+  Learning}, pages 248--260, 2022.
+
+\bibitem{sellergren2025medgemma}
+Andrew Sellergren et~al.
+\newblock {MedGemma}: Open multimodal medical foundation models.
+\newblock {\em arXiv preprint arXiv:2507.05201}, 2025.
+
+\bibitem{singhal2023medpalm}
+Karan Singhal, Shekoofeh Azizi, Tao Tu, S.~Sara Mahdavi, Jason Wei, Hyung~Won
+  Chung, Nathan Scales, Ajay Tanwani, Heather Cole-Lewis, Stephen Pfohl, et~al.
+\newblock Large language models encode clinical knowledge.
+\newblock {\em Nature}, 620(7972):172--180, 2023.
+
+\bibitem{wang2024augmentingblackbox}
+Yubo Wang, Xueguang Ma, and Wenhu Chen.
+\newblock Augmenting black-box {LLMs} with medical textbooks for biomedical
+  question answering.
+\newblock {\em arXiv preprint arXiv:2309.02233}, 2024.
+
+\bibitem{xiong2024benchmarkingrag}
+Guangzhi Xiong, Qiao Jin, Zhiyong Lu, and Aidong Zhang.
+\newblock Benchmarking retrieval-augmented generation for medicine.
+\newblock {\em arXiv preprint arXiv:2402.13178}, 2024.
+
+\end{thebibliography}
