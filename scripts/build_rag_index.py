@@ -30,6 +30,8 @@ def main():
 
     print("Building RAG index...")
     print(f"  Corpus source:   {config.rag.corpus_source}")
+    if config.rag.corpus_variant:
+        print(f"  Corpus variant:  {config.rag.corpus_variant}")
     if include:
         print(f"  Corpus include:  {include}")
     print(f"  Embedding model: {config.rag.embedding_model}")
@@ -48,6 +50,7 @@ def main():
         max_corpus_size=config.rag.max_corpus_size,
         corpus_source=config.rag.corpus_source,
         corpus_include=include,
+        corpus_variant=config.rag.corpus_variant,
     )
 
     print(f"\nIndex ready: {collection.count()} chunks indexed.")

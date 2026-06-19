@@ -239,6 +239,17 @@ pip install -e ".[hf]"
 python scripts/build_rag_index.py --config config_medcpt.yaml
 python scripts/run_experiment.py  --config config_medcpt.yaml
 
+# Better-fitting / authoritative corpora (MIRAGE/MedRAG) — separate indexes.
+# textbooks = US-aligned, best-fit (RAG-favourable); statpearls = clean fair test.
+python scripts/build_rag_index.py --config config_medrag_textbooks.yaml
+python scripts/run_experiment.py  --config config_medrag_textbooks.yaml
+python scripts/build_rag_index.py --config config_statpearls.yaml   # needs manual StatPearls build
+python scripts/run_experiment.py  --config config_statpearls.yaml
+# compare the RAG effect under each corpus vs the MedMCQA-explanation corpus:
+python scripts/statistical_analysis.py \
+    --experiment medical_mcq_medrag_textbooks_0.1_3r \
+    --experiment medical_mcq_comparison_full_0.1_3r
+
 # Retrieval hyperparameter robustness sweep (no re-indexing; query-time only)
 python scripts/rag_sweep.py --config config.yaml \
     --top-k 1,3,5 --max-distance 0.2,0.3,0.4 --query-mode question_plus_options

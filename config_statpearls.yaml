@@ -1,0 +1,58 @@
+# Cleaner authoritative corpus: StatPearls (Workstream A — corpus robustness).
+# Authoritative, US-aligned clinical reference, and NOT the source of MedQA, so
+# this is the FAIR null test: if the RAG null survives StatPearls, the result is
+# not a corpus-fit artifact.
+#
+# StatPearls cannot be auto-downloaded (licensing). Build the MedRAG StatPearls
+# snippets first via the MIRAGE script (https://github.com/Teddy-XiongGZ/MedRAG),
+# then either expose them as the HF dataset 'MedRAG/statpearls' cache or adapt
+# src/rag/medical_corpus.py to read your local path.
+#   python scripts/build_rag_index.py --config config_statpearls.yaml
+#   python scripts/run_experiment.py  --config config_statpearls.yaml
+#   python scripts/statistical_analysis.py \
+#     --experiment medical_mcq_statpearls_0.1_3r \
+#     --experiment medical_mcq_comparison_full_0.1_3r
+
+experiment:
+  name: "medical_mcq_statpearls_0.1_3r"
+  repetitions: 3
+  max_questions: null
+  random_seed: 42
+  temperature: [0.1]
+  timeout_per_query: 10
+  answer_retry_attempts: 2
+  record_failures: true
+  domain: "medical"
+
+dataset:
+  source: "medqa"
+  split: "test"
+
+models:
+  - name: "gemma3-4b"
+    ollama_id: "gemma3:4b"
+    category: "small_general"
+  - name: "medgemma-4b"
+    ollama_id: "edwardlo12/medgemma-4b-it-q4_k_m:latest"
+    category: "small_domain"
+
+rag:
+  top_k: 3
+  chunk_size: 512
+  chunk_overlap: 50
+  embedding_model: "nomic-embed-text"
+  embedding_backend: "ollama"
+  collection_name: "medqa_statpearls"
+  max_distance: 0.3
+  retrieval_mode: "balanced"
+  query_mode: "question_plus_options"
+  dense_multiplier: 4
+  lexical_multiplier: 4
+  rerank_alpha: 0.6
+  min_lexical_overlap: 0.01
+  corpus_source: "statpearls"
+  max_corpus_size: null
+  persist_dir: "data/chroma_db_statpearls"
+
+storage:
+  results_dir: "results"

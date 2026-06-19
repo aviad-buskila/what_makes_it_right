@@ -18,6 +18,7 @@ if str(PROJECT_ROOT) not in sys.path:
 from src.analysis.contamination import build_corpus_ngrams, question_overlap
 from src.dataset.loader import Question
 from src.llm.embeddings import HFEmbedder, MedCPTEmbedder, OllamaEmbedder, get_embedder
+from src.rag.medical_corpus import _medrag_row_to_text
 from src.rag.oracle import build_oracle_context
 
 
@@ -68,6 +69,15 @@ def main() -> int:
     except ValueError:
         pass
     print(f"[{'PASS' if 'backend' not in ''.join(failures) else 'FAIL'}] embedder factory")
+
+    # 3b. MedRAG row parsing prefers 'contents', falls back to title+content.
+    if _medrag_row_to_text({"contents": "A. B"}) != "A. B":
+        failures.append("medrag: contents not preferred")
+    if _medrag_row_to_text({"title": "T", "content": "C"}) != "T. C":
+        failures.append("medrag: title+content fallback wrong")
+    if _medrag_row_to_text({"content": "only"}) != "only":
+        failures.append("medrag: content-only fallback wrong")
+    print(f"[{'PASS' if 'medrag' not in ''.join(failures) else 'FAIL'}] medrag row parsing")
 
     # 4. Dataset dispatch raises for unknown sources.
     from src.dataset.loader import load_dataset_by_source

@@ -18,11 +18,15 @@ def load_corpus_by_source(
     max_corpus_size: int | None = None,
     random_seed: int = 42,
     include: tuple[str, ...] | None = None,
+    variant: str | None = None,
 ) -> list[dict[str, str]]:
     """Dispatch to a corpus loader by name.
 
     Supported sources:
       - ``medqa``         → MedQA textbook / MedMCQA explanations fallback
+      - ``medrag``        → MIRAGE/MedRAG corpus (``variant`` selects subset:
+                            textbooks/statpearls/pubmed/wikipedia; default textbooks)
+      - ``statpearls`` / ``textbooks`` / ``pubmed`` / ``wikipedia`` → MedRAG subset
       - ``cybersecurity`` → MITRE ATT&CK + CWE + NIST SP 800-53 + OWASP
     """
     key = source.strip().lower()
@@ -30,6 +34,17 @@ def load_corpus_by_source(
         corpus = load_textbook_corpus(
             cache_dir=cache_dir,
             max_corpus_size=max_corpus_size or 25_000,
+            random_seed=random_seed,
+        )
+        return _dedupe_corpus(corpus)
+    if key in {"medrag", "statpearls", "textbooks", "pubmed", "wikipedia"}:
+        from src.rag.medical_corpus import load_medrag_corpus
+
+        subset = variant if key == "medrag" else key
+        corpus = load_medrag_corpus(
+            subset=subset or "textbooks",
+            cache_dir=cache_dir,
+            max_corpus_size=max_corpus_size,
             random_seed=random_seed,
         )
         return _dedupe_corpus(corpus)
@@ -189,6 +204,7 @@ def build_index(
     max_corpus_size: int | None = 25_000,
     corpus_source: str = "medqa",
     corpus_include: tuple[str, ...] | None = None,
+    corpus_variant: str | None = None,
 ) -> chromadb.Collection:
     """Build a ChromaDB index from the configured knowledge corpus.
 
@@ -218,6 +234,7 @@ def build_index(
         cache_dir=cache_dir,
         max_corpus_size=max_corpus_size,
         include=corpus_include,
+        variant=corpus_variant,
     )
     print(f"Loaded {len(corpus)} documents from corpus.")
 
