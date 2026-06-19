@@ -51,6 +51,30 @@ class Retriever:
         """Embed a query string with the configured embedder backend."""
         return self._embedder.embed_query(text)
 
+    def fetch_dense_candidates(
+        self, query_text: str, n_candidates: int = 50
+    ) -> list[tuple[str, float]]:
+        """Return up to ``n_candidates`` (chunk, cosine_distance) pairs, ascending.
+
+        Pure dense retrieval with no distance cutoff and no rerank — this is the
+        raw material a retrieval cache stores so that any ``top_k`` /
+        ``max_distance`` can be replayed offline via :func:`rank_candidates`.
+        """
+        embedding = self.embed_query(query_text)
+        results = self.collection.query(
+            query_embeddings=[embedding],
+            n_results=max(1, n_candidates),
+            include=["documents", "distances"],
+        )
+        documents = results["documents"][0] if results["documents"] else []
+        distances = (
+            results["distances"][0] if results.get("distances")
+            else [0.0] * len(documents)
+        )
+        pairs = [(doc, float(dist)) for doc, dist in zip(documents, distances)]
+        pairs.sort(key=lambda p: p[1])
+        return pairs
+
     def query(self, question_text: str, top_k: int | None = None) -> list[str]:
         """Return the top-K most relevant text chunks for a question.
 
@@ -152,6 +176,48 @@ class Retriever:
         scored.sort(key=lambda x: x[0], reverse=True)
         limit = max(k * self.lexical_multiplier, k)
         return [doc for _, doc in scored[:limit]]
+
+
+def rank_candidates(
+    query_text: str,
+    candidates: list[tuple[str, float]],
+    top_k: int,
+    max_distance: float,
+    rerank_alpha: float = 0.6,
+    min_lexical_overlap: float = 0.0,
+    mode: str = "balanced",
+) -> list[str]:
+    """Select the final top-K chunks from a cached dense candidate pool.
+
+    Pure function (no embedding / DB access) that replays the retriever's
+    distance cutoff and hybrid dense+lexical fusion over a pre-fetched
+    ``candidates`` list of ``(chunk, cosine_distance)`` pairs. This is what makes
+    offline tuning of ``top_k`` and ``max_distance`` possible from a cache.
+
+    Note: unlike the live ``Retriever.query`` in ``balanced``/``best`` mode, this
+    does not inject lexical-only candidates from the global corpus pool — it
+    ranks within the dense candidate pool, which is what a cache contains.
+    """
+    close = [(doc, dist) for doc, dist in candidates if dist <= max_distance]
+    if not close:
+        return []
+    if mode == "fast":
+        return [doc for doc, _ in close[:top_k]]
+
+    dense_scores = [1.0 - dist for _, dist in close]
+    max_dense = max(max(dense_scores, default=1.0), 1e-9)
+    query_tokens = _token_set(query_text)
+
+    ranked: list[tuple[float, str]] = []
+    for (doc, _dist), dense_raw in zip(close, dense_scores):
+        overlap = _bm25ish_score(query_tokens, _token_set(doc))
+        dense = dense_raw / max_dense
+        score = (rerank_alpha * dense) + ((1.0 - rerank_alpha) * overlap)
+        if overlap >= min_lexical_overlap or dense > 0:
+            ranked.append((score, doc))
+
+    ranked.sort(key=lambda x: x[0], reverse=True)
+    return [doc for _, doc in ranked[:top_k]]
 
 
 def _token_set(text: str) -> set[str]:

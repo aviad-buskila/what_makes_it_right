@@ -202,6 +202,31 @@ python scripts/statistical_analysis.py --experiment medical_mcq_comparison_full_
 python scripts/statistical_analysis.py --experiment run_nomic --experiment run_medcpt
 ```
 
+**Cache retrieval once, reuse everywhere (faster, reproducible):**
+
+```bash
+# 1. Run retrieval once over all questions -> cache (exact chunks + candidate pool)
+python scripts/precompute_retrieval.py --config config.yaml --pool-size 50
+
+# 2. Run experiments from the cache (no re-embedding / re-querying ChromaDB)
+python scripts/run_experiment.py --config config.yaml \
+    --retrieval-cache data/medqa/retrieval_cache/medqa_textbooks.jsonl
+
+# 3. Tune top_k / max_distance offline from the cache (instant, no LLM)
+python scripts/tune_retrieval.py --config config.yaml --sweep \
+    --top-k-grid 1,3,5,8 --max-distance-grid 0.2,0.25,0.3,0.35,0.4
+# evaluate retrieval correctness on a sample, or inspect one question:
+python scripts/tune_retrieval.py --config config.yaml --sample 200
+python scripts/tune_retrieval.py --config config.yaml --question-id medqa_test_0
+```
+
+The cache stores, per question, the exact chunks the live retriever returned
+(for faithful experiment reproduction, `--cache-mode final`) and a dense
+candidate pool with distances (so the tuner can replay any `top_k`/`max_distance`
+offline, and `run_experiment --cache-mode ranked` can re-rank at a new config).
+The legacy online evaluator (`scripts/evaluate_retrieval.py`, re-embeds each run)
+remains available.
+
 **Defend the RAG null (Workstream A):**
 
 ```bash
