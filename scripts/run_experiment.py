@@ -28,6 +28,20 @@ def main():
         default=None,
         help="Questions JSONL path (defaults to data/<dataset_source>/questions.jsonl)",
     )
+    parser.add_argument(
+        "--retrieval-cache",
+        default=None,
+        help="Path to a precomputed retrieval cache (scripts/precompute_retrieval.py). "
+             "When set, cached chunks are used instead of live retrieval — fast and "
+             "exactly reproducible.",
+    )
+    parser.add_argument(
+        "--cache-mode",
+        choices=["final", "ranked"],
+        default="final",
+        help="'final' uses the chunks cached at build config; 'ranked' re-ranks the "
+             "cached candidate pool at this config's top_k/max_distance.",
+    )
     args = parser.parse_args()
 
     config = load_config(args.config)
@@ -78,16 +92,47 @@ def main():
     total = len(questions) * config.repetitions * setup_count
     print(f"Total calls:   {total}")
 
+    # Cache path: use precomputed retrieval instead of a live retriever.
+    precomputed_chunks = None
+    if args.retrieval_cache:
+        from src.rag.cache import load_cache
+
+        cache = load_cache(args.retrieval_cache)
+        if args.cache_mode == "ranked":
+            precomputed_chunks = cache.ranked_chunks_map(
+                top_k=config.rag.top_k,
+                max_distance=config.rag.max_distance,
+                rerank_alpha=config.rag.rerank_alpha,
+                min_lexical_overlap=config.rag.min_lexical_overlap,
+                mode=config.rag.retrieval_mode,
+            )
+        else:
+            precomputed_chunks = cache.final_chunks_map()
+        n_with = sum(1 for v in precomputed_chunks.values() if v)
+        print(f"Using retrieval cache '{args.retrieval_cache}' "
+              f"({len(precomputed_chunks)} questions, {n_with} with context, "
+              f"mode={args.cache_mode}).")
+
+        setups = build_setups(config, retriever=None)
+        store = ResultsStore(config.results_dir)
+        run_experiment(config, questions, setups, store,
+                       retriever=None, precomputed_chunks=precomputed_chunks)
+        print(f"\nExperiment complete! Results saved to "
+              f"{config.results_dir}/{config.name}.jsonl")
+        return
+
     # Initialize RAG retriever
     chroma_path = config.rag.persist_dir
     retriever = None
     if Path(chroma_path).exists():
         try:
-            ensure_model(config.rag.embedding_model)
+            if config.rag.embedding_backend == "ollama":
+                ensure_model(config.rag.embedding_model)
             retriever = Retriever(
                 persist_dir=chroma_path,
                 collection_name=config.rag.collection_name,
                 embedding_model=config.rag.embedding_model,
+                embedding_backend=config.rag.embedding_backend,
                 top_k=config.rag.top_k,
                 timeout_per_query=config.timeout_per_query,
                 max_distance=config.rag.max_distance,

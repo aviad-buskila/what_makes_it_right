@@ -188,6 +188,106 @@ Outputs are written to `results/retrieval/<experiment_name>/`:
 - **Chunk size / overlap** — rebuild the index with different `rag.chunk_size` / `rag.chunk_overlap`, rerun, compare `mean_discrimination` and retrieval-only accuracy.
 - **Corpus ablation** — toggle `rag.corpus_include`, rebuild, and compare source-mix vs. accuracy to measure each KB's marginal contribution.
 
+## Journal-revision experiments
+
+These extend the core 2×2 study to defend the RAG null and establish generality
+(see `paper/paper.tex`). New code is config-driven and reuses the same pipeline.
+
+**Stronger statistics (no new runs needed)** — exact McNemar, Holm/BH
+correction, odds ratios, TOST equivalence, and power, for one or more runs:
+
+```bash
+python scripts/statistical_analysis.py --experiment medical_mcq_comparison_full_0.1_3r --tost-margin 0.05
+# merge two runs head-to-head (e.g. different embedders / scales / quantization):
+python scripts/statistical_analysis.py --experiment run_nomic --experiment run_medcpt
+```
+
+**Cache retrieval once, reuse everywhere (faster, reproducible):**
+
+```bash
+# 1. Run retrieval once over all questions -> cache (exact chunks + candidate pool)
+python scripts/precompute_retrieval.py --config config.yaml --pool-size 50
+
+# 2. Run experiments from the cache (no re-embedding / re-querying ChromaDB)
+python scripts/run_experiment.py --config config.yaml \
+    --retrieval-cache data/medqa/retrieval_cache/medqa_textbooks.jsonl
+
+# 3. Tune top_k / max_distance offline from the cache (instant, no LLM)
+python scripts/tune_retrieval.py --config config.yaml --sweep \
+    --top-k-grid 1,3,5,8 --max-distance-grid 0.2,0.25,0.3,0.35,0.4
+# evaluate retrieval correctness on a sample, or inspect one question:
+python scripts/tune_retrieval.py --config config.yaml --sample 200
+python scripts/tune_retrieval.py --config config.yaml --question-id medqa_test_0
+```
+
+The cache stores, per question, the exact chunks the live retriever returned
+(for faithful experiment reproduction, `--cache-mode final`) and a dense
+candidate pool with distances (so the tuner can replay any `top_k`/`max_distance`
+offline, and `run_experiment --cache-mode ranked` can re-rank at a new config).
+The legacy online evaluator (`scripts/evaluate_retrieval.py`, re-embeds each run)
+remains available.
+
+**Defend the RAG null (Workstream A):**
+
+```bash
+# Oracle / upper-bound retrieval (adds answer / answer_soft / privileged_query setups)
+python scripts/run_experiment.py --config config_oracle.yaml
+python scripts/statistical_analysis.py --experiment medical_mcq_oracle_0.1_3r
+
+# Stronger biomedical embedder (MedCPT) — separate index
+pip install -e ".[hf]"
+python scripts/build_rag_index.py --config config_medcpt.yaml
+python scripts/run_experiment.py  --config config_medcpt.yaml
+
+# Better-fitting / authoritative corpora (MIRAGE/MedRAG) — separate indexes.
+# textbooks = US-aligned, best-fit (RAG-favourable); statpearls = clean fair test.
+python scripts/build_rag_index.py --config config_medrag_textbooks.yaml
+python scripts/run_experiment.py  --config config_medrag_textbooks.yaml
+python scripts/build_rag_index.py --config config_statpearls.yaml   # needs manual StatPearls build
+python scripts/run_experiment.py  --config config_statpearls.yaml
+# compare the RAG effect under each corpus vs the MedMCQA-explanation corpus:
+python scripts/statistical_analysis.py \
+    --experiment medical_mcq_medrag_textbooks_0.1_3r \
+    --experiment medical_mcq_comparison_full_0.1_3r
+
+# Retrieval hyperparameter robustness sweep (no re-indexing; query-time only)
+python scripts/rag_sweep.py --config config.yaml \
+    --top-k 1,3,5 --max-distance 0.2,0.3,0.4 --query-mode question_plus_options
+```
+
+**Generalize across benchmarks, scale, domain (Workstream B):**
+
+```bash
+python scripts/run_experiment.py --config config_pubmedqa.yaml
+python scripts/run_experiment.py --config config_medmcqa.yaml
+python scripts/run_experiment.py --config config_mmlu.yaml
+python scripts/run_experiment.py --config config_scale_27b.yaml   # set the 27B model ids first
+python scripts/run_experiment.py --config config_cyber.yaml        # cross-domain replication
+```
+
+**De-confound (Workstream C):**
+
+```bash
+# n-gram leakage / contamination probe (corpus + optional external reference)
+python scripts/contamination_probe.py --config config.yaml --n 13
+# quantization spot-check on a subset, then compare to the 4-bit run
+python scripts/run_experiment.py --config config_quant_check.yaml
+python scripts/statistical_analysis.py --experiment medical_mcq_quantcheck_fp16 \
+    --experiment medical_mcq_comparison_full_0.1_3r
+```
+
+**Error / conflict analysis (Workstream E):**
+
+```bash
+python scripts/error_analysis.py --experiment medical_mcq_comparison_full_0.1_3r \
+    --questions data/medqa/questions.jsonl
+```
+
+New config knobs: `rag.embedding_backend` (`ollama`|`hf`|`medcpt`) and
+`rag.oracle_modes` (e.g. `["answer","answer_soft","privileged_query"]`). New
+dataset sources: `pubmedqa`, `medmcqa`, `mmlu`. Run the test suite with
+`python tests/test_statistics.py` and `python tests/test_revision_modules.py`.
+
 ## Data and outputs
 
 - Medical questions: `data/medqa/questions.jsonl`

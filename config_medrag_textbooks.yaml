@@ -1,0 +1,58 @@
+# Better-fitting corpus: MIRAGE/MedRAG textbooks (Workstream A — corpus robustness).
+# The 18 US medical textbooks MedQA was written from: best topical fit, US-aligned,
+# textbook-grade. Because MedQA items were authored from these books this is the
+# RAG-FAVOURABLE condition (borderline near-leakage) — use it to show RAG *can*
+# help when the corpus is well matched, and contrast with the cleaner StatPearls run.
+#
+# Only the corpus differs from the main run (same models, embedder, retrieval params),
+# so the RAG effect is directly comparable.
+#   python scripts/build_rag_index.py --config config_medrag_textbooks.yaml
+#   python scripts/run_experiment.py  --config config_medrag_textbooks.yaml
+#   python scripts/statistical_analysis.py \
+#     --experiment medical_mcq_medrag_textbooks_0.1_3r \
+#     --experiment medical_mcq_comparison_full_0.1_3r   # vs the MedMCQA-explanation corpus
+
+experiment:
+  name: "medical_mcq_medrag_textbooks_0.1_3r"
+  repetitions: 3
+  max_questions: null
+  random_seed: 42
+  temperature: [0.1]
+  timeout_per_query: 10
+  answer_retry_attempts: 2
+  record_failures: true
+  domain: "medical"
+
+dataset:
+  source: "medqa"
+  split: "test"
+
+models:
+  - name: "gemma3-4b"
+    ollama_id: "gemma3:4b"
+    category: "small_general"
+  - name: "medgemma-4b"
+    ollama_id: "edwardlo12/medgemma-4b-it-q4_k_m:latest"
+    category: "small_domain"
+
+rag:
+  top_k: 3
+  chunk_size: 512
+  chunk_overlap: 50
+  embedding_model: "nomic-embed-text"
+  embedding_backend: "ollama"
+  collection_name: "medqa_medrag_textbooks"
+  max_distance: 0.3
+  retrieval_mode: "balanced"
+  query_mode: "question_plus_options"
+  dense_multiplier: 4
+  lexical_multiplier: 4
+  rerank_alpha: 0.6
+  min_lexical_overlap: 0.01
+  corpus_source: "medrag"
+  corpus_variant: "textbooks"
+  max_corpus_size: null        # use the full textbooks corpus
+  persist_dir: "data/chroma_db_medrag_textbooks"
+
+storage:
+  results_dir: "results"

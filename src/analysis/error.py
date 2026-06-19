@@ -97,6 +97,130 @@ def rag_effect_summary(delta_df: pd.DataFrame) -> pd.DataFrame:
     )
 
 
+def rag_conflict_analysis(df: pd.DataFrame) -> pd.DataFrame:
+    """Explain RAG-changed items using the stored retrieved context.
+
+    For every (question, model) pair where toggling RAG changed majority-vote
+    correctness, characterise the retrieved context by term overlap with the
+    gold option vs. the distractors:
+
+      * ``gold_overlap``       — recall of gold-option terms in the context
+      * ``distractor_overlap`` — mean recall of distractor-option terms
+      * ``evidence``           — "supports_gold" if gold_overlap is highest,
+                                 "supports_distractor" if a distractor is higher,
+                                 "no_evidence" if the context has no option terms.
+
+    This lets the discussion distinguish RAG hurting because the retrieved
+    passage *conflicts* with the gold answer (supports a distractor) from RAG
+    failing because the passage was simply *irrelevant* (no_evidence).
+    """
+    delta = rag_delta_per_question(df)
+    changed = delta[delta["delta"] != 0]
+    if changed.empty:
+        return pd.DataFrame()
+
+    rag_rows = df[(df["has_rag"] == True)].dropna(subset=["retrieved_context"])
+    context_by_q: dict[str, list[str]] = {}
+    for _, r in rag_rows.iterrows():
+        ctx = r["retrieved_context"]
+        if isinstance(ctx, list) and ctx and r["question_id"] not in context_by_q:
+            context_by_q[r["question_id"]] = ctx
+
+    # Reconstruct option text per question from any row carrying it (if present).
+    # Falls back gracefully when option text is not stored in results.
+    rows = []
+    for _, row in changed.iterrows():
+        qid = row["question_id"]
+        ctx_chunks = context_by_q.get(qid, [])
+
+        record = {
+            "question_id": qid,
+            "model_name": row["model_name"],
+            "effect": row["effect"],
+            "n_chunks": len(ctx_chunks),
+        }
+        # Option text is not in the results store; evidence labelling requires it.
+        # When unavailable we still report effect + chunk count so the breakdown
+        # of helped/hurt with vs without retrieved context is computable.
+        record["had_context"] = len(ctx_chunks) > 0
+        rows.append(record)
+
+    return pd.DataFrame(rows)
+
+
+def rag_conflict_summary(conflict_df: pd.DataFrame) -> pd.DataFrame:
+    """Summarise RAG-changed items by effect and whether context was present."""
+    if conflict_df.empty:
+        return pd.DataFrame()
+    return (
+        conflict_df.groupby(["model_name", "effect", "had_context"])
+        .size()
+        .reset_index(name="count")
+    )
+
+
+def rag_conflict_analysis_with_options(
+    df: pd.DataFrame,
+    questions: list,
+) -> pd.DataFrame:
+    """Richer conflict analysis when the original questions (with option text)
+    are available.
+
+    ``questions`` is a list of :class:`~src.dataset.loader.Question`. Provides the
+    ``gold_overlap`` / ``distractor_overlap`` / ``evidence`` labelling described
+    in :func:`rag_conflict_analysis`.
+    """
+    from statistics import mean
+
+    from src.rag.evaluation import _term_overlap
+
+    q_by_id = {q.id: q for q in questions}
+    delta = rag_delta_per_question(df)
+    changed = delta[delta["delta"] != 0]
+    if changed.empty:
+        return pd.DataFrame()
+
+    rag_rows = df[(df["has_rag"] == True)].dropna(subset=["retrieved_context"])
+    context_by_q: dict[str, list[str]] = {}
+    for _, r in rag_rows.iterrows():
+        ctx = r["retrieved_context"]
+        if isinstance(ctx, list) and ctx and r["question_id"] not in context_by_q:
+            context_by_q[r["question_id"]] = ctx
+
+    rows = []
+    for _, row in changed.iterrows():
+        qid = row["question_id"]
+        q = q_by_id.get(qid)
+        if q is None:
+            continue
+        context_blob = "\n\n".join(context_by_q.get(qid, []))
+        gold_recall, _, _ = _term_overlap(q.options.get(q.correct_answer, ""), context_blob)
+        distractor_recalls = [
+            _term_overlap(text, context_blob)[0]
+            for letter, text in q.options.items()
+            if letter != q.correct_answer
+        ]
+        distractor_mean = mean(distractor_recalls) if distractor_recalls else 0.0
+        max_distractor = max(distractor_recalls) if distractor_recalls else 0.0
+
+        if gold_recall == 0 and max_distractor == 0:
+            evidence = "no_evidence"
+        elif gold_recall >= max_distractor:
+            evidence = "supports_gold"
+        else:
+            evidence = "supports_distractor"
+
+        rows.append({
+            "question_id": qid,
+            "model_name": row["model_name"],
+            "effect": row["effect"],
+            "gold_overlap": round(gold_recall, 4),
+            "distractor_overlap": round(distractor_mean, 4),
+            "evidence": evidence,
+        })
+    return pd.DataFrame(rows)
+
+
 def difficulty_spectrum(pivot: pd.DataFrame, n_hardest: int = 10) -> pd.DataFrame:
     """Return the N hardest and N easiest questions ranked by models_correct."""
     setup_cols = [c for c in pivot.columns if c not in ("question_id", "correct_answer", "models_correct")]

@@ -1,0 +1,50 @@
+# Second model scale (Workstream B): 27B general vs domain pair on MedQA.
+# Tests whether in-weights > in-context holds beyond 4B and whether the RAG null
+# narrows with scale. Set the exact Ollama ids you have pulled locally.
+#   python scripts/run_experiment.py --config config_scale_27b.yaml
+#
+# NOTE: confirm/replace the MedGemma-27B Ollama id with the build you pulled
+# (e.g. a community q4_k_m GGUF of medgemma-27b-text-it).
+
+experiment:
+  name: "medical_mcq_27b_0.1_3r"
+  repetitions: 3
+  max_questions: null
+  random_seed: 42
+  temperature: [0.1]
+  timeout_per_query: 30
+  answer_retry_attempts: 2
+  record_failures: true
+  domain: "medical"
+
+dataset:
+  source: "medqa"
+  split: "test"
+
+models:
+  - name: "gemma3-27b"
+    ollama_id: "gemma3:27b"
+    category: "large_general"
+  - name: "medgemma-27b"
+    ollama_id: "REPLACE_ME/medgemma-27b-text-it-q4_k_m:latest"  # set to your local id
+    category: "large_domain"
+
+rag:
+  top_k: 3
+  chunk_size: 512
+  chunk_overlap: 50
+  embedding_model: "nomic-embed-text"
+  embedding_backend: "ollama"
+  collection_name: "medqa_textbooks"
+  max_distance: 0.3
+  retrieval_mode: "balanced"
+  query_mode: "question_plus_options"
+  dense_multiplier: 4
+  lexical_multiplier: 4
+  rerank_alpha: 0.6
+  min_lexical_overlap: 0.01
+  corpus_source: "medqa"
+  persist_dir: "data/chroma_db"
+
+storage:
+  results_dir: "results"

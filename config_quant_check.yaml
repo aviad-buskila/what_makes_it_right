@@ -1,0 +1,52 @@
+# Quantization spot-check (Workstream C): re-evaluate a subset at higher
+# precision to bound the 4-bit quantization confound. Compare against the main
+# 4-bit run on the SAME question subset (random_seed fixes the subset).
+#   python scripts/run_experiment.py --config config_quant_check.yaml
+#   python scripts/statistical_analysis.py \
+#     --experiment medical_mcq_quantcheck_fp16 \
+#     --experiment medical_mcq_comparison_full_0.1_3r
+#
+# Set the Ollama ids to higher-precision builds you have pulled (e.g. fp16/q8_0).
+
+experiment:
+  name: "medical_mcq_quantcheck_fp16"
+  repetitions: 3
+  max_questions: 300        # subset to keep the higher-precision run affordable
+  random_seed: 42           # same seed -> same subset as a 300-item 4-bit run
+  temperature: [0.1]
+  timeout_per_query: 30
+  answer_retry_attempts: 2
+  record_failures: true
+  domain: "medical"
+
+dataset:
+  source: "medqa"
+  split: "test"
+
+models:
+  - name: "gemma3-4b-fp16"
+    ollama_id: "gemma3:4b-it-fp16"          # replace with your higher-precision id
+    category: "small_general"
+  - name: "medgemma-4b-q8"
+    ollama_id: "REPLACE_ME/medgemma-4b-it-q8_0:latest"  # higher-precision MedGemma
+    category: "small_domain"
+
+rag:
+  top_k: 3
+  chunk_size: 512
+  chunk_overlap: 50
+  embedding_model: "nomic-embed-text"
+  embedding_backend: "ollama"
+  collection_name: "medqa_textbooks"
+  max_distance: 0.3
+  retrieval_mode: "balanced"
+  query_mode: "question_plus_options"
+  dense_multiplier: 4
+  lexical_multiplier: 4
+  rerank_alpha: 0.6
+  min_lexical_overlap: 0.01
+  corpus_source: "medqa"
+  persist_dir: "data/chroma_db"
+
+storage:
+  results_dir: "results"

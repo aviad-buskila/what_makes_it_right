@@ -17,9 +17,13 @@ from src.analysis.error import (
     plot_difficulty_histogram,
     plot_rag_effect,
     question_verdict_pivot,
+    rag_conflict_analysis,
+    rag_conflict_analysis_with_options,
+    rag_conflict_summary,
     rag_delta_per_question,
     rag_effect_summary,
 )
+from src.dataset.loader import load_questions
 from src.storage.results import ResultsStore
 
 
@@ -29,6 +33,8 @@ def main():
     parser.add_argument("--results-dir", default="results", help="Results directory")
     parser.add_argument("--output-dir", default="results", help="Output directory for report")
     parser.add_argument("--n-hardest", type=int, default=10, help="Number of hardest/easiest questions to show")
+    parser.add_argument("--questions", default=None,
+                        help="Optional questions JSONL for evidence-level RAG conflict analysis")
     args = parser.parse_args()
 
     store = ResultsStore(args.results_dir)
@@ -125,6 +131,46 @@ def main():
             f"- RAG hurt on:   {hurt if hurt else 'none'}",
             "",
         ]
+
+    # --- RAG conflict analysis: why does RAG change answers? ---
+    conflict = rag_conflict_analysis(df)
+    if not conflict.empty:
+        conflict_summary = rag_conflict_summary(conflict)
+        lines += [
+            "---",
+            "",
+            "## RAG Conflict Analysis",
+            "",
+            "Breakdown of RAG-changed items by effect and whether the model "
+            "actually received retrieved context.",
+            "",
+            conflict_summary.to_markdown(index=False),
+            "",
+        ]
+
+        # Richer, evidence-level analysis when option text is available.
+        questions = None
+        if args.questions and Path(args.questions).exists():
+            questions = load_questions(Path(args.questions))
+        else:
+            default_q = Path(f"data/{df['question_id'].iloc[0].split('_')[0]}/questions.jsonl")
+            if default_q.exists():
+                questions = load_questions(default_q)
+        if questions:
+            evidence = rag_conflict_analysis_with_options(df, questions)
+            if not evidence.empty:
+                ev_summary = (
+                    evidence.groupby(["model_name", "effect", "evidence"])
+                    .size().reset_index(name="count")
+                )
+                lines += [
+                    "Evidence alignment of the retrieved context on RAG-changed "
+                    "items (does the context support the gold answer or a "
+                    "distractor?):",
+                    "",
+                    ev_summary.to_markdown(index=False),
+                    "",
+                ]
 
     lines += [
         "---",

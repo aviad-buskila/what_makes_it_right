@@ -1,0 +1,52 @@
+# Stronger biomedical embedder study (Workstream A).
+# Reproduces the RAG comparison with the MedCPT biomedical dual-encoder instead
+# of nomic-embed-text, to show the RAG null is not an embedder artifact.
+#
+# NOTE: uses a SEPARATE Chroma index (different collection + persist dir) because
+# the embedding space differs. Build it first:
+#   python scripts/build_rag_index.py --config config_medcpt.yaml
+#   python scripts/run_experiment.py  --config config_medcpt.yaml
+# Requires: pip install -e ".[hf]"  (transformers + torch + sentence-transformers)
+
+experiment:
+  name: "medical_mcq_medcpt_0.1_3r"
+  repetitions: 3
+  max_questions: null
+  random_seed: 42
+  temperature: [0.1]
+  timeout_per_query: 10
+  answer_retry_attempts: 2
+  record_failures: true
+  domain: "medical"
+
+dataset:
+  source: "medqa"
+  split: "test"
+
+models:
+  - name: "gemma3-4b"
+    ollama_id: "gemma3:4b"
+    category: "small_general"
+  - name: "medgemma-4b"
+    ollama_id: "edwardlo12/medgemma-4b-it-q4_k_m:latest"
+    category: "small_domain"
+
+rag:
+  top_k: 3
+  chunk_size: 512
+  chunk_overlap: 50
+  embedding_model: "ncbi/MedCPT"   # informational; MedCPT backend ignores model id
+  embedding_backend: "medcpt"
+  collection_name: "medqa_textbooks_medcpt"
+  max_distance: 0.3
+  retrieval_mode: "balanced"
+  query_mode: "question_plus_options"
+  dense_multiplier: 4
+  lexical_multiplier: 4
+  rerank_alpha: 0.6
+  min_lexical_overlap: 0.01
+  corpus_source: "medqa"
+  persist_dir: "data/chroma_db_medcpt"
+
+storage:
+  results_dir: "results"

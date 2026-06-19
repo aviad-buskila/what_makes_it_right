@@ -27,10 +27,15 @@ class RagConfig:
     chunk_size: int = 512
     chunk_overlap: int = 50
     embedding_model: str = "nomic-embed-text"
+    embedding_backend: str = "ollama"  # "ollama" | "hf" | "medcpt"
     collection_name: str = "medqa_textbooks"
     max_distance: float = 0.27  # cosine distance cutoff; chunks above this are discarded
-    corpus_source: str = "medqa"  # "medqa" or "cybersecurity"
+    corpus_source: str = "medqa"  # medqa | medrag | statpearls | cybersecurity | ...
     corpus_include: list[str] | None = None  # ablation knob for cyber sources
+    corpus_variant: str | None = None  # MedRAG subset when corpus_source=="medrag"
+    # Oracle / upper-bound retrieval modes to add as extra setups, e.g.
+    # ["answer", "answer_soft", "privileged_query"]. Empty/None = no oracle.
+    oracle_modes: list[str] | None = None
     persist_dir: str = "data/chroma_db"
     max_corpus_size: int | None = None
     retrieval_mode: str = "balanced"  # "fast", "balanced", "best"

@@ -66,6 +66,42 @@ def _term_overlap(target: str, context: str) -> tuple[float, int, int]:
     return len(matched) / len(target_tokens), len(matched), len(target_tokens)
 
 
+def score_chunks(question: Question, chunks: list[str]) -> dict:
+    """Silver-label retrieval-correctness signals for a set of retrieved chunks.
+
+    Returns option_overlap (per letter), correct_term_recall, discrimination
+    (gold recall minus mean distractor recall), and the heuristic "pick the
+    highest-overlap option" prediction and whether it matches the gold answer.
+
+    Shared by the live retrieval evaluator and the cache-backed tuner so both
+    measure retrieval correctness identically.
+    """
+    context_blob = "\n\n".join(chunks)
+    option_overlap: dict[str, float] = {}
+    for letter, text in question.options.items():
+        recall, _, _ = _term_overlap(text, context_blob)
+        option_overlap[letter] = recall
+
+    correct_recall = option_overlap.get(question.correct_answer, 0.0)
+    distractor_scores = [v for k_, v in option_overlap.items()
+                         if k_ != question.correct_answer]
+    discrimination = correct_recall - (mean(distractor_scores)
+                                       if distractor_scores else 0.0)
+
+    heuristic_pick = None
+    if option_overlap and max(option_overlap.values()) > 0:
+        heuristic_pick = max(option_overlap, key=option_overlap.get)
+    heuristic_correct = heuristic_pick == question.correct_answer
+
+    return {
+        "option_overlap": option_overlap,
+        "correct_term_recall": correct_recall,
+        "discrimination": discrimination,
+        "heuristic_pick": heuristic_pick,
+        "heuristic_correct": heuristic_correct,
+    }
+
+
 @dataclass
 class QueryDiagnostics:
     question_id: str
@@ -99,23 +135,8 @@ def evaluate_query(
     distances = _raw_distances(retriever, question.question_text, k)
     chunk_lengths = [len(c) for c in chunks]
     sources = [infer_source(c) for c in chunks]
-    context_blob = "\n\n".join(chunks)
 
-    option_overlap: dict[str, float] = {}
-    for letter, text in question.options.items():
-        recall, _, _ = _term_overlap(text, context_blob)
-        option_overlap[letter] = recall
-
-    correct_recall = option_overlap.get(question.correct_answer, 0.0)
-    distractor_scores = [v for k_, v in option_overlap.items()
-                         if k_ != question.correct_answer]
-    discrimination = correct_recall - (mean(distractor_scores)
-                                       if distractor_scores else 0.0)
-
-    heuristic_pick = None
-    if option_overlap and max(option_overlap.values()) > 0:
-        heuristic_pick = max(option_overlap, key=option_overlap.get)
-    heuristic_correct = heuristic_pick == question.correct_answer
+    scored = score_chunks(question, chunks)
 
     previews = [c[:preview_chars].replace("\n", " ") + ("…" if len(c) > preview_chars else "")
                 for c in chunks]
@@ -129,11 +150,11 @@ def evaluate_query(
         sources=sources,
         latency_seconds=latency,
         covered=len(chunks) > 0,
-        correct_term_recall=correct_recall,
-        option_overlap=option_overlap,
-        discrimination=discrimination,
-        heuristic_pick=heuristic_pick,
-        heuristic_correct=heuristic_correct,
+        correct_term_recall=scored["correct_term_recall"],
+        option_overlap=scored["option_overlap"],
+        discrimination=scored["discrimination"],
+        heuristic_pick=scored["heuristic_pick"],
+        heuristic_correct=scored["heuristic_correct"],
         chunks_preview=previews,
     )
 
@@ -144,9 +165,7 @@ def _raw_distances(retriever: Retriever, text: str, k: int) -> list[float]:
     This bypasses the lexical rerank so the distribution reflects the index
     itself, which is what you want when tuning ``max_distance``.
     """
-    from src.llm.client import generate_embedding
-    emb = generate_embedding(text, model=retriever.embedding_model,
-                             timeout=retriever.timeout_per_query)
+    emb = retriever.embed_query(text)
     res = retriever.collection.query(
         query_embeddings=[emb],
         n_results=max(k, 1),

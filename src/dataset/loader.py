@@ -119,12 +119,47 @@ def load_dataset_by_source(
 
     Supported sources:
       - ``medqa``       → MedQA-USMLE-4-options (default medical benchmark)
+      - ``pubmedqa``    → PubMedQA labeled (yes/no/maybe → A/B/C)
+      - ``medmcqa``     → MedMCQA (``variant`` selects split; default validation)
+      - ``mmlu``        → MMLU clinical subsets (``variant`` = subject or None=all)
       - ``cybermetric`` → CyberMetric (``variant`` ∈ {80, 500, 2000, 10000})
       - ``secqa``       → SecQA (``variant`` ∈ {"v1", "v2"})
     """
     key = source.strip().lower()
     if key == "medqa":
         return load_medqa(
+            split=split,
+            max_questions=max_questions,
+            random_seed=random_seed,
+            cache_dir=cache_dir,
+        )
+    if key == "pubmedqa":
+        from src.dataset.medical_extra import load_pubmedqa
+
+        return load_pubmedqa(
+            split=split if split in {"train"} else "train",
+            max_questions=max_questions,
+            random_seed=random_seed,
+            cache_dir=cache_dir,
+        )
+    if key == "medmcqa":
+        from src.dataset.medical_extra import load_medmcqa
+
+        chosen_split = str(variant) if variant is not None else "validation"
+        return load_medmcqa(
+            split=chosen_split,
+            max_questions=max_questions,
+            random_seed=random_seed,
+            cache_dir=cache_dir,
+        )
+    if key == "mmlu":
+        from src.dataset.medical_extra import load_mmlu_medical
+
+        subjects = None
+        if variant is not None:
+            subjects = tuple(str(variant).split(",")) if "," in str(variant) else str(variant)
+        return load_mmlu_medical(
+            subjects=subjects,
             split=split,
             max_questions=max_questions,
             random_seed=random_seed,
@@ -153,5 +188,5 @@ def load_dataset_by_source(
         )
     raise ValueError(
         f"Unknown dataset source {source!r}. "
-        "Use one of: medqa, cybermetric, secqa."
+        "Use one of: medqa, pubmedqa, medmcqa, mmlu, cybermetric, secqa."
     )

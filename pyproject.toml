@@ -17,9 +17,22 @@ dependencies = [
     "seaborn>=0.13",
 ]
 
+[project.optional-dependencies]
+# Stronger biomedical / HF embedders (MedCPT, BGE) for the RAG robustness study.
+hf = [
+    "sentence-transformers>=2.2",
+    "transformers>=4.40",
+    "torch>=2.0",
+]
+
 [project.scripts]
 download-dataset = "scripts.download_dataset:main"
 build-rag-index = "scripts.build_rag_index:main"
 run-experiment = "scripts.run_experiment:main"
 analyze-results = "scripts.analyze_results:main"
 evaluate-retrieval = "scripts.evaluate_retrieval:main"
+precompute-retrieval = "scripts.precompute_retrieval:main"
+tune-retrieval = "scripts.tune_retrieval:main"
+rag-sweep = "scripts.rag_sweep:main"
+statistical-analysis = "scripts.statistical_analysis:main"
+contamination-probe = "scripts.contamination_probe:main"

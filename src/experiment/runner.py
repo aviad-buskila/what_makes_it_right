@@ -33,6 +33,18 @@ def build_setups(config: ExperimentConfig, retriever: Retriever | None = None) -
                 answer_retry_attempts=config.answer_retry_attempts,
                 domain=config.domain,
             ))
+            for oracle_mode in (config.rag.oracle_modes or []):
+                setups.append(ExperimentSetup(
+                    model_config=model_config,
+                    use_rag=True,
+                    retriever=retriever,
+                    rag_config=config.rag,
+                    temperature=temperature,
+                    timeout_per_query=config.timeout_per_query,
+                    answer_retry_attempts=config.answer_retry_attempts,
+                    domain=config.domain,
+                    oracle_mode=oracle_mode,
+                ))
     return setups
 
 
@@ -42,12 +54,17 @@ def run_experiment(
     setups: list[ExperimentSetup],
     store: ResultsStore,
     retriever: Retriever | None = None,
+    precomputed_chunks: dict[str, list[str]] | None = None,
 ) -> None:
     """Run the full experiment.
 
     Loop order: question → retrieve chunks once → model pairs (base + RAG) →
     repetitions.  Each question's chunks are retrieved exactly once and shared
     across all RAG setups, avoiding redundant embedding calls.
+
+    If ``precomputed_chunks`` (a ``{question_id: chunks}`` map, e.g. from a
+    retrieval cache) is supplied, those chunks are used directly and no live
+    retrieval is performed — making re-runs fast and exactly reproducible.
     """
     if not check_health():
         raise RuntimeError("Ollama is not running. Start it with 'ollama serve'.")
@@ -74,7 +91,10 @@ def run_experiment(
         for question in questions:
             # Retrieve chunks once for this question and reuse across all RAG setups.
             chunks: list[str] | None = None
-            if retriever is not None:
+            if precomputed_chunks is not None:
+                # Use cached retrieval — fast and exactly reproducible.
+                chunks = precomputed_chunks.get(question.id)
+            elif retriever is not None:
                 try:
                     retrieval_calls += 1
                     retrieval_query = retriever.build_query_text(

@@ -30,9 +30,12 @@ def main():
 
     print("Building RAG index...")
     print(f"  Corpus source:   {config.rag.corpus_source}")
+    if config.rag.corpus_variant:
+        print(f"  Corpus variant:  {config.rag.corpus_variant}")
     if include:
         print(f"  Corpus include:  {include}")
     print(f"  Embedding model: {config.rag.embedding_model}")
+    print(f"  Embedding backend: {config.rag.embedding_backend}")
     print(f"  Chunk size:      {config.rag.chunk_size}")
     print(f"  Chunk overlap:   {config.rag.chunk_overlap}")
     print(f"  Persist dir:     {persist_dir}")
@@ -41,11 +44,13 @@ def main():
         persist_dir=persist_dir,
         collection_name=config.rag.collection_name,
         embedding_model=config.rag.embedding_model,
+        embedding_backend=config.rag.embedding_backend,
         chunk_size=config.rag.chunk_size,
         chunk_overlap=config.rag.chunk_overlap,
         max_corpus_size=config.rag.max_corpus_size,
         corpus_source=config.rag.corpus_source,
         corpus_include=include,
+        corpus_variant=config.rag.corpus_variant,
     )
 
     print(f"\nIndex ready: {collection.count()} chunks indexed.")
