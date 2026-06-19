@@ -8,7 +8,7 @@ import chromadb
 from datasets import load_dataset
 from tqdm import tqdm
 
-from src.llm.client import generate_embedding
+from src.llm.embeddings import get_embedder
 from src.rag.cyber_corpus import load_cybersecurity_corpus
 
 
@@ -182,6 +182,7 @@ def build_index(
     persist_dir: str = "data/chroma_db",
     collection_name: str = "medqa_textbooks",
     embedding_model: str = "nomic-embed-text",
+    embedding_backend: str = "ollama",
     chunk_size: int = 512,
     chunk_overlap: int = 50,
     cache_dir: str | None = None,
@@ -191,9 +192,12 @@ def build_index(
 ) -> chromadb.Collection:
     """Build a ChromaDB index from the configured knowledge corpus.
 
-    Embeds chunks using Ollama and persists to disk. ``corpus_source`` selects
-    between the medical (``medqa``) and cybersecurity (``cybersecurity``) KBs.
+    Embeds chunks using the configured backend (``ollama`` by default; ``hf`` or
+    ``medcpt`` for a stronger biomedical embedder) and persists to disk.
+    ``corpus_source`` selects between the medical (``medqa``) and cybersecurity
+    (``cybersecurity``) KBs.
     """
+    embedder = get_embedder(model=embedding_model, backend=embedding_backend)
     Path(persist_dir).mkdir(parents=True, exist_ok=True)
     client = chromadb.PersistentClient(path=persist_dir)
 
@@ -227,8 +231,10 @@ def build_index(
 
     for doc in tqdm(corpus, desc="Processing documents"):
         chunks = chunk_text(doc["text"], chunk_size, chunk_overlap)
-        for chunk_pos, chunk in enumerate(chunks):
-            embedding = generate_embedding(chunk, model=embedding_model)
+        if not chunks:
+            continue
+        chunk_embeddings = embedder.embed_documents(chunks)
+        for chunk_pos, (chunk, embedding) in enumerate(zip(chunks, chunk_embeddings)):
             batch_ids.append(f"chunk_{chunk_idx}")
             batch_docs.append(chunk)
             batch_embeddings.append(embedding)

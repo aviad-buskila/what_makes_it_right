@@ -33,6 +33,7 @@ def main():
     if include:
         print(f"  Corpus include:  {include}")
     print(f"  Embedding model: {config.rag.embedding_model}")
+    print(f"  Embedding backend: {config.rag.embedding_backend}")
     print(f"  Chunk size:      {config.rag.chunk_size}")
     print(f"  Chunk overlap:   {config.rag.chunk_overlap}")
     print(f"  Persist dir:     {persist_dir}")
@@ -41,6 +42,7 @@ def main():
         persist_dir=persist_dir,
         collection_name=config.rag.collection_name,
         embedding_model=config.rag.embedding_model,
+        embedding_backend=config.rag.embedding_backend,
         chunk_size=config.rag.chunk_size,
         chunk_overlap=config.rag.chunk_overlap,
         max_corpus_size=config.rag.max_corpus_size,

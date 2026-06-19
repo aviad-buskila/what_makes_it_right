@@ -1,7 +1,12 @@
+# Generalization benchmark: MedMCQA validation split (Workstream B).
+# The RAG corpus uses MedMCQA *train explanations*; the items evaluated here are
+# the *validation* questions/answers, which are disjoint -> no answer leakage.
+#   python scripts/run_experiment.py --config config_medmcqa.yaml
+
 experiment:
-  name: "medical_mcq_comparison_full_0.1_3r"
+  name: "medmcqa_0.1_3r"
   repetitions: 3
-  max_questions: null  # null = full test set, integer for subset (e.g. 200 for pilot)
+  max_questions: null
   random_seed: 42
   temperature: [0.1]
   timeout_per_query: 10
@@ -10,13 +15,11 @@ experiment:
   domain: "medical"
 
 dataset:
-  source: "medqa"
+  source: "medmcqa"
   split: "test"
+  variant: "validation"   # labeled split for MedMCQA
 
 models:
-  # - name: "gpt-oss-20b"
-  #   ollama_id: "gpt-oss:20b"
-  #   category: "large_general"
   - name: "gemma3-4b"
     ollama_id: "gemma3:4b"
     category: "small_general"
@@ -29,19 +32,17 @@ rag:
   chunk_size: 512
   chunk_overlap: 50
   embedding_model: "nomic-embed-text"
-  embedding_backend: "ollama"  # ollama | hf | medcpt (see config_medcpt.yaml)
+  embedding_backend: "ollama"
   collection_name: "medqa_textbooks"
-  max_distance: 0.3  # cosine distance cutoff — chunks above this are discarded
-  retrieval_mode: "balanced"  # fast | balanced | best
-  query_mode: "question_plus_options"  # question_only | question_plus_options | question_plus_top_terms
+  max_distance: 0.3
+  retrieval_mode: "balanced"
+  query_mode: "question_plus_options"
   dense_multiplier: 4
   lexical_multiplier: 4
   rerank_alpha: 0.6
   min_lexical_overlap: 0.01
   corpus_source: "medqa"
   persist_dir: "data/chroma_db"
-  # Optional oracle/upper-bound setups (see config_oracle.yaml):
-  # oracle_modes: ["answer", "answer_soft", "privileged_query"]
 
 storage:
   results_dir: "results"

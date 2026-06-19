@@ -5,7 +5,7 @@ from collections import Counter
 
 import chromadb
 
-from src.llm.client import generate_embedding
+from src.llm.embeddings import get_embedder
 
 
 class Retriever:
@@ -16,6 +16,7 @@ class Retriever:
         persist_dir: str = "data/chroma_db",
         collection_name: str = "medqa_textbooks",
         embedding_model: str = "nomic-embed-text",
+        embedding_backend: str = "ollama",
         top_k: int = 5,
         timeout_per_query: int = 60,
         max_distance: float = 0.27,
@@ -29,6 +30,10 @@ class Retriever:
         self.client = chromadb.PersistentClient(path=persist_dir)
         self.collection = self.client.get_collection(collection_name)
         self.embedding_model = embedding_model
+        self.embedding_backend = embedding_backend
+        self._embedder = get_embedder(
+            model=embedding_model, backend=embedding_backend, timeout=timeout_per_query
+        )
         self.top_k = top_k
         self.timeout_per_query = timeout_per_query
         self.max_distance = max_distance
@@ -42,6 +47,10 @@ class Retriever:
         if self.retrieval_mode in {"balanced", "best"}:
             self._prime_lexical_pool()
 
+    def embed_query(self, text: str) -> list[float]:
+        """Embed a query string with the configured embedder backend."""
+        return self._embedder.embed_query(text)
+
     def query(self, question_text: str, top_k: int | None = None) -> list[str]:
         """Return the top-K most relevant text chunks for a question.
 
@@ -51,11 +60,7 @@ class Retriever:
         - best: dense + lightweight lexical pre-candidates + fusion rerank
         """
         k = top_k or self.top_k
-        embedding = generate_embedding(
-            question_text,
-            model=self.embedding_model,
-            timeout=self.timeout_per_query,
-        )
+        embedding = self.embed_query(question_text)
         results = self.collection.query(
             query_embeddings=[embedding],
             n_results=max(k * self.dense_multiplier, k),

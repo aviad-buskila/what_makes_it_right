@@ -7,6 +7,7 @@ from src.experiment.config import ModelConfig, RagConfig
 from src.llm.client import generate
 from src.llm.parser import extract_answer, normalize_answer_letter
 from src.llm.prompts import build_base_prompt, build_rag_prompt
+from src.rag.oracle import build_oracle_context
 from src.rag.retriever import Retriever
 
 
@@ -32,6 +33,7 @@ class ExperimentSetup:
         timeout_per_query: int = 60,
         answer_retry_attempts: int = 2,
         domain: str = "medical",
+        oracle_mode: str | None = None,
     ):
         self.model_config = model_config
         self.use_rag = use_rag
@@ -41,9 +43,15 @@ class ExperimentSetup:
         self.timeout_per_query = timeout_per_query
         self.answer_retry_attempts = max(1, answer_retry_attempts)
         self.domain = domain
+        self.oracle_mode = oracle_mode
 
-        rag_suffix = "+RAG" if use_rag else ""
-        self.name = f"{model_config.name}{rag_suffix}@t{self.temperature:g}"
+        if oracle_mode:
+            suffix = f"+Oracle:{oracle_mode}"
+        elif use_rag:
+            suffix = "+RAG"
+        else:
+            suffix = ""
+        self.name = f"{model_config.name}{suffix}@t{self.temperature:g}"
 
     def answer(self, question: Question, pre_retrieved_chunks: list[str] | None = None, repetition: int = 0) -> SetupResult:
         """Send a question to this setup and return the result.
@@ -54,7 +62,24 @@ class ExperimentSetup:
         """
         context_chunks: list[str] | None = None
 
-        if self.use_rag:
+        if self.oracle_mode:
+            # Oracle setups ignore shared retrieval and build privileged context.
+            if self.oracle_mode == "privileged_query":
+                if self.retriever is not None:
+                    top_k = self.rag_config.top_k if self.rag_config else 5
+                    gold_letter = (question.correct_answer or "").strip().upper()
+                    gold_text = question.options.get(gold_letter, "")
+                    query_text = f"{question.question_text}\n{gold_text}".strip()
+                    context_chunks = self.retriever.query(query_text, top_k=top_k)
+                else:
+                    context_chunks = None
+            else:
+                context_chunks = build_oracle_context(question, mode=self.oracle_mode)
+            if context_chunks:
+                prompt = build_rag_prompt(question, context_chunks, domain=self.domain)
+            else:
+                prompt = build_base_prompt(question, domain=self.domain)
+        elif self.use_rag:
             if pre_retrieved_chunks is not None:
                 context_chunks = pre_retrieved_chunks
             elif self.retriever:

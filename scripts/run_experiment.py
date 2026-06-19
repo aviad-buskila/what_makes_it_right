@@ -83,11 +83,13 @@ def main():
     retriever = None
     if Path(chroma_path).exists():
         try:
-            ensure_model(config.rag.embedding_model)
+            if config.rag.embedding_backend == "ollama":
+                ensure_model(config.rag.embedding_model)
             retriever = Retriever(
                 persist_dir=chroma_path,
                 collection_name=config.rag.collection_name,
                 embedding_model=config.rag.embedding_model,
+                embedding_backend=config.rag.embedding_backend,
                 top_k=config.rag.top_k,
                 timeout_per_query=config.timeout_per_query,
                 max_distance=config.rag.max_distance,

@@ -33,6 +33,18 @@ def build_setups(config: ExperimentConfig, retriever: Retriever | None = None) -
                 answer_retry_attempts=config.answer_retry_attempts,
                 domain=config.domain,
             ))
+            for oracle_mode in (config.rag.oracle_modes or []):
+                setups.append(ExperimentSetup(
+                    model_config=model_config,
+                    use_rag=True,
+                    retriever=retriever,
+                    rag_config=config.rag,
+                    temperature=temperature,
+                    timeout_per_query=config.timeout_per_query,
+                    answer_retry_attempts=config.answer_retry_attempts,
+                    domain=config.domain,
+                    oracle_mode=oracle_mode,
+                ))
     return setups
 
 

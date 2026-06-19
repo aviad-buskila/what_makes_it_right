@@ -1,0 +1,54 @@
+# Oracle / upper-bound retrieval study (Workstream A).
+# Adds oracle setups alongside base + RAG so we can measure the *ceiling* of
+# in-context help and localise the realistic-RAG null.
+#
+# Run with the SAME ChromaDB index as the main run (privileged_query uses it):
+#   python scripts/run_experiment.py --config config_oracle.yaml
+#   python scripts/statistical_analysis.py --experiment medical_mcq_oracle_0.1_3r
+
+experiment:
+  name: "medical_mcq_oracle_0.1_3r"
+  repetitions: 3
+  max_questions: null
+  random_seed: 42
+  temperature: [0.1]
+  timeout_per_query: 10
+  answer_retry_attempts: 2
+  record_failures: true
+  domain: "medical"
+
+dataset:
+  source: "medqa"
+  split: "test"
+
+models:
+  - name: "gemma3-4b"
+    ollama_id: "gemma3:4b"
+    category: "small_general"
+  - name: "medgemma-4b"
+    ollama_id: "edwardlo12/medgemma-4b-it-q4_k_m:latest"
+    category: "small_domain"
+
+rag:
+  top_k: 3
+  chunk_size: 512
+  chunk_overlap: 50
+  embedding_model: "nomic-embed-text"
+  embedding_backend: "ollama"
+  collection_name: "medqa_textbooks"
+  max_distance: 0.3
+  retrieval_mode: "balanced"
+  query_mode: "question_plus_options"
+  dense_multiplier: 4
+  lexical_multiplier: 4
+  rerank_alpha: 0.6
+  min_lexical_overlap: 0.01
+  corpus_source: "medqa"
+  persist_dir: "data/chroma_db"
+  # Adds three extra setups per model: a fully-leaky answer oracle, a softer
+  # content oracle, and a privileged-query oracle (retrieves using the gold
+  # option). These upper-bound what in-context evidence can contribute.
+  oracle_modes: ["answer", "answer_soft", "privileged_query"]
+
+storage:
+  results_dir: "results"

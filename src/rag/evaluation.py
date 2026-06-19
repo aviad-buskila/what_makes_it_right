@@ -144,9 +144,7 @@ def _raw_distances(retriever: Retriever, text: str, k: int) -> list[float]:
     This bypasses the lexical rerank so the distribution reflects the index
     itself, which is what you want when tuning ``max_distance``.
     """
-    from src.llm.client import generate_embedding
-    emb = generate_embedding(text, model=retriever.embedding_model,
-                             timeout=retriever.timeout_per_query)
+    emb = retriever.embed_query(text)
     res = retriever.collection.query(
         query_embeddings=[emb],
         n_results=max(k, 1),
